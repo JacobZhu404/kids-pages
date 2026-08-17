@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Cloudflare Pages deploy cache (wrangler)
+.wrangler/
+
+# 敏感凭证：Cloudflare API Token / Account ID（不含版本库，部署脚本有硬编码回退）
+cloudflare_config.json
+
+# 临时目录（write 工具原子写入残留）
+.*.tmpdir/
+*.tmpdir/
+*.tmp
+
+# IDE / OS / 日志
+.vscode/
+.idea/
+*.swp
+.DS_Store
+*.log

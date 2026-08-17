@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>秘密花园 · 小萝卜和爸爸的学习资料</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+         background:linear-gradient(135deg,#eef2ff,#fef3c7); min-height:100vh; color:#1e293b; }
+  header { background:linear-gradient(135deg,#7c3aed,#db2777); color:#fff; padding:40px 20px 32px; text-align:center; }
+  header h1 { font-size:30px; letter-spacing:2px; }
+  header p { margin-top:8px; font-size:16px; opacity:.94; }
+  main { max-width:880px; margin:0 auto; padding:24px 18px 60px; }
+  .topic-title, .topic-section { margin:28px 0 6px; padding-bottom:8px; border-bottom:2px solid #ddd6fe; }
+  .topic-title { display:flex; align-items:center; gap:10px; }
+  .topic-title h2, .topic-section h2 { font-size:22px; color:#6d28d9; }
+  .topic-title .badge, .topic-section .badge { background:#ede9fe; color:#6d28d9; border-radius:999px; padding:2px 10px; font-size:12px; }
+  .grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-top:12px; }
+  @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
+  .card { background:#fff; border-radius:14px; padding:16px; box-shadow:0 1px 8px rgba(15,23,42,.07);
+          text-decoration:none; color:inherit; display:block; border-top:4px solid #7c3aed;
+          transition:transform .12s, box-shadow .12s; }
+  a.card:hover { transform:translateY(-3px); box-shadow:0 8px 22px rgba(15,23,42,.16); }
+  .card .src { font-size:12px; font-weight:700; color:#6d28d9; letter-spacing:.5px; }
+  .card p  { font-size:14px; color:#475569; line-height:1.55; margin-top:6px; }
+  .card.empty { background:#f1f5f9; border-top-color:#cbd5e1; cursor:not-allowed; }
+  .card.empty .src { color:#94a3b8; }
+  .card.empty p { color:#94a3b8; }
+  .empty-tag { display:inline-block; background:#e2e8f0; color:#64748b; border-radius:999px;
+               padding:2px 9px; font-size:11px; margin-top:8px; }
+  .legend { background:#fff7ed; border-left:5px solid #f97316; border-radius:10px; padding:12px 16px;
+            margin:22px 0; font-size:13.5px; color:#7c2d12; line-height:1.7; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🌸 秘密花园</h1>
+  <p>小萝卜和爸爸的学习资料</p>
+</header>
+<main>
+
+  <!-- 主题一：深度搜索与广度搜索 -->
+  <div class="topic-title">
+    <h2>① 深度搜索与广度搜索（DFS / BFS）</h2>
+    <span class="badge">3 个版本齐</span>
+  </div>
+  <div class="grid">
+    <a class="card" href="gesp6-dfs-bfs.html">
+      <span class="src">千问 (QWEN)</span>
+      <p>深搜广搜通关站：核心概念、区别、典型题目全通关，配图配例。</p>
+    </a>
+    <a class="card" href="dsfs-bfs-walkthrough.html">
+      <span class="src">WorkBuddy</span>
+      <p>DFS / BFS 走查教程：一步步走查深搜与广搜的执行过程。</p>
+    </a>
+    <a class="card" href="dfs-bfs/">
+      <span class="src">TRAE</span>
+      <p>DFS/BFS 互动教程：可交互走查，动画展示深搜与广搜的执行过程。</p>
+    </a>
+  </div>
+
+  <!-- 主题二：树上漫步 -->
+  <div class="topic-section">
+    <h2>② 树上漫步（GESP 六级真题 P11962）</h2>
+    <span class="badge">3 个版本齐</span>
+  </div>
+  <div class="grid">
+    <a class="card" href="gesp6-p11962-tutorial.html">
+      <span class="src">千问 · QWEN</span>
+      <p>树上漫步·图文动画精讲：逐段讲解思路、深度优先遍历与奇偶步数判断。</p>
+    </a>
+    <a class="card" href="p11962-tree-walk.html">
+      <span class="src">WorkBuddy</span>
+      <p>树上漫步·互动教学：互动式板书，一步步引导推理，动手验证。</p>
+    </a>
+    <a class="card" href="tree-stroll/">
+      <span class="src">TRAE</span>
+      <p>树上漫步·互动版：可交互小程序，自己动手走一遍，看动画理解每一步。</p>
+    </a>
+  </div>
+
+  <div class="legend">
+    📌 <b>全齐了</b> · 两个主题、三个来源（千问 / WorkBuddy / TRAE），6 个网页全部到位。祝学习愉快 🎉
+  </div>
+
+</main>
+</body>
+</html>
