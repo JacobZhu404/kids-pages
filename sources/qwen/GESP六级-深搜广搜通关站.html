@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DFS &amp; BFS 深搜广搜通关站 · GESP 六级</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+         background:#f1f5f9; color:#1e293b; line-height:1.75; }
+  header { background:linear-gradient(135deg,#4f46e5,#7c3aed 55%,#db2777);
+           color:#fff; padding:42px 20px 34px; text-align:center; }
+  header h1 { font-size:34px; letter-spacing:2px; }
+  header p { margin-top:10px; font-size:16px; opacity:.92; }
+  .badge { display:inline-block; background:rgba(255,255,255,.22); border:1px solid rgba(255,255,255,.5);
+           border-radius:999px; padding:2px 14px; font-size:13px; margin-top:12px; }
+  nav { position:sticky; top:0; z-index:50; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.08);
+        padding:10px 8px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  nav a { text-decoration:none; color:#4f46e5; background:#eef2ff; border:1px solid #c7d2fe;
+          border-radius:999px; padding:4px 13px; font-size:13px; }
+  nav a:hover { background:#4f46e5; color:#fff; }
+  main { max-width:1000px; margin:0 auto; padding:18px 16px 60px; }
+  section { background:#fff; border-radius:16px; padding:26px 26px 30px; margin:22px 0;
+            box-shadow:0 1px 6px rgba(15,23,42,.06); }
+  h2 { font-size:24px; margin-bottom:6px; color:#312e81; }
+  h2 .num { display:inline-block; background:linear-gradient(135deg,#4f46e5,#7c3aed); color:#fff;
+            border-radius:10px; padding:0 10px; margin-right:8px; font-size:20px; }
+  h3 { font-size:18px; margin:22px 0 8px; color:#4338ca; }
+  h4 { font-size:16px; margin:16px 0 6px; color:#0f172a; }
+  p { margin:8px 0; }
+  .lead { font-size:17px; }
+  .tagline { background:#eef2ff; border-left:5px solid #4f46e5; border-radius:8px;
+             padding:12px 16px; margin:14px 0; }
+  .warn { background:#fff7ed; border-left:5px solid #f97316; border-radius:8px; padding:12px 16px; margin:14px 0; }
+  .tip  { background:#f0fdf4; border-left:5px solid #22c55e; border-radius:8px; padding:12px 16px; margin:14px 0; }
+  .cmp  { background:#fef2f2; border-left:5px solid #ef4444; border-radius:8px; padding:12px 16px; margin:14px 0; }
+  ul,ol { margin:8px 0 8px 26px; }
+  li { margin:4px 0; }
+  table { border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; }
+  th,td { border:1px solid #e2e8f0; padding:8px 10px; text-align:left; }
+  th { background:#eef2ff; color:#3730a3; }
+  .mono, code, pre { font-family:"SF Mono",Menlo,Consolas,"Courier New",monospace; }
+  code { background:#eef2ff; color:#4338ca; padding:1px 6px; border-radius:5px; font-size:13.5px; }
+  pre { background:#0f172a; color:#e2e8f0; border-radius:12px; padding:16px 18px; overflow-x:auto; margin:12px 0; }
+  pre code { background:none; color:inherit; padding:0; font-size:13.5px; line-height:1.65; }
+  .c { color:#6ee7b7; } .k { color:#7dd3fc; } .n { color:#fdba74; } .pp { color:#d8b4fe; } .s { color:#fcd34d; }
+  .grid { display:grid; grid-template-columns:1fr; gap:12px; }
+  .controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:14px 0 6px; }
+  .controls button, .controls select { font-size:14px; padding:7px 14px; border-radius:999px; border:1px solid #c7d2fe;
+    background:#fff; color:#4338ca; cursor:pointer; }
+  .controls button:hover { background:#eef2ff; }
+  .controls button:disabled { opacity:.4; cursor:not-allowed; }
+  .status { font-size:13.5px; color:#475569; background:#f8fafc; border:1px dashed #cbd5e1;
+            border-radius:10px; padding:8px 12px; margin:10px 0; width:100%; }
+  .maze { display:grid; gap:1px; width:fit-content; margin:6px auto; background:#cbd5e1; padding:1px; border-radius:6px; }
+  .cell { width:25px; height:25px; background:#f8fafc; border-radius:2px; }
+  .cell.wall { background:#334155; }
+  .cell.start { background:#22c55e; }
+  .cell.goal { background:#ef4444; border-radius:50%; }
+  .cell.vis { background:#93c5fd; }
+  .cell.dead { background:#cbd5e1; }
+  .cell.cur { outline:3px solid #f59e0b; outline-offset:-1px; }
+  .container-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 12px; margin:10px 0;
+                   font-size:13.5px; overflow-x:auto; white-space:nowrap; }
+  .container-box b { color:#4338ca; }
+  .chip { display:inline-block; background:#eef2ff; color:#3730a3; border:1px solid #c7d2fe; border-radius:6px;
+          padding:1px 8px; margin:0 3px; font-family:"SF Mono",Menlo,monospace; font-size:13px; }
+  .lbl { font-size:12px; color:#64748b; margin:0 4px; }
+  .lbl.hot { color:#db2777; font-weight:600; }
+  .legend { font-size:13px; color:#475569; margin:10px 0; display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+  .legend span { display:inline-flex; align-items:center; gap:5px; }
+  .lg { display:inline-block; width:14px; height:14px; border-radius:3px; }
+  .opt { display:inline-block; margin:4px 8px 4px 0; padding:7px 16px; border-radius:999px; border:1px solid #c7d2fe;
+         background:#fff; color:#4338ca; font-size:14px; cursor:pointer; }
+  .opt:hover { background:#eef2ff; }
+  .opt.ok { background:#22c55e; color:#fff; border-color:#22c55e; }
+  .opt.no { background:#fca5a5; color:#fff; border-color:#ef4444; }
+  .expl { display:none; background:#f0fdf4; border-left:5px solid #22c55e; border-radius:8px;
+          padding:10px 14px; margin:10px 0; font-size:14px; }
+  .expl.bad { background:#fef2f2; border-left-color:#ef4444; }
+  details { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 14px; margin:12px 0; }
+  summary { cursor:pointer; color:#4338ca; font-weight:600; }
+  .pb { counter-increment:pb; }
+  .pb .pt { font-weight:700; color:#be185d; }
+  .answer-note { font-size:14px; }
+  footer { text-align:center; color:#94a3b8; font-size:13px; padding:10px 0 40px; }
+  .bubble { background:#fff7ed; border:1px dashed #fdba74; border-radius:14px; padding:14px 18px; margin:12px 0; }
+  .bubble b { color:#c2410c; }
+  @media (max-width:600px){ .cell{width:20px;height:20px;} header h1{font-size:26px;} }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🐭 DFS 深搜 &amp; 🌀 BFS 广搜 通关站</h1>
+  <p>给五年级的你 · 系统搞定 GESP 六级搜索算法</p>
+  <span class="badge">递归已会 ✓ 直接上手</span>
+</header>
+
+<nav>
+  <a href="#sec0">0 先看这里</a>
+  <a href="#sec1">1 栈和队列</a>
+  <a href="#sec2">2 DFS 深搜</a>
+  <a href="#sec3">3 BFS 广搜</a>
+  <a href="#sec4">4 对比与选择</a>
+  <a href="#sec5">5 图与二叉树</a>
+  <a href="#sec6">6 例题精讲</a>
+  <a href="#sec7">7 练习题</a>
+  <a href="#sec8">8 考试贴士</a>
+</nav>
+
+<main>
+
+<!-- ============ 第 0 节 ============ -->
+<section id="sec0">
+  <h2><span class="num">0</span>先看这里：搜索到底在搜什么？</h2>
+  <p class="lead">深搜和广搜，是两个<b>“在迷宫/地图/选择树里找答案”</b>的方法。它们把每一步选择当作「岔路口」，一个接一个地试。</p>
+  <div class="tagline">
+    <b>DFS 深搜</b>：像一只勇敢的小老鼠，<b>一条路走到底</b>，撞墙了才退回来换一条路。适合「把所有方案都枚举出来」。
+    <br><br>
+    <b>BFS 广搜</b>：像<b>往水面扔石头</b>，波纹一圈一圈往外扩散。适合「找最近的/最短的」。
+  </div>
+  <p>GESP 六级考纲原话：<b>掌握深度优先搜索（DFS）、宽度优先搜索（BFS）的概念及应用，能根据现实问题选择合适的搜索算法。</b>所以考试主要看三件事：</p>
+  <ul>
+    <li>会用<b>递归</b>写 DFS（也会看栈 stack）；会用<b>队列 queue</b>写 BFS；</li>
+    <li>会加 <code>visited/used</code> 标记，防止重复访问死循环；</li>
+    <li>拿到题目能判断：<b>这题该用 DFS 还是 BFS？</b></li>
+  </ul>
+  <p>下面第 1 节先热身，把两个「秘密武器」栈和队列搞定，后面的动画就能看得明明白白。</p>
+</section>
+
+<!-- ============ 第 1 节 ============ -->
+<section id="sec1">
+  <h2><span class="num">1</span>热身：栈 Stack 和队列 Queue</h2>
+  <p>DFS 的「退回来」靠<b>栈</b>，BFS 的「一圈一圈」靠<b>队列</b>。先动手玩一玩！</p>
+
+  <h3>🪵 栈 Stack —— 像叠盘子：后放上去的，先拿走（后进先出 LIFO）</h3>
+  <div class="controls">
+    <button type="button" onclick="stPush(7)">压入 7</button>
+    <button type="button" onclick="stPush(9)">压入 9</button>
+    <button type="button" onclick="stPush(5)">压入 5</button>
+    <button type="button" onclick="stPop()">弹出（拿走最上面的）</button>
+    <button type="button" onclick="stReset()">清空</button>
+  </div>
+  <div class="container-box" id="box_stack">栈：<b>（空的）</b></div>
+  <p class="legend"><span><span class="lg" style="background:#eef2ff"></span>盘子</span> 压入 = 放在最上面；弹出 = 只能拿走最上面的。想拿最下面的盘子？不行，得一个个来。</p>
+
+  <h3>🚌 队列 Queue —— 像排队买奶茶：先来的先买（先进先出 FIFO）</h3>
+  <div class="controls">
+    <button type="button" onclick="qIn('小明')">入队 小明</button>
+    <button type="button" onclick="qIn('小红')">入队 小红</button>
+    <button type="button" onclick="qIn('小刚')">入队 小刚</button>
+    <button type="button" onclick="qOut()">出队（最前面的离开）</button>
+    <button type="button" onclick="qReset()">清空</button>
+  </div>
+  <div class="container-box" id="box_queue">队列：<b>（空的）</b></div>
+  <p class="legend"><span><span class="lg" style="background:#eef2ff"></span>排队的人</span> 入队 = 站到最后面；出队 = 最前面的人离开。BFS 的「一圈一圈扩散」就是按入队的先后一个个处理。</p>
+
+  <h3>C++ 里怎么用？</h3>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;   // 比赛常用，一次包含所有头文件
+using namespace std;
+
+int main() {
+    // ---- 栈 stack：后进先出 ----
+    stack&lt;int&gt; s;
+    s.push(1);   s.push(2);   s.push(3);
+    int top = s.top();        // top = 3，只看不拿走
+    s.pop();                  // 真正拿走 3
+    s.empty();                // 空了吗？现在 false
+    s.size();                 // 现在有几个？2 个
+
+    // ---- 队列 queue：先进先出 ----
+    queue&lt;int&gt; q;
+    q.push(1);   q.push(2);   q.push(3);
+    int front = q.front();    // front = 1，最前面的
+    q.pop();                  // 拿走 1
+    q.empty();                // false
+    q.size();                 // 2 个
+
+    // ---- 存坐标 (x,y)：用 pair ----
+    queue&lt;pair&lt;int,int&gt;&gt; q2;
+    q2.push(make_pair(2, 3));
+    int x = q2.front().first;    // x = 2
+    int y = q2.front().second;   // y = 3
+    return 0;
+}</code></pre>
+</section>
+
+<!-- ============ 第 2 节 ============ -->
+<section id="sec2">
+  <h2><span class="num">2</span>DFS 深度优先搜索</h2>
+  <div class="tagline">
+    思想一句话：<b>往前走，能走就走；走不通，退回来换一条。</b>（英文名 Depth-First Search，所以叫 DFS，也叫「深搜」）
+  </div>
+
+  <h3>2.1 模板：DFS 就是「递归 + 标记 + 回溯」</h3>
+  <p>你有递归基础，那 DFS 只差两个小零件：<b>① used/vis 标记</b>防止重复走；<b>② 回溯时撤销标记</b>（有些题需要）。</p>
+<pre><code class="cpp">void dfs(当前状态) {
+    if (达到目标/边界) { 记录答案; return; }
+    for (每一个可以做的选择) {
+        if (这个选择被用过了) continue;   // ① 标记检查
+        used[选择] = true;                // ① 标记
+        做这个选择;
+        dfs(下一步);                      // 递归往下走
+        used[选择] = false;               // ② 回溯：撤销标记！
+    }
+}</code></pre>
+  <div class="warn"><b>⚠️ 最常犯的错：</b>忘记 <code>used[i] = false</code>（回溯），导致后面的方案少了一大堆；或者忘记标记 <code>used[i] = true</code>，导致无限递归/爆栈。</div>
+
+  <h3>2.2 🐭 动画：DFS 走迷宫（看栈怎么「进进出出」）</h3>
+  <p>绿色是起点，红色是终点。深搜的策略是固定顺序「右 → 下 → 左 → 上」，一条道走到黑，撞墙就出栈回退。左边是栈里存的格子。</p>
+  <div class="legend">
+    <span><span class="lg" style="background:#22c55e"></span>起点</span>
+    <span><span class="lg" style="background:#ef4444"></span>终点</span>
+    <span><span class="lg" style="background:#93c5fd"></span>走过/访问过</span>
+    <span><span class="lg" style="background:#cbd5e1"></span>走不通(出栈)</span>
+    <span><span class="lg" style="background:#f59e0b"></span>当前位置</span>
+  </div>
+  <div class="maze" id="grid_dfsMaze"></div>
+  <div class="container-box" id="stack_dfsMaze"></div>
+  <div class="controls">
+    <button type="button" data-p="dfsMaze" data-a="reset">↺ 重置</button>
+    <button type="button" data-p="dfsMaze" data-a="prev">◀ 上一步</button>
+    <button type="button" data-p="dfsMaze" data-a="play">▶ 播放</button>
+    <button type="button" data-p="dfsMaze" data-a="next">下一步 ▶</button>
+    <select data-speed="dfsMaze">
+      <option value="650">慢速</option>
+      <option value="280" selected>中速</option>
+      <option value="80">快速</option>
+    </select>
+  </div>
+  <div class="status" id="st_dfsMaze"></div>
+  <p>注意看：深搜经常「东撞西撞」，找到的路径<b>不一定最短</b>！但它的好处是——<b>只要有条路，就一定能找到</b>，而且能顺便把所有走法都试一遍。</p>
+
+  <h3>2.3 递归版代码（考试最爱考）</h3>
+  <p>上面的动画是「手写栈」版（方便你看栈怎么动）。考试里直接用<b>递归</b>更省事，因为递归就是系统帮你用栈！</p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int n, m;
+char mp[105][105];        // 地图：'#'墙  '.'路
+bool vis[105][105];
+int dx[4] = {0, 1, 0, -1};   // 右 下 左 上
+int dy[4] = {1, 0, -1, 0};
+
+// 深搜：看看能不能从 (x,y) 走到终点
+bool dfs(int x, int y) {
+    if (x &lt; 0 || x &gt;= n || y &lt; 0 || y &gt;= m) return false;  // 越界
+    if (mp[x][y] == '#') return false;                      // 撞墙
+    if (vis[x][y]) return false;                            // 走过（别绕圈）
+    vis[x][y] = true;                                       // 标记！
+    if (mp[x][y] == 'T') return true;                       // 到终点啦
+
+    for (int k = 0; k &lt; 4; k++) {
+        if (dfs(x + dx[k], y + dy[k])) return true;         // 只要有一步能到终点
+    }
+    return false;                                           // 四个方向都不行
+}
+
+int main() {
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; n; i++) cin &gt;&gt; mp[i];
+    int sx, sy;                                             // 找起点 S
+    for (int i = 0; i &lt; n; i++)
+        for (int j = 0; j &lt; m; j++)
+            if (mp[i][j] == 'S') { sx = i; sy = j; }
+    cout &lt;&lt; (dfs(sx, sy) ? "YES" : "NO") &lt;&lt; endl;
+    return 0;
+}</code></pre>
+  <div class="tip"><b>💡 注意：</b>这个版本的 vis 标记<b>不用撤销</b>——因为我们的目的是「能不能到」，走过的地方再走一遍没意义。但是！在「枚举所有方案」的题里（比如全排列），回溯时必须 <code>used[i] = false</code>。后面例题会再强调。</div>
+
+  <h3>2.4 🌳 动画：DFS 枚举全排列（看递归树怎么长）</h3>
+  <p>把 1、2、3 排成所有可能的顺序（3! = 6 种）。DFS 会从「起点」一层层往下选数，选完一层就往深处走，走到底就输出一种排列，然后回溯换下一个数。这就是递归树！</p>
+  <div class="maze" style="display:block;background:none;padding:0;width:100%">
+    <svg id="tree_perm" width="100%" style="max-width:880px;display:block;margin:0 auto;"></svg>
+  </div>
+  <div class="container-box" id="stack_permTree"></div>
+  <div class="controls">
+    <button type="button" data-p="permTree" data-a="reset">↺ 重置</button>
+    <button type="button" data-p="permTree" data-a="prev">◀ 上一步</button>
+    <button type="button" data-p="permTree" data-a="play">▶ 播放</button>
+    <button type="button" data-p="permTree" data-a="next">下一步 ▶</button>
+    <select data-speed="permTree">
+      <option value="650">慢速</option>
+      <option value="280" selected>中速</option>
+      <option value="80">快速</option>
+    </select>
+  </div>
+  <div class="status" id="st_permTree"></div>
+<pre><code class="cpp">// 全排列：把 1~n 的所有排列方式都输出（DFS 经典题）
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int n;
+int a[15];                 // a[k] 存第 k 个位置放哪个数
+bool used[15];             // used[i]：数字 i 用过了吗
+
+void dfs(int k) {          // 准备填第 k 个位置
+    if (k &gt; n) {           // 填完了，输出这一种排列
+        for (int i = 1; i &lt;= n; i++) cout &lt;&lt; a[i] &lt;&lt; " ";
+        cout &lt;&lt; endl;
+        return;
+    }
+    for (int i = 1; i &lt;= n; i++) {
+        if (used[i]) continue;    // 数字 i 已经用过了
+        used[i] = true;           // 标记
+        a[k] = i;
+        dfs(k + 1);               // 递归填下一个位置
+        used[i] = false;          // 回溯：撤销标记，让 i 给别的方案用
+    }
+}
+
+int main() {
+    cin &gt;&gt; n;
+    dfs(1);
+    return 0;
+}</code></pre>
+  <div class="tip"><b>💡 时间复杂度：</b>全排列一共 n! 种，所以是 O(n!)。n=8 是 40320 种，n=12 约 4.8 亿种——所以 GESP 题里用 DFS 枚举时，n 一般不超过 10~15。</div>
+</section>
+
+<!-- ============ 第 3 节 ============ -->
+<section id="sec3">
+  <h2><span class="num">3</span>BFS 广度优先搜索</h2>
+  <div class="tagline">
+    思想一句话：<b>从起点开始，先处理离它 1 步的所有格子，再处理 2 步的……一层一层往外扩。</b>（Breadth-First Search → BFS，也叫「广搜」）
+  </div>
+
+  <h3>3.1 模板：BFS = 队列 + 一层层记录距离</h3>
+<pre><code class="cpp">void bfs(起点) {
+    queue&lt;状态&gt; q;
+    q.push(起点);
+    dist[起点] = 0;              // 起点距离是 0
+    while (!q.empty()) {
+        取出队头 now;
+        for (每个邻居 nxt) {
+            if (nxt 越界 / 撞墙 / 已访问) continue;
+            dist[nxt] = dist[now] + 1;   // 层数 + 1
+            q.push(nxt);                 // 入队，等会儿处理它
+        }
+    }
+}</code></pre>
+  <div class="warn"><b>⚠️ 关键：</b>BFS 是「<b>第一次</b>访问到终点时的距离就是最短距离」！因为波纹是同时一圈圈扩散的，谁先碰到终点，谁就是最近的。</div>
+
+  <h3>3.2 🌀 动画：同一个迷宫，用 BFS 走一遍</h3>
+  <p>看颜色！每个格子的颜色代表它离起点几「层」：蓝色离得近，越往外越暖色。队头先出队，把它的 4 个邻居入队，一层一层推进。</p>
+  <div class="legend">
+    <span><span class="lg" style="background:#22c55e"></span>起点</span>
+    <span><span class="lg" style="background:#ef4444"></span>终点</span>
+    <span><span class="lg" style="background:hsl(215,85%,72%)"></span>第 1 层(近)</span>
+    <span><span class="lg" style="background:hsl(100,85%,72%)"></span>中间层</span>
+    <span><span class="lg" style="background:hsl(10,85%,72%)"></span>第 18 层(远)</span>
+  </div>
+  <div class="maze" id="grid_bfsMaze"></div>
+  <div class="container-box" id="stack_bfsMaze"></div>
+  <div class="controls">
+    <button type="button" data-p="bfsMaze" data-a="reset">↺ 重置</button>
+    <button type="button" data-p="bfsMaze" data-a="prev">◀ 上一步</button>
+    <button type="button" data-p="bfsMaze" data-a="play">▶ 播放</button>
+    <button type="button" data-p="bfsMaze" data-a="next">下一步 ▶</button>
+    <select data-speed="bfsMaze">
+      <option value="650">慢速</option>
+      <option value="280" selected>中速</option>
+      <option value="80">快速</option>
+    </select>
+  </div>
+  <div class="status" id="st_bfsMaze"></div>
+  <p>对比一下：BFS 走的路线更「整齐」，像波纹一样铺开，<b>找到终点时走的步数一定是最少的</b>。</p>
+
+  <h3>3.3 BFS 求最短路径（GESP 超高频）</h3>
+<pre><code class="cpp">// 迷宫最短路：从 S 到 T 最少走几步（BFS 经典题）
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int n, m;
+char mp[105][105];        // '#':墙  '.':路  'S':起点  'T':终点
+int step[105][105];       // step[x][y] = 到 (x,y) 的步数，-1 表示没到过
+int dx[4] = {0, 1, 0, -1};
+int dy[4] = {1, 0, -1, 0};
+queue&lt;pair&lt;int,int&gt;&gt; q;
+
+int main() {
+    cin &gt;&gt; n &gt;&gt; m;
+    int sx, sy, ex, ey;
+    for (int i = 0; i &lt; n; i++)
+        for (int j = 0; j &lt; m; j++) {
+            cin &gt;&gt; mp[i][j];
+            if (mp[i][j] == 'S') { sx = i; sy = j; }
+            if (mp[i][j] == 'T') { ex = i; ey = j; }
+        }
+
+    memset(step, -1, sizeof(step));   // 全部标记成"没到过"
+    q.push(make_pair(sx, sy));
+    step[sx][sy] = 0;                 // 起点 0 步
+
+    while (!q.empty()) {
+        int x = q.front().first;
+        int y = q.front().second;
+        q.pop();
+
+        if (x == ex &amp;&amp; y == ey) {     // 第一次到终点 = 最短！
+            cout &lt;&lt; step[x][y] &lt;&lt; endl;
+            return 0;
+        }
+
+        for (int k = 0; k &lt; 4; k++) {
+            int nx = x + dx[k], ny = y + dy[k];
+            if (nx &lt; 0 || nx &gt;= n || ny &lt; 0 || ny &gt;= m) continue;  // 越界
+            if (mp[nx][ny] == '#') continue;                       // 墙
+            if (step[nx][ny] != -1) continue;                      // 已经走过了
+            step[nx][ny] = step[x][y] + 1;                         // 层数 + 1
+            q.push(make_pair(nx, ny));
+        }
+    }
+    cout &lt;&lt; -1 &lt;&lt; endl;          // 队列空了还没到 = 走不到
+    return 0;
+}</code></pre>
+  <div class="tip"><b>💡 想输出路径？</b>开一个 <code>pre[x][y]</code> 数组，每步记录「我是从哪个格子来的」，到终点后从终点倒着走回去，就得到完整路径（练 7-4 有答案）。</div>
+</section>
+
+<!-- ============ 第 4 节 ============ -->
+<section id="sec4">
+  <h2><span class="num">4</span>DFS vs BFS：什么时候用哪个？</h2>
+  <table>
+    <tr><th>对比</th><th>DFS 深搜</th><th>BFS 广搜</th></tr>
+    <tr><td>就像</td><td>小老鼠一条路走到底</td><td>水面波纹一圈圈扩散</td></tr>
+    <tr><td>用的工具</td><td>栈 stack（常写递归）</td><td>队列 queue</td></tr>
+    <tr><td>擅长</td><td>枚举<b>所有方案</b>（全排列、组合）</td><td>求<b>最短</b>步数/次数</td></tr>
+    <tr><td>找到答案时</td><td>不一定最短</td><td>第一次找到 = 最短</td></tr>
+    <tr><td>实现难度</td><td>代码短，但回溯要小心</td><td>代码固定，不容易错</td></tr>
+    <tr><td>空间</td><td>栈深 = 路径长度</td><td>队列里同时存<b>整层</b>的格子，可能更大</td></tr>
+  </table>
+
+  <h3>小测试：你来当裁判！点击选项看对不对</h3>
+
+  <div class="quiz-q" data-ans="bfs">
+    <p>1️⃣ 求迷宫从入口到出口的<b>最短</b>步数，用哪个？</p>
+    <button class="opt" data-v="dfs">DFS</button>
+    <button class="opt" data-v="bfs">BFS</button>
+    <div class="expl">✔️ BFS！求「最短」是 BFS 的招牌本领——第一次碰到终点就是最短距离。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="dfs">
+    <p>2️⃣ 输出数字 1~4 的所有排列方式，用哪个？</p>
+    <button class="opt" data-v="dfs">DFS</button>
+    <button class="opt" data-v="bfs">BFS</button>
+    <div class="expl">✔️ DFS！枚举「所有方案」是 DFS 的强项，配合回溯可以一层层穷举。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="both">
+    <p>3️⃣ 数一数地图里有几个「连通块」（相邻的 1 算一块），用哪个？</p>
+    <button class="opt" data-v="dfs">DFS</button>
+    <button class="opt" data-v="bfs">BFS</button>
+    <button class="opt" data-v="both">两个都行</button>
+    <div class="expl">✔️ 两个都行！连通块只看「能不能连到一起」，DFS 递归最顺手，BFS 用队列也行。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="bfs">
+    <p>4️⃣ 想把二叉树<b>一层一层</b>从左到右输出（层序遍历），用哪个？</p>
+    <button class="opt" data-v="dfs">DFS</button>
+    <button class="opt" data-v="bfs">BFS</button>
+    <div class="expl">✔️ BFS！「一层一层」就是队列的活。DFS 对应的是前序/中序/后序遍历。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="dfs">
+    <p>5️⃣ 只想判断迷宫<b>能不能</b>走到终点（不管最短），用哪个最省事？</p>
+    <button class="opt" data-v="dfs">DFS</button>
+    <button class="opt" data-v="bfs">BFS</button>
+    <div class="expl">✔️ DFS 更省事（代码短）。当然 BFS 也可以——但没必要「杀鸡用牛刀」。</div>
+  </div>
+
+  <div class="bubble"><b>📌 口诀：</b>「最短、最少、最近」→ 找 BFS；「所有、全排列、方案数、判断能否」→ 找 DFS。</div>
+</section>
+
+<!-- ============ 第 5 节 ============ -->
+<section id="sec5">
+  <h2><span class="num">5</span>图 &amp; 二叉树上的搜索（六级必考）</h2>
+  <p>迷宫是「图」的一种特例。真正的图（Graph）用<b>点 + 边</b>表示，存法最常用<b>邻接表</b>。看看在这张 6 个点的图上，DFS 和 BFS 分别怎么走——可以切换！</p>
+
+  <h3>5.1 🕸️ 动画：图上的 DFS / BFS 遍历</h3>
+  <div class="controls">
+    <button type="button" onclick="graphMode('dfs')" id="gm_dfs">用 DFS 走</button>
+    <button type="button" onclick="graphMode('bfs')" id="gm_bfs">用 BFS 走</button>
+  </div>
+  <svg id="svg_graph" width="100%" style="max-width:520px;display:block;margin:0 auto;"></svg>
+  <div class="container-box" id="stack_graph"></div>
+  <div class="controls">
+    <button type="button" data-p="graph" data-a="reset">↺ 重置</button>
+    <button type="button" data-p="graph" data-a="prev">◀ 上一步</button>
+    <button type="button" data-p="graph" data-a="play">▶ 播放</button>
+    <button type="button" data-p="graph" data-a="next">下一步 ▶</button>
+    <select data-speed="graph">
+      <option value="650">慢速</option>
+      <option value="280" selected>中速</option>
+      <option value="80">快速</option>
+    </select>
+  </div>
+  <div class="status" id="st_graph"></div>
+  <p>深搜会沿着一条边「钻」到底再回头；广搜则从 A 出发，一层层把「朋友的朋友」都找到。</p>
+
+  <h3>5.2 邻接表建图 + 遍历代码</h3>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 100005;
+vector&lt;int&gt; g[N];        // 邻接表：g[x] 存所有和 x 相连的点
+bool vis[N];
+
+// DFS 遍历（递归）：访问一个点，再访问它没去过的邻居
+void dfs(int x) {
+    vis[x] = true;
+    cout &lt;&lt; x &lt;&lt; " ";                       // 访问顺序
+    for (int i = 0; i &lt; (int)g[x].size(); i++) {
+        int y = g[x][i];
+        if (!vis[y]) dfs(y);
+    }
+}
+
+// BFS 遍历：队列一层层走
+void bfs(int s) {
+    queue&lt;int&gt; q;
+    q.push(s);
+    vis[s] = true;
+    while (!q.empty()) {
+        int x = q.front(); q.pop();
+        cout &lt;&lt; x &lt;&lt; " ";                   // 访问顺序
+        for (int i = 0; i &lt; (int)g[x].size(); i++) {
+            int y = g[x][i];
+            if (!vis[y]) {
+                vis[y] = true;
+                q.push(y);
+            }
+        }
+    }
+}
+
+int main() {
+    int n, m;                    // n 个点，m 条边
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; m; i++) {
+        int u, v; cin &gt;&gt; u &gt;&gt; v;
+        g[u].push_back(v);       // 无向图：两边都连
+        g[v].push_back(u);
+    }
+    dfs(1);
+    return 0;
+}</code></pre>
+  <div class="warn"><b>⚠️ 注意：</b>BFS 里 vis 标记要在<b>入队时</b>就置 true（不是出队时），否则同一个点会被加进队列好多次！</div>
+
+  <h3>5.3 🌲 二叉树上的搜索（对应关系要背下来）</h3>
+  <table>
+    <tr><th>二叉树操作</th><th>本质</th></tr>
+    <tr><td>前序遍历：根 → 左 → 右</td><td>DFS（递归）</td></tr>
+    <tr><td>中序遍历：左 → 根 → 右</td><td>DFS（递归）</td></tr>
+    <tr><td>后序遍历：左 → 右 → 根</td><td>DFS（递归）</td></tr>
+    <tr><td>层序遍历：一层一层从左到右</td><td><b>BFS（队列）</b></td></tr>
+  </table>
+<pre><code class="cpp">// 二叉树：用指针存左右孩子
+struct Node {
+    int val;
+    Node *left, *right;
+};
+
+// 前序遍历（DFS）
+void preorder(Node *t) {
+    if (t == NULL) return;
+    cout &lt;&lt; t-&gt;val &lt;&lt; " ";      // 先根
+    preorder(t-&gt;left);           // 再左
+    preorder(t-&gt;right);          // 后右
+}
+
+// 层序遍历（BFS）：用队列！
+void levelorder(Node *root) {
+    queue&lt;Node*&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        Node *t = q.front(); q.pop();
+        cout &lt;&lt; t-&gt;val &lt;&lt; " ";
+        if (t-&gt;left)  q.push(t-&gt;left);
+        if (t-&gt;right) q.push(t-&gt;right);
+    }
+}</code></pre>
+</section>
+
+<!-- ============ 第 6 节 ============ -->
+<section id="sec6">
+  <h2><span class="num">6</span>例题精讲（GESP 六级风格）</h2>
+
+  <h3>例 1：全排列【DFS】⭐ 必背</h3>
+  <p><b>题意：</b>输入 n，按字典序输出 1~n 的所有排列，每行一个。</p>
+  <p><b>思路：</b>用 <code>dfs(k)</code> 填第 k 位；<code>used</code> 标记哪个数用过；填满就输出；回溯时撤销标记。上面 2.4 节有完整代码，这里是另一个常见写法：</p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int n, a[15]; bool used[15];
+
+void dfs(int k) {
+    if (k == n) {                       // 0~n-1 位都填好了
+        for (int i = 0; i &lt; n; i++) cout &lt;&lt; a[i] &lt;&lt; " ";
+        cout &lt;&lt; endl;
+        return;
+    }
+    for (int i = 1; i &lt;= n; i++) {
+        if (used[i]) continue;
+        used[i] = true;
+        a[k] = i;
+        dfs(k + 1);
+        used[i] = false;                // 回溯！
+    }
+}
+int main() { cin &gt;&gt; n; dfs(0); return 0; }</code></pre>
+
+  <h3>例 2：骑士游历·最少步数【BFS】⭐ 必背</h3>
+  <p><b>题意：</b>在 8×8 棋盘上，国际象棋的「马」（走日字）从 (x1,y1) 跳到 (x2,y2)，最少几步？</p>
+  <p><b>思路：</b>马有 8 种跳法，就是 8 个「方向」。BFS 从起点扩散，第一次到终点就是最少步数。</p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int step[9][9];
+int dx[8] = {1, 2, 2, 1, -1, -2, -2, -1};
+int dy[8] = {2, 1, -1, -2, -2, -1, 1, 2};
+queue&lt;pair&lt;int,int&gt;&gt; q;
+
+int main() {
+    int x1, y1, x2, y2;
+    cin &gt;&gt; x1 &gt;&gt; y1 &gt;&gt; x2 &gt;&gt; y2;
+
+    memset(step, -1, sizeof(step));
+    q.push(make_pair(x1, y1));
+    step[x1][y1] = 0;
+
+    while (!q.empty()) {
+        int x = q.front().first, y = q.front().second;
+        q.pop();
+        if (x == x2 &amp;&amp; y == y2) {
+            cout &lt;&lt; step[x][y] &lt;&lt; endl;
+            return 0;
+        }
+        for (int k = 0; k &lt; 8; k++) {
+            int nx = x + dx[k], ny = y + dy[k];
+            if (nx &lt; 1 || nx &gt; 8 || ny &lt; 1 || ny &gt; 8) continue;
+            if (step[nx][ny] != -1) continue;
+            step[nx][ny] = step[x][y] + 1;
+            q.push(make_pair(nx, ny));
+        }
+    }
+    cout &lt;&lt; -1 &lt;&lt; endl;
+    return 0;
+}</code></pre>
+
+  <h3>例 3：细胞计数【DFS/BFS 连通块】⭐ 必背</h3>
+  <p><b>题意：</b>n×m 的地图，'1' 是细胞，上下左右相邻的 1 算同一个细胞。求共有多少个细胞？</p>
+  <p><b>思路：</b>扫一遍地图，遇到没访问过的 1 就计数 +1，然后 DFS 把整块连通的一起「淹没」。</p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int n, m, cnt;
+char mp[105][105];
+int dx[4] = {0, 1, 0, -1}, dy[4] = {1, 0, -1, 0};
+
+void dfs(int x, int y) {
+    if (x &lt; 0 || x &gt;= n || y &lt; 0 || y &gt;= m) return;
+    if (mp[x][y] != '1') return;      // 不是细胞 或 已经被淹没
+    mp[x][y] = '0';                   // 淹没它，防止重复计数
+    for (int k = 0; k &lt; 4; k++) dfs(x + dx[k], y + dy[k]);
+}
+
+int main() {
+    cin &gt;&gt; n &gt;&gt; m;
+    for (int i = 0; i &lt; n; i++) cin &gt;&gt; mp[i];
+    for (int i = 0; i &lt; n; i++)
+        for (int j = 0; j &lt; m; j++)
+            if (mp[i][j] == '1') { cnt++; dfs(i, j); }
+    cout &lt;&lt; cnt &lt;&lt; endl;
+    return 0;
+}</code></pre>
+  <div class="tip"><b>💡 这个技巧叫 Flood Fill（洪水填充）</b>——把整块区域「灌满水」标记掉，是连通块题的标准做法。</div>
+
+  <h3>例 4：二叉树的遍历【DFS/BFS】</h3>
+  <p><b>题意：</b>给一棵二叉树（用数组存：1 号是根，2i 是左孩子，2i+1 是右孩子，-1 表示没有），输出前序遍历和层序遍历。</p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int n;
+int lc[1005], rc[1005];     // lc[i], rc[i]：i 的左右孩子
+
+void preorder(int x) {      // 前序：根 左 右
+    if (x == -1) return;
+    cout &lt;&lt; x &lt;&lt; " ";
+    preorder(lc[x]);
+    preorder(rc[x]);
+}
+
+void levelorder(int root) { // 层序：BFS
+    queue&lt;int&gt; q;
+    q.push(root);
+    while (!q.empty()) {
+        int x = q.front(); q.pop();
+        cout &lt;&lt; x &lt;&lt; " ";
+        if (lc[x] != -1) q.push(lc[x]);
+        if (rc[x] != -1) q.push(rc[x]);
+    }
+}
+
+int main() {
+    cin &gt;&gt; n;
+    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; lc[i] &gt;&gt; rc[i];
+    preorder(1);  cout &lt;&lt; endl;
+    levelorder(1); cout &lt;&lt; endl;
+    return 0;
+}</code></pre>
+</section>
+
+<!-- ============ 第 7 节 ============ -->
+<section id="sec7">
+  <h2><span class="num">7</span>练习题（先自己做，再点开答案）</h2>
+  <p>建议：每道题先想 <b>① 用 DFS 还是 BFS？② 需要标记吗？③ 需要回溯吗？</b>然后再动手写。</p>
+
+  <div class="pb">
+    <p class="pt">7-1 组合【DFS】</p>
+    <p>从 1~5 里选 3 个数，输出所有组合（要求每个组合内部按从小到大排，组合之间按字典序）。例如 1 2 3、1 2 4……</p>
+    <p class="answer-note"><b>提示：</b>全排列的兄弟题。区别：组合不看顺序，「1 2 3」和「3 2 1」是同一种，所以每次从「上一个选的数 + 1」开始选，就不会重复。</p>
+    <details><summary>📖 看答案</summary>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int a[10];   // a[k] 存第 k 个选的数
+
+void dfs(int k, int last) {   // 选第 k 个，只能从 last+1 开始
+    if (k == 4) {
+        for (int i = 1; i &lt;= 3; i++) cout &lt;&lt; a[i] &lt;&lt; " ";
+        cout &lt;&lt; endl;
+        return;
+    }
+    for (int i = last + 1; i &lt;= 5; i++) {
+        a[k] = i;
+        dfs(k + 1, i);
+    }
+}
+int main() { dfs(1, 0); return 0; }</code></pre>
+    </details>
+  </div>
+
+  <div class="pb">
+    <p class="pt">7-2 迷宫可达性【DFS】</p>
+    <p>n×m 迷宫（'#' 墙、'S' 起点、'T' 终点），判断能否从 S 走到 T。n,m ≤ 100。</p>
+    <p class="answer-note"><b>提示：</b>就是 2.3 节的代码，直接背下来用。判断能否 → DFS。</p>
+    <details><summary>📖 看答案</summary>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int n, m; char mp[105][105]; bool vis[105][105];
+int dx[4] = {0,1,0,-1}, dy[4] = {1,0,-1,0};
+bool dfs(int x, int y) {
+    if (x&lt;0||x&gt;=n||y&lt;0||y&gt;=m) return false;
+    if (mp[x][y]=='#') return false;
+    if (vis[x][y]) return false;
+    vis[x][y] = true;
+    if (mp[x][y]=='T') return true;
+    for (int k=0;k&lt;4;k++) if (dfs(x+dx[k],y+dy[k])) return true;
+    return false;
+}
+int main() {
+    cin&gt;&gt;n&gt;&gt;m;
+    int sx=0,sy=0;
+    for (int i=0;i&lt;n;i++) for (int j=0;j&lt;m;j++){ cin&gt;&gt;mp[i][j]; if(mp[i][j]=='S'){sx=i;sy=j;} }
+    cout&lt;&lt;(dfs(sx,sy)?"YES":"NO")&lt;&lt;endl;
+    return 0;
+}</code></pre>
+    </details>
+  </div>
+
+  <div class="pb">
+    <p class="pt">7-3 池塘计数【DFS 连通块】</p>
+    <p>n×m 地图，'W' 是水，'.' 是地。<b>八个方向</b>相邻的水算同一个池塘。数一数有几个池塘。</p>
+    <p class="answer-note"><b>提示：</b>例 3 细胞计数的变体：方向从 4 个变成 8 个（多 4 个斜方向），别的都一样。</p>
+    <details><summary>📖 看答案</summary>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int n, m, cnt; char mp[105][105];
+int dx[8] = {-1,-1,-1,0,0,1,1,1};
+int dy[8] = {-1,0,1,-1,1,-1,0,1};
+void dfs(int x, int y) {
+    if (x&lt;0||x&gt;=n||y&lt;0||y&gt;=m) return;
+    if (mp[x][y]!='W') return;
+    mp[x][y]='.';
+    for (int k=0;k&lt;8;k++) dfs(x+dx[k],y+dy[k]);
+}
+int main() {
+    cin&gt;&gt;n&gt;&gt;m;
+    for (int i=0;i&lt;n;i++) cin&gt;&gt;mp[i];
+    for (int i=0;i&lt;n;i++)
+        for (int j=0;j&lt;m;j++)
+            if (mp[i][j]=='W'){ cnt++; dfs(i,j); }
+    cout&lt;&lt;cnt&lt;&lt;endl;
+    return 0;
+}</code></pre>
+    </details>
+  </div>
+
+  <div class="pb">
+    <p class="pt">7-4 最短路 + 输出路径【BFS】⭐ 进阶</p>
+    <p>输出从 S 到 T 的最短步数，<b>并输出路径上经过的坐标</b>（每行一个坐标）。</p>
+    <p class="answer-note"><b>提示：</b>开 <code>pre[x][y]</code> 记录「我是从哪个格子来的」。到终点后，用栈从终点倒着压回去，再弹出就是正序路径。</p>
+    <details><summary>📖 看答案</summary>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int n, m; char mp[105][105];
+int step[105][105];
+pair&lt;int,int&gt; pre[105][105];      // pre[x][y]：从哪个格子来的
+int dx[4] = {0,1,0,-1}, dy[4] = {1,0,-1,0};
+queue&lt;pair&lt;int,int&gt;&gt; q;
+
+int main() {
+    cin&gt;&gt;n&gt;&gt;m;
+    int sx,sy,ex,ey;
+    for (int i=0;i&lt;n;i++) for (int j=0;j&lt;m;j++){
+        cin&gt;&gt;mp[i][j];
+        if(mp[i][j]=='S'){sx=i;sy=j;}
+        if(mp[i][j]=='T'){ex=i;ey=j;}
+    }
+    memset(step,-1,sizeof(step));
+    q.push(make_pair(sx,sy)); step[sx][sy]=0;
+    while(!q.empty()){
+        int x=q.front().first, y=q.front().second; q.pop();
+        if(x==ex&amp;&amp;y==ey) break;
+        for(int k=0;k&lt;4;k++){
+            int nx=x+dx[k], ny=y+dy[k];
+            if(nx&lt;0||nx&gt;=n||ny&lt;0||ny&gt;=m) continue;
+            if(mp[nx][ny]=='#') continue;
+            if(step[nx][ny]!=-1) continue;
+            step[nx][ny]=step[x][y]+1;
+            pre[nx][ny]=make_pair(x,y);   // 记住"来路"
+            q.push(make_pair(nx,ny));
+        }
+    }
+    if(step[ex][ey]==-1){ cout&lt;&lt;-1&lt;&lt;endl; return 0; }
+    cout&lt;&lt;step[ex][ey]&lt;&lt;endl;
+
+    // 用栈把终点倒推回起点，再倒序输出
+    stack&lt;pair&lt;int,int&gt;&gt; path;
+    int x=ex, y=ey;
+    while(!(x==sx&amp;&amp;y==sy)){
+        path.push(make_pair(x,y));
+        int tx=pre[x][y].first, ty=pre[x][y].second;
+        x=tx; y=ty;
+    }
+    path.push(make_pair(sx,sy));
+    while(!path.empty()){
+        cout&lt;&lt;path.top().first&lt;&lt;" "&lt;&lt;path.top().second&lt;&lt;endl;
+        path.pop();
+    }
+    return 0;
+}</code></pre>
+    </details>
+  </div>
+
+  <div class="pb">
+    <p class="pt">7-5 八数码·最少移动次数【BFS 状态搜索】⭐ 挑战</p>
+    <p>3×3 棋盘有 1~8 八个数字和一个空格。每次可以把空格和上下左右相邻的数字交换。给一个初始局面，问移到「目标局面」最少要多少步？</p>
+    <p class="answer-note"><b>提示：</b>棋盘本身就是一个「状态」，BFS 在状态之间走！把 3×3 棋盘转成一个 9 位数（如 123456780）当状态，用 <code>map&lt;int,int&gt;</code> 或 <code>unordered_map</code> 记步数。GESP 六级偶尔会这么考「状态搜索」。</p>
+    <details><summary>📖 看答案（思路版）</summary>
+<pre><code class="cpp">// 思路：每个状态是一个 9 位数（0 表示空格）
+// 用 unordered_map&lt;int,int&gt; dist 记"状态 - 步数"
+// BFS：
+//   取出队头状态 s，找到 0 的位置 p
+//   0 和上下左右的数字交换，得到新状态 t
+//   如果 dist 里没有 t，dist[t] = dist[s]+1，入队
+// 目标状态是 123456780，第一次出现就返回步数
+// 注意：判断 0 能不能往上/下/左/右移，
+//       要检查 p 在第几行第几列，别让 0 从第 2 行直接"穿"到第 4 列。</code></pre>
+    </details>
+  </div>
+
+  <div class="pb">
+    <p class="pt">7-6 二叉树第 k 层的节点【BFS】</p>
+    <p>给一棵二叉树的先序遍历（用 -1 表示空子树），输出第 k 层有哪些节点（根是第 1 层），按从左到右。</p>
+    <p class="answer-note"><b>提示：</b>层序遍历时记录每个节点在第几层，<code>dist</code> 数组搞定。也可以用 DFS 带一个 depth 参数。</p>
+    <details><summary>📖 看答案</summary>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+int lc[1005], rc[1005], dep[1005], k;
+
+void bfs_level() {
+    queue&lt;int&gt; q;
+    q.push(1); dep[1] = 1;
+    while (!q.empty()) {
+        int x = q.front(); q.pop();
+        if (dep[x] == k) cout &lt;&lt; x &lt;&lt; " ";
+        if (lc[x] != -1) { dep[lc[x]] = dep[x] + 1; q.push(lc[x]); }
+        if (rc[x] != -1) { dep[rc[x]] = dep[x] + 1; q.push(rc[x]); }
+    }
+}
+// main 里：读入 n 个节点的左右孩子，读入 k，调用 bfs_level()</code></pre>
+    </details>
+  </div>
+</section>
+
+<!-- ============ 第 8 节 ============ -->
+<section id="sec8">
+  <h2><span class="num">8</span>考试小贴士（GESP 实战）</h2>
+  <ul>
+    <li><b>先判算法：</b>「最短/最少/最近」→ BFS；「所有方案/排列/判断能否」→ DFS。判错了整题白写。</li>
+    <li><b>mark 标记三问：</b>要标记吗？标记放哪（入队时/进函数时）？要撤销吗（枚举方案要，判断连通性不要）？</li>
+    <li><b>边界检查永远写在最前面：</b><code>nx&lt;0||nx&gt;=n||ny&lt;0||ny&gt;=m</code>，先挡越界再看墙，顺序别反。</li>
+    <li><b>会估算复杂度：</b>n ≤ 10~15 常是 DFS 枚举（阶乘级）；n·m ≤ 10^4~10^6 可 BFS（线性级）。GESP 选择题常考「这种规模用哪种算法」。</li>
+    <li><b>大图用邻接表：</b>n 上万时别用邻接矩阵（会爆内存），用 <code>vector&lt;int&gt; g[N]</code>。</li>
+    <li><b>输出格式要抠：</b>空格、换行、多输出一个空格都可能被判 0 分。样例过了也要自己造数据测。</li>
+    <li><b>递归爆栈：</b>递归深度几万层会栈溢出，六级一般不会这么变态，但心里有数。</li>
+  </ul>
+
+  <div class="bubble"><b>🎯 考场检查单（写完代码逐条对）：</b>① 方向数组 4 个（还是 8 个？） ② 越界判断 ③ 标记数组有没有置 true ④ 回溯有没有撤销 ⑤ 终点判断在哪 ⑥ 输出格式。</div>
+</section>
+
+<footer>加油！搜索是通往七级动态规划和八级比赛题的第一座桥 🚀 遇到不懂的随时回来问我，我可以再给你出更多练习题。</footer>
+</main>
+
+<script>
+/*__PURE_START__*/
+const MAZE = [
+ [1,1,1,1,1,1,1,1,1,1,1,1],
+ [1,0,0,1,0,0,0,0,1,0,0,1],
+ [1,0,1,1,0,1,1,0,1,1,0,1],
+ [1,0,0,0,0,1,1,0,0,0,0,1],
+ [1,1,1,1,0,1,1,1,1,1,0,1],
+ [1,0,0,0,0,0,0,1,0,0,0,1],
+ [1,0,1,1,1,1,0,1,1,1,0,1],
+ [1,0,1,0,0,0,0,1,0,0,0,1],
+ [1,0,0,0,1,1,0,0,0,1,0,1],
+ [1,1,1,1,1,1,1,1,1,1,1,1]
+];
+const START = {r:1, c:1}, GOAL = {r:8, c:10};
+const DR = [0,1,0,-1], DC = [1,0,-1,0];
+const fmtCell = c => '(' + c.r + ',' + c.c + ')';
+
+function dfsMazeFrames(){
+  const R = MAZE.length, C = MAZE[0].length;
+  const vis = Array.from({length:R},()=>Array(C).fill(false));
+  const dead = new Set();
+  vis[START.r][START.c] = true;
+  const stack = [{r:START.r, c:START.c, dir:0}];
+  const frames = [];
+  const snap = () => {
+    const v = [], d = [];
+    for (let i=0;i<R;i++) for (let j=0;j<C;j++){
+      if (vis[i][j]) v.push({r:i, c:j});
+      if (dead.has(i+','+j)) d.push({r:i, c:j});
+    }
+    return {vis:v, closed:d, stack:stack.map(o=>({r:o.r,c:o.c}))};
+  };
+  let f0 = snap();
+  f0.type='start'; f0.cur={r:START.r,c:START.c};
+  f0.msg='从起点 '+fmtCell(START)+' 出发，压入栈。策略：右→下→左→上，一条路走到底';
+  frames.push(f0);
+  let found = false;
+  while (stack.length && !found){
+    const top = stack[stack.length-1];
+    let moved = false;
+    while (top.dir < 4){
+      const nr = top.r + DR[top.dir], nc = top.c + DC[top.dir];
+      top.dir++;
+      if (nr<0||nr>=R||nc<0||nc>=C) continue;
+      if (MAZE[nr][nc]===1 || vis[nr][nc]) continue;
+      vis[nr][nc] = true;
+      stack.push({r:nr,c:nc,dir:0});
+      const f = snap();
+      f.cur = {r:nr,c:nc};
+      if (nr===GOAL.r && nc===GOAL.c){
+        f.type='found'; f.found=true;
+        f.msg='🎉 到达终点 '+fmtCell(GOAL)+'！找到一条路（不一定最短）';
+        frames.push(f); found = true;
+      } else {
+        f.type='push';
+        f.msg='从 '+fmtCell({r:top.r,c:top.c})+' 走进 '+fmtCell({r:nr,c:nc})+'，压入栈';
+        frames.push(f);
+      }
+      moved = true;
+      break;
+    }
+    if (!moved){
+      const popped = stack.pop();
+      dead.add(popped.r+','+popped.c);
+      const f = snap();
+      f.type='pop'; f.cur={r:popped.r,c:popped.c};
+      f.msg=fmtCell({r:popped.r,c:popped.c})+' 四个方向都试过了，走不通 → 出栈回退！';
+      frames.push(f);
+    }
+  }
+  return frames;
+}
+
+function bfsMazeFrames(){
+  const R = MAZE.length, C = MAZE[0].length;
+  const dist = Array.from({length:R},()=>Array(C).fill(-1));
+  dist[START.r][START.c] = 0;
+  const queue = [{r:START.r,c:START.c}];
+  let head = 0;
+  const frames = [];
+  const snap = () => {
+    const v = [];
+    for (let i=0;i<R;i++) for (let j=0;j<C;j++)
+      if (dist[i][j]>=0) v.push({r:i,c:j,d:dist[i][j]});
+    return {vis:v, queue:queue.slice(head).map(o=>({r:o.r,c:o.c}))};
+  };
+  let f0 = snap();
+  f0.type='start'; f0.cur={r:START.r,c:START.c};
+  f0.msg='起点 '+fmtCell(START)+' 入队，距离 0。每次取出队头，把它的 4 个邻居入队';
+  frames.push(f0);
+  while (head < queue.length){
+    const cur = queue[head]; head++;
+    if (cur.r===GOAL.r && cur.c===GOAL.c){
+      const f = snap();
+      f.type='found'; f.found=true; f.cur=cur;
+      f.msg='🎉 出队的是终点！最短距离 = '+dist[cur.r][cur.c]+' 步（第一次碰到一定最短）';
+      frames.push(f);
+      break;
+    }
+    let f = snap();
+    f.type='visit'; f.cur=cur;
+    f.msg='取出队头 '+fmtCell(cur)+'（第 '+dist[cur.r][cur.c]+' 层），检查它的 4 个邻居';
+    frames.push(f);
+    for (let k=0;k<4;k++){
+      const nr=cur.r+DR[k], nc=cur.c+DC[k];
+      if (nr<0||nr>=R||nc<0||nc>=C) continue;
+      if (MAZE[nr][nc]===1 || dist[nr][nc]!==-1) continue;
+      dist[nr][nc] = dist[cur.r][cur.c] + 1;
+      queue.push({r:nr,c:nc});
+      let f2 = snap();
+      f2.type='discover'; f2.cur={r:nr,c:nc};
+      f2.msg='发现邻居 '+fmtCell({r:nr,c:nc})+'（第 '+dist[nr][nc]+' 层），入队';
+      frames.push(f2);
+    }
+  }
+  return frames;
+}
+
+function buildPermTree(n){
+  const nodes = [{id:0, label:'起点', seq:'', depth:0}];
+  const edges = [];
+  let nextId = 1;
+  function build(id, depth, seq, used){
+    if (depth === n) return;
+    for (let i=1;i<=n;i++){
+      if (used.has(i)) continue;
+      const cid = nextId++;
+      nodes.push({id:cid, label:seq+i, seq:seq+i, depth:depth+1});
+      edges.push({a:id, b:cid});
+      build(cid, depth+1, seq+i, new Set(used).add(i));
+    }
+  }
+  build(0, 0, '', new Set());
+  const adj = {};
+  nodes.forEach(nd => adj[nd.id] = []);
+  edges.forEach(e => adj[e.a].push(e.b));
+  const events = [];
+  const visited = new Set([0]);
+  const stack = [0];
+  events.push({type:'visit', id:0});
+  while (stack.length){
+    const top = stack[stack.length-1];
+    const kids = adj[top];
+    let moved = false;
+    while (kids.length){
+      const k = kids.shift();
+      if (!visited.has(k)){
+        visited.add(k);
+        stack.push(k);
+        events.push({type:'visit', id:k});
+        moved = true;
+        break;
+      }
+    }
+    if (!moved){
+      stack.pop();
+      events.push({type:'leave', id:top});
+    }
+  }
+  return {nodes, edges, events};
+}
+
+const GADJ = [[1,2,4],[0,3],[0,3,5],[1,2,4],[0,3,5],[2,4]];
+const GLABEL = ['A','B','C','D','E','F'];
+
+function graphFrames(mode){
+  const frames = [];
+  const visited = new Set([0]);
+  const mk = (type, cur, container, msg) => ({type, cur, container:container.slice(), msg});
+  if (mode === 'dfs'){
+    const stack = [0];
+    frames.push(mk('visit', 0, stack, '从 A 出发，压入栈。策略：按邻居顺序，一条路钻到底'));
+    while (stack.length){
+      const top = stack[stack.length-1];
+      let moved = false;
+      for (let i=0;i<GADJ[top].length;i++){
+        const nb = GADJ[top][i];
+        if (!visited.has(nb)){
+          visited.add(nb);
+          stack.push(nb);
+          frames.push(mk('visit', nb, stack, '从 '+GLABEL[top]+' 发现没去过的邻居 '+GLABEL[nb]+'，压入栈'));
+          moved = true;
+          break;
+        }
+      }
+      if (!moved){
+        stack.pop();
+        frames.push(mk('back', top, stack, GLABEL[top]+' 的邻居都去过了 → 出栈回退'));
+      }
+    }
+  } else {
+    const queue = [0];
+    let head = 0;
+    frames.push(mk('enqueue', 0, queue, 'A 入队。每次取出队头，把所有没去过的邻居入队'));
+    while (head < queue.length){
+      const cur = queue[head++];
+      frames.push(mk('dequeue', cur, queue, '取出队头 '+GLABEL[cur]+'，检查它的邻居'));
+      for (let i=0;i<GADJ[cur].length;i++){
+        const nb = GADJ[cur][i];
+        if (!visited.has(nb)){
+          visited.add(nb);
+          queue.push(nb);
+          frames.push(mk('enqueue', nb, queue, '发现新节点 '+GLABEL[nb]+'，入队'));
+        }
+      }
+    }
+  }
+  return frames;
+}
+/*__PURE_END__*/
+
+/* ================= 面板框架 ================= */
+const panels = {};
+function registerPanel(name, frames, render){
+  panels[name] = {frames, idx:0, playing:false, timer:null, speed:280, render};
+  render(name);
+}
+function goTo(name, i){
+  const p = panels[name];
+  p.idx = Math.max(0, Math.min(p.frames.length-1, i));
+  p.render(name);
+  updateBtns(name);
+}
+function stopPlay(name){
+  const p = panels[name];
+  p.playing = false;
+  if (p.timer){ clearInterval(p.timer); p.timer = null; }
+  updateBtns(name);
+}
+function togglePlay(name){
+  const p = panels[name];
+  if (p.playing){ stopPlay(name); return; }
+  p.playing = true;
+  if (p.idx >= p.frames.length-1) goTo(name, 0);
+  p.timer = setInterval(()=>{
+    if (p.idx >= p.frames.length-1) stopPlay(name);
+    else goTo(name, p.idx+1);
+  }, p.speed);
+  updateBtns(name);
+}
+function resetP(name){ stopPlay(name); goTo(name, 0); }
+function prevP(name){ stopPlay(name); goTo(name, panels[name].idx-1); }
+function nextP(name){ if (panels[name].idx < panels[name].frames.length-1) goTo(name, panels[name].idx+1); else stopPlay(name); }
+function updateBtns(name){
+  const p = panels[name];
+  document.querySelectorAll('[data-p="'+name+'"]').forEach(b=>{
+    const a = b.getAttribute('data-a');
+    if (a==='prev') b.disabled = p.idx <= 0;
+    if (a==='next') b.disabled = p.idx >= p.frames.length-1;
+    if (a==='play') b.textContent = p.playing ? '⏸ 暂停' : '▶ 播放';
+  });
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-p][data-a]');
+  if (!b) return;
+  const name = b.getAttribute('data-p'), a = b.getAttribute('data-a');
+  if (a==='reset') resetP(name);
+  else if (a==='prev') prevP(name);
+  else if (a==='next') nextP(name);
+  else if (a==='play') togglePlay(name);
+});
+document.addEventListener('change', e=>{
+  if (e.target.getAttribute('data-speed')){
+    const name = e.target.getAttribute('data-speed');
+    panels[name].speed = parseInt(e.target.value, 10);
+    if (panels[name].playing){ stopPlay(name); togglePlay(name); }
+  }
+});
+
+/* ================= 栈/队列演示 ================= */
+const stArr = [], qArr = [];
+function stRender(){
+  const el = document.getElementById('box_stack');
+  if (!stArr.length){ el.innerHTML = '栈：<b>（空的）</b>'; return; }
+  let h = '栈（底→顶）：';
+  stArr.forEach(v => h += '<span class="chip">'+v+'</span>');
+  h += ' <span class="lbl hot">↑ 下一次弹出它</span>';
+  el.innerHTML = h;
+}
+function qRender(){
+  const el = document.getElementById('box_queue');
+  if (!qArr.length){ el.innerHTML = '队列：<b>（空的）</b>'; return; }
+  let h = '队列（前→后）：<span class="lbl hot">队头</span>';
+  qArr.forEach(v => h += '<span class="chip">'+v+'</span>');
+  h += '<span class="lbl hot">队尾</span>  <span class="lbl">↓ 下一次出队的是队头</span>';
+  el.innerHTML = h;
+}
+function stPush(v){ stArr.push(v); stRender(); }
+function stPop(){ if (stArr.length) stArr.pop(); stRender(); }
+function stReset(){ stArr.length = 0; stRender(); }
+function qIn(v){ qArr.push(v); qRender(); }
+function qOut(){ if (qArr.length) qArr.shift(); qRender(); }
+function qReset(){ qArr.length = 0; qRender(); }
+stRender(); qRender();
+
+/* ================= DFS 迷宫 ================= */
+const gridCells = {};          // 面板名 -> 网格二维数组（与注册顺序解耦）
+function buildGrid(containerId, panelName){
+  const cont = document.getElementById(containerId);
+  cont.style.gridTemplateColumns = 'repeat('+MAZE[0].length+',25px)';
+  const cells = [];
+  for (let i=0;i<MAZE.length;i++){
+    cells[i] = [];
+    for (let j=0;j<MAZE[0].length;j++){
+      const d = document.createElement('div');
+      d.className = MAZE[i][j]===1 ? 'cell wall' : 'cell';
+      if (i===START.r && j===START.c) d.classList.add('start');
+      if (i===GOAL.r && j===GOAL.c) d.classList.add('goal');
+      cont.appendChild(d);
+      cells[i][j] = d;
+    }
+  }
+  gridCells[panelName] = cells;
+}
+function renderMaze(name){
+  const p = panels[name], f = p.frames[p.idx];
+  const cells = gridCells[name];
+  if (!cells) return;          // 网格还没建好就跳过（防御）
+  const dmap = {}, dead = new Set();
+  f.vis.forEach(o => dmap[o.r+','+o.c] = o.d !== undefined ? o.d : 0);
+  (f.closed||[]).forEach(o => dead.add(o.r+','+o.c));
+  for (let i=0;i<MAZE.length;i++) for (let j=0;j<MAZE[0].length;j++){
+    const el = cells[i][j];
+    let base = MAZE[i][j]===1 ? 'cell wall' : 'cell';
+    if (i===START.r && j===START.c) base = 'cell start';
+    else if (i===GOAL.r && j===GOAL.c) base = 'cell goal';
+    el.className = base;
+    el.style.background = '';
+    const key = i+','+j;
+    if (MAZE[i][j]===0 && dmap[key]!==undefined && base==='cell'){
+      if (dead.has(key)) el.classList.add('dead');
+      else if (name==='bfsMaze'){
+        el.classList.add('vis');
+        el.style.background = 'hsl('+Math.max(0, 215-11.9*dmap[key])+',85%,72%)';
+      } else {
+        el.classList.add('vis');
+      }
+    }
+    if (f.cur && f.cur.r===i && f.cur.c===j && MAZE[i][j]===0) el.classList.add('cur');
+  }
+  // 栈/队列显示
+  const boxId = name==='dfsMaze' ? 'stack_dfsMaze' : 'stack_bfsMaze';
+  const box = document.getElementById(boxId);
+  const container = name==='dfsMaze' ? f.stack : f.queue;
+  if (name==='dfsMaze'){
+    let h = '<b>栈（底→顶）：</b>';
+    if (!container.length) h += '<span class="lbl">空栈</span>';
+    container.forEach(c => h += '<span class="chip">'+c.r+','+c.c+'</span>');
+    if (container.length) h += '<span class="lbl hot">← 栈顶（下一步处理它）</span>';
+    box.innerHTML = h;
+  } else {
+    let h = '<b>队列（前→后）：</b><span class="lbl hot">队头→</span>';
+    if (!container.length) h += '<span class="lbl">空队列</span>';
+    container.forEach(c => h += '<span class="chip">'+c.r+','+c.c+'</span>');
+    h += '<span class="lbl hot">←队尾</span>';
+    box.innerHTML = h;
+  }
+  document.getElementById('st_'+name).textContent =
+    '第 '+(p.idx+1)+' / '+p.frames.length+' 步 ｜ '+f.msg+' ｜ 已访问 '+f.vis.length+' 个格子';
+}
+
+const dfsFrames = dfsMazeFrames();
+const bfsFrames = bfsMazeFrames();
+// 注意顺序：必须先 buildGrid 创建好网格，再 registerPanel（注册时会立刻渲染第一帧）
+buildGrid('grid_dfsMaze', 'dfsMaze');
+registerPanel('dfsMaze', dfsFrames, renderMaze);
+buildGrid('grid_bfsMaze', 'bfsMaze');
+registerPanel('bfsMaze', bfsFrames, renderMaze);
+
+/* ================= 全排列树 ================= */
+const permData = buildPermTree(3);
+const permNodeById = {};
+permData.nodes.forEach(n => permNodeById[n.id] = n);
+function buildPermSVG(){
+  const svg = document.getElementById('tree_perm');
+  const W = 880, H = 300;
+  svg.setAttribute('viewBox', '0 0 '+W+' '+H);
+  const byDepth = {};
+  permData.nodes.forEach(n => { (byDepth[n.depth] = byDepth[n.depth] || []).push(n); });
+  permData.nodes.forEach(n => {
+    const list = byDepth[n.depth];
+    n.x = n.depth===0 ? W/2 : (list.length===1 ? W/2 : 60 + list.indexOf(n)*(W-120)/(list.length-1));
+    n.y = 45 + n.depth*68;
+  });
+  let html = '';
+  permData.edges.forEach(e => {
+    const a = permNodeById[e.a], b = permNodeById[e.b];
+    html += '<line id="pte_'+e.a+'_'+e.b+'" x1="'+a.x+'" y1="'+(a.y+18)+'" x2="'+b.x+'" y2="'+(b.y-18)+'" stroke="#cbd5e1" stroke-width="2"/>';
+  });
+  permData.nodes.forEach(n => {
+    const isLeaf = n.depth === 3;
+    html += '<g>'+
+      '<circle id="ptn_'+n.id+'" cx="'+n.x+'" cy="'+n.y+'" r="'+(isLeaf?20:19)+'" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>'+
+      '<text x="'+n.x+'" y="'+(n.y+5)+'" text-anchor="middle" font-size="'+(isLeaf?13:12)+'" font-weight="600" fill="#1e293b">'+n.label+'</text>'+
+      '</g>';
+  });
+  svg.innerHTML = html;
+}
+function renderPerm(name){
+  const p = panels[name];
+  const visited = new Set(), path = [];
+  for (let i=0;i<=p.idx;i++){
+    const ev = p.frames[i];
+    if (ev.type==='visit'){ visited.add(ev.id); path.push(ev.id); }
+    else if (ev.type==='leave'){ path.pop(); }
+  }
+  const cur = path.length ? path[path.length-1] : null;
+  permData.nodes.forEach(n => {
+    const el = document.getElementById('ptn_'+n.id);
+    if (!el) return;
+    let fill = '#e2e8f0';
+    if (visited.has(n.id)) fill = n.depth===3 ? '#34d399' : '#93c5fd';
+    if (path.indexOf(n.id) >= 0) fill = '#3b82f6';
+    if (cur === n.id) fill = '#f59e0b';
+    el.setAttribute('fill', fill);
+    el.setAttribute('stroke', path.indexOf(n.id)>=0 ? '#1d4ed8' : '#94a3b8');
+  });
+  permData.edges.forEach(e => {
+    const el = document.getElementById('pte_'+e.a+'_'+e.b);
+    if (!el) return;
+    const ia = path.indexOf(e.a), ib = path.indexOf(e.b);
+    if (ia>=0 && ib>=0 && Math.abs(ia-ib)===1){
+      el.setAttribute('stroke','#3b82f6'); el.setAttribute('stroke-width','3');
+    } else {
+      el.setAttribute('stroke','#cbd5e1'); el.setAttribute('stroke-width','2');
+    }
+  });
+  const f = p.frames[p.idx];
+  const pathLabels = path.map(id => permNodeById[id].label).join(' → ');
+  const box = document.getElementById('stack_permTree');
+  let h = '<b>递归调用栈（路径）：</b>';
+  path.forEach(id => h += '<span class="chip">'+permNodeById[id].label+'</span>');
+  if (!path.length) h += '<span class="lbl">空</span>';
+  box.innerHTML = h;
+  document.getElementById('st_permTree').textContent =
+    '第 '+(p.idx+1)+' / '+p.frames.length+' 步 ｜ '+f.msg+(pathLabels ? ' ｜ 当前前缀: '+pathLabels : '');
+}
+buildPermSVG();
+registerPanel('permTree', permData.events, renderPerm);
+
+/* ================= 图遍历 ================= */
+const GPOS = [[100,60],[280,40],[400,120],[300,260],[80,240],[240,150]];
+function buildGraphSVG(){
+  const svg = document.getElementById('svg_graph');
+  svg.setAttribute('viewBox', '0 0 480 300');
+  let html = '';
+  GADJ.forEach((list, u) => {
+    list.forEach(v => {
+      if (u < v){
+        html += '<line id="gl_'+u+'_'+v+'" x1="'+GPOS[u][0]+'" y1="'+GPOS[u][1]+'" x2="'+GPOS[v][0]+'" y2="'+GPOS[v][1]+'" stroke="#cbd5e1" stroke-width="2"/>';
+      }
+    });
+  });
+  GADJ.forEach((list, u) => {
+    html += '<g>'+
+      '<circle id="gn_'+u+'" cx="'+GPOS[u][0]+'" cy="'+GPOS[u][1]+'" r="22" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>'+
+      '<text x="'+GPOS[u][0]+'" y="'+(GPOS[u][1]+6)+'" text-anchor="middle" font-size="16" font-weight="700" fill="#1e293b">'+GLABEL[u]+'</text>'+
+      '</g>';
+  });
+  svg.innerHTML = html;
+}
+let graphModeName = 'dfs';
+function renderGraph(name){
+  const p = panels[name];
+  const visited = new Set(), order = [];
+  for (let i=0;i<=p.idx;i++){
+    const ev = p.frames[i];
+    if (ev.type==='visit' || ev.type==='enqueue' || ev.type==='dequeue'){
+      if (!visited.has(ev.cur)){ visited.add(ev.cur); order.push(ev.cur); }
+    }
+  }
+  const f = p.frames[p.idx];
+  for (let u=0;u<6;u++){
+    const el = document.getElementById('gn_'+u);
+    if (!el) continue;
+    el.setAttribute('fill', visited.has(u) ? '#60a5fa' : '#e2e8f0');
+    el.setAttribute('stroke', f.cur===u ? '#f59e0b' : (visited.has(u)?'#1d4ed8':'#94a3b8'));
+    if (f.cur===u) el.setAttribute('stroke-width','4'); else el.setAttribute('stroke-width','2');
+  }
+  GADJ.forEach((list, u) => list.forEach(v => {
+    if (u >= v) return;
+    const el = document.getElementById('gl_'+u+'_'+v);
+    if (!el) return;
+    if (visited.has(u) && visited.has(v)){
+      el.setAttribute('stroke','#3b82f6'); el.setAttribute('stroke-width','3');
+    } else {
+      el.setAttribute('stroke','#cbd5e1'); el.setAttribute('stroke-width','2');
+    }
+  }));
+  const box = document.getElementById('stack_graph');
+  const container = f.container;
+  let h = graphModeName==='dfs' ? '<b>栈（底→顶）：</b>' : '<b>队列（前→后）：</b>';
+  if (!container.length) h += '<span class="lbl">空</span>';
+  container.forEach(id => h += '<span class="chip">'+GLABEL[id]+'</span>');
+  box.innerHTML = h;
+  document.getElementById('st_graph').textContent =
+    '第 '+(p.idx+1)+' / '+p.frames.length+' 步 ｜ '+f.msg+' ｜ 访问顺序: '+order.map(id=>GLABEL[id]).join(' → ');
+}
+function graphMode(mode){
+  graphModeName = mode;
+  const p = panels['graph'];
+  stopPlay('graph');
+  p.frames = graphFrames(mode);
+  goTo('graph', 0);
+  document.getElementById('gm_dfs').style.background = mode==='dfs' ? '#4f46e5' : '#fff';
+  document.getElementById('gm_dfs').style.color = mode==='dfs' ? '#fff' : '#4338ca';
+  document.getElementById('gm_bfs').style.background = mode==='bfs' ? '#4f46e5' : '#fff';
+  document.getElementById('gm_bfs').style.color = mode==='bfs' ? '#fff' : '#4338ca';
+}
+buildGraphSVG();
+registerPanel('graph', graphFrames('dfs'), renderGraph);
+graphMode('dfs');
+
+/* ================= 小测试 ================= */
+document.querySelectorAll('.quiz-q').forEach(qq => {
+  qq.querySelectorAll('.opt').forEach(o => {
+    o.addEventListener('click', () => {
+      if (qq.getAttribute('data-done')) return;
+      qq.setAttribute('data-done','1');
+      const ans = qq.getAttribute('data-ans'), val = o.getAttribute('data-v');
+      if (val === ans){
+        o.classList.add('ok');
+        qq.querySelector('.expl').classList.remove('bad');
+      } else {
+        o.classList.add('no');
+        qq.querySelector('.expl').classList.add('bad');
+        const right = qq.querySelector('.opt[data-v="'+ans+'"]');
+        if (right) right.classList.add('ok');
+      }
+      qq.querySelector('.expl').style.display = 'block';
+    });
+  });
+});
+
+/* ================= 代码高亮 ================= */
+const KW = new Set(['#include','include','using','namespace','std','int','char','long','bool','void','return','if','else','for','while','do','break','continue','struct','class','typedef','true','false','const','new','delete','NULL','nullptr','main','cin','cout','endl','queue','stack','vector','pair','make_pair','push','pop','front','top','back','empty','size','memset','push_back','struct']);
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function hl(code){
+  const s = esc(code);
+  const parts = s.split(/(\/\/[^\n]*|"[^"]*"|#[^\n]*|&lt;[^&]*?&gt;|\b\d+\b|\b[A-Za-z_]\w*\b)/g);
+  return parts.map(t => {
+    if (t.startsWith('//')) return '<span class="c">'+t+'</span>';
+    if (t.startsWith('"')) return '<span class="s">'+t+'</span>';
+    if (t.charAt(0)==='#') return '<span class="pp">'+t+'</span>';
+    if (t.startsWith('&lt;') && t.endsWith('&gt;')) return '<span class="pp">'+t+'</span>';
+    if (/^\d+$/.test(t)) return '<span class="n">'+t+'</span>';
+    if (KW.has(t)) return '<span class="k">'+t+'</span>';
+    return t;
+  }).join('');
+}
+document.querySelectorAll('pre code.cpp').forEach(el => { el.innerHTML = hl(el.textContent); });
+</script>
+</body>
+</html>

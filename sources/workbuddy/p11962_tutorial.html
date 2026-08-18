@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>P11962 树上漫步 · 互动教学</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --purple: #8b5cf6;
+  --green: #10b981;
+  --blue: #3b82f6;
+  --orange: #f59e0b;
+  --red: #ef4444;
+  --gray: #6b7280;
+  --light-bg: #f8fafc;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --text-light: #64748b;
+  --even-color: #8b5cf6;
+  --odd-color: #10b981;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: linear-gradient(135deg, #f0f4ff 0%, #fdf4ff 100%);
+  color: var(--text);
+  line-height: 1.8;
+  min-height: 100vh;
+}
+.container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 40px 20px 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  color: white;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+}
+.header h1 { font-size: 28px; margin-bottom: 8px; }
+.header .subtitle { font-size: 16px; opacity: 0.9; }
+.header .tags { margin-top: 12px; }
+.header .tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin: 0 4px;
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+.nav a {
+  padding: 8px 18px;
+  border-radius: 20px;
+  background: white;
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 14px;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.nav a:hover, .nav a.active {
+  background: var(--purple);
+  color: white;
+  border-color: var(--purple);
+}
+
+/* Section */
+.section {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.section h2 {
+  font-size: 22px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section h2 .icon { font-size: 28px; }
+.section h3 {
+  font-size: 18px;
+  margin: 20px 0 10px;
+  color: var(--purple);
+}
+.section p { margin-bottom: 12px; font-size: 15px; }
+
+/* Highlight boxes */
+.box {
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 15px;
+}
+.box-info { background: #eff6ff; border-left: 4px solid var(--blue); }
+.box-tip { background: #fffbeb; border-left: 4px solid var(--orange); }
+.box-success { background: #ecfdf5; border-left: 4px solid var(--green); }
+.box-key {
+  background: linear-gradient(135deg, #f3e8ff 0%, #fce7f3 100%);
+  border-left: 4px solid var(--purple);
+  font-size: 16px;
+}
+
+/* Code blocks */
+pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 20px;
+  border-radius: 12px;
+  overflow-x: auto;
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 12px 0;
+}
+pre .kw { color: #c084fc; }
+pre .type { color: #67e8f9; }
+pre .str { color: #fcd34d; }
+pre .num { color: #fca5a5; }
+pre .cmt { color: #64748b; font-style: italic; }
+pre .fn { color: #93c5fd; }
+pre .hl-line {
+  background: rgba(139, 92, 246, 0.3);
+  display: block;
+  margin: 0 -20px;
+  padding: 0 20px;
+  border-radius: 4px;
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary { background: var(--purple); color: white; }
+.btn-primary:hover { background: #7c3aed; transform: translateY(-1px); }
+.btn-success { background: var(--green); color: white; }
+.btn-success:hover { background: #059669; transform: translateY(-1px); }
+.btn-outline { background: white; color: var(--text); border: 2px solid var(--border); }
+.btn-outline:hover { border-color: var(--purple); color: var(--purple); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
+
+/* Speed slider */
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+.speed-control input[type=range] { width: 150px; cursor: pointer; }
+
+/* SVG tree canvas */
+.tree-canvas {
+  background: #fafbff;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  margin: 16px 0;
+  display: block;
+}
+
+/* Animation status */
+.status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.status-item {
+  background: var(--light-bg);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.status-item .label { color: var(--text-light); }
+.status-item .value { font-weight: 700; margin-left: 6px; }
+
+/* Code + visual side by side */
+.code-visual-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 768px) {
+  .code-visual-split { grid-template-columns: 1fr; }
+}
+
+/* Queue/Stack display */
+.data-structure {
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  min-height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ds-label {
+  color: #94a3b8;
+  font-size: 13px;
+  margin-right: 8px;
+  white-space: nowrap;
+}
+.ds-item {
+  background: var(--purple);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  animation: pop 0.3s ease;
+}
+.ds-item.even { background: var(--purple); }
+.ds-item.odd { background: var(--green); }
+@keyframes pop {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Answer display */
+.answer-grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.answer-cell {
+  background: var(--light-bg);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: center;
+  min-width: 70px;
+  transition: all 0.3s;
+}
+.answer-cell .node-id { font-size: 12px; color: var(--text-light); }
+.answer-cell .node-ans { font-size: 24px; font-weight: 800; color: var(--purple); }
+.answer-cell.even-color { border-color: var(--purple); background: #f5f3ff; }
+.answer-cell.odd-color { border-color: var(--green); background: #ecfdf5; }
+.answer-cell.odd-color .node-ans { color: var(--green); }
+
+/* Quiz */
+.quiz-question {
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+  border: 1px solid var(--border);
+}
+.quiz-question .q-num {
+  display: inline-block;
+  background: var(--purple);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+  font-size: 14px;
+  margin-right: 8px;
+}
+.quiz-options { margin-top: 12px; }
+.quiz-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  margin: 8px 0;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.quiz-option:hover { border-color: var(--purple); }
+.quiz-option.correct { background: #ecfdf5; border-color: var(--green); }
+.quiz-option.wrong { background: #fef2f2; border-color: var(--red); }
+.quiz-explanation {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: none;
+}
+.quiz-explanation.show { display: block; }
+.quiz-score {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  display: none;
+}
+.quiz-score.show { display: block; }
+
+/* Toggle */
+.collapse-toggle {
+  cursor: pointer;
+  padding: 12px 16px;
+  background: var(--light-bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+}
+.collapse-toggle:hover { background: #eef2ff; }
+.collapse-toggle .arrow { transition: transform 0.3s; }
+.collapse-toggle.open .arrow { transform: rotate(90deg); }
+.collapse-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+.collapse-content.open { max-height: 3000px; }
+
+/* Step description */
+.step-desc {
+  background: linear-gradient(135deg, #f3e8ff 0%, #e0e7ff 100%);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-size: 15px;
+  min-height: 50px;
+  border-left: 4px solid var(--purple);
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+.legend-dot.unvisited { background: white; border-color: #cbd5e1; }
+.legend-dot.even { background: var(--purple); border-color: var(--purple); }
+.legend-dot.odd { background: var(--green); border-color: var(--green); }
+.legend-dot.current { background: var(--orange); border-color: var(--red); }
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  text-align: center;
+}
+th { background: var(--purple); color: white; font-weight: 600; }
+tr:nth-child(even) td { background: #f8fafc; }
+.highlight-row td { background: #fef3c7 !important; font-weight: 600; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+/* Problem statement */
+.problem-stmt {
+  background: #1e293b;
+  color: #e2e8f0;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.problem-stmt .io-label {
+  color: #fbbf24;
+  font-weight: 700;
+  margin-top: 10px;
+  display: block;
+}
+.problem-stmt code {
+  background: #334155;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>🌳 P11962 树上漫步</h1>
+  <div class="subtitle">GESP 2025年3月 六级 · 互动教学</div>
+  <div class="tags">
+    <span class="tag">树的遍历</span>
+    <span class="tag">二分图染色</span>
+    <span class="tag">奇偶性</span>
+    <span class="tag">O(n) 优化</span>
+  </div>
+</div>
+
+<!-- ===== NAV ===== -->
+<div class="nav">
+  <a onclick="scrollToSection('intro')">1. 题目解读</a>
+  <a onclick="scrollToSection('insight')">2. 核心洞察</a>
+  <a onclick="scrollToSection('coloring')">3. 染色动画</a>
+  <a onclick="scrollToSection('parity')">4. 奇偶距离</a>
+  <a onclick="scrollToSection('code')">5. 代码讲解</a>
+  <a onclick="scrollToSection('walkthrough')">6. 样例推演</a>
+  <a onclick="scrollToSection('quiz')">7. 互动测验</a>
+</div>
+
+<!-- ===== 1. 题目解读 ===== -->
+<div class="section" id="intro">
+  <h2><span class="icon">📖</span> 第一关：读懂题目</h2>
+
+  <div class="problem-stmt">
+    <strong>题目大意：</strong>小 A 有一棵 n 个结点的树。从某个结点出发，每一步移动到相邻结点，<strong>只在偶数步（含 0 步）后结束</strong>。问：从每个结点出发，能结束漫步的结点有多少个？<br><br>
+    <span class="io-label">输入：</span>n 和 n-1 条边<br>
+    <span class="io-label">输出：</span>n 个整数，第 i 个表示从结点 i 出发的答案<br>
+    <span class="io-label">数据范围：</span>n ≤ 2×10⁵，时间 1s，内存 512MB
+  </div>
+
+  <div class="box box-info">
+    <strong>🔍 把题目翻译成人话：</strong><br>
+    你站在树上某个结点，可以走来走去（能走重复的路），但<strong>最后停下来的那一步必须是偶数步</strong>（0、2、4、6...）。问你能停在哪些结点上？
+  </div>
+
+  <div class="box box-tip">
+    <strong>💡 关键信息：</strong><br>
+    ① 这是一棵<strong>树</strong>（连通、无环、n-1 条边）<br>
+    ② 可以走<strong>重复的结点和边</strong><br>
+    ③ 只关心<strong>偶数步</strong>能否到达<br>
+    ④ 对<strong>每个结点</strong>都要算答案
+  </div>
+
+  <h3>🤔 先想想暴力怎么做？</h3>
+  <p>最直接的想法：对每个结点做一次 BFS，算出它到所有其他结点的距离，数一下偶数距离的有多少个。时间复杂度 O(n²)。</p>
+  <div class="box" style="background:#fef2f2;border-left:4px solid var(--red);">
+    <strong>⚠️ 但是！</strong>n ≤ 2×10⁵，O(n²) = 4×10¹⁰，1 秒内跑不完，会 <strong>超时 TLE</strong>！<br>
+    我们需要一个更聪明的 O(n) 方法。
+  </div>
+</div>
+
+<!-- ===== 2. 核心洞察 ===== -->
+<div class="section" id="insight">
+  <h2><span class="icon">💡</span> 第二关：发现核心规律</h2>
+
+  <h3>🌲 树的一个重要性质：二分图</h3>
+  <p>树是一种特殊的图——它一定是<strong>二分图</strong>。什么意思呢？我们可以把树上的所有结点染成两种颜色，使得<strong>每条边连接的两个结点颜色不同</strong>。</p>
+
+  <div class="box box-key">
+    <strong>🎯 染色规则：</strong>从任意结点开始 BFS/DFS，<br>
+    • 起点染 <span style="color:var(--purple);font-weight:700;">紫色（偶数层）</span><br>
+    • 它的邻居染 <span style="color:var(--green);font-weight:700;">绿色（奇数层）</span><br>
+    • 邻居的邻居又染 <span style="color:var(--purple);font-weight:700;">紫色</span>...<br>
+    交替染色，就像棋盘一样！
+  </div>
+
+  <h3>📐 偶数步 = 同色结点</h3>
+  <p>这是本题最核心的推理：</p>
+
+  <div class="box box-success">
+    <strong>推理链条：</strong><br>
+    ① 在树上，两个结点之间有<strong>唯一路径</strong>（树没有环）<br>
+    ② 路径长度 = 两结点的距离<br>
+    ③ 每走一步，颜色就变一次（因为相邻结点颜色不同）<br>
+    ④ 走偶数步 → 颜色变偶数次 → <strong>回到同色</strong><br>
+    ⑤ 走奇数步 → 颜色变奇数次 → <strong>变成异色</strong><br><br>
+    <strong>结论：从结点 i 出发，偶数步能到达的 = 所有和 i 同色的结点！</strong>
+  </div>
+
+  <div class="box box-tip">
+    <strong>🤔 等等，如果距离是奇数，我多走几步绕回来不就行了？</strong><br>
+    好问题！在树上你可以走到某个邻居再走回来（+2步），所以奇数距离的结点可以变成奇+2、奇+4... 但永远是奇数！<br>
+    同理，偶数距离的结点可以变成偶+2、偶+4... 永远是偶数！<br>
+    <strong>所以奇偶性不会因为绕路而改变。</strong>
+  </div>
+
+  <div class="box box-key" style="font-size:17px;">
+    <strong>🏆 最终结论：</strong><br>
+    设紫色（偶数层）结点有 <strong>E</strong> 个，绿色（奇数层）结点有 <strong>O</strong> 个。<br>
+    • 紫色结点的答案 = <strong>E</strong>（同色都是偶数步可达）<br>
+    • 绿色结点的答案 = <strong>O</strong>（同色都是偶数步可达）<br>
+    只需要一次 BFS/DFS 染色，数一下每种颜色有多少个就行！时间 O(n)！
+  </div>
+</div>
+
+<!-- ===== 3. 染色动画 ===== -->
+<div class="section" id="coloring">
+  <h2><span class="icon">🎨</span> 第三关：BFS 染色动画</h2>
+  <p>让我们用样例 2 的树来演示染色过程。从结点 1 开始 BFS，交替染成紫色和绿色。</p>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot unvisited"></div> 未访问</div>
+    <div class="legend-item"><div class="legend-dot even"></div> 偶数层（紫）</div>
+    <div class="legend-item"><div class="legend-dot odd"></div> 奇数层（绿）</div>
+    <div class="legend-item"><div class="legend-dot current"></div> 当前处理</div>
+  </div>
+
+  <div class="code-visual-split">
+    <div>
+      <svg class="tree-canvas" id="colorSvg" width="100%" height="340" viewBox="0 0 400 340"></svg>
+    </div>
+    <div>
+      <pre id="colorCode" style="font-size:12px;height:340px;overflow-y:auto;"><span class="cmt">// BFS 染色</span>
+<span class="type">int</span> color[N];
+<span class="type">int</span> cnt[<span class="num">2</span>]; <span class="cmt">// cnt[0]=偶数层, cnt[1]=奇数层</span>
+queue&lt;<span class="type">int</span>&gt; q;
+
+<span class="cmt">// 从结点1开始</span>
+q.push(<span class="num">1</span>);
+color[<span class="num">1</span>] = <span class="num">0</span>; <span class="cmt">// 0=紫色(偶数层)</span>
+cnt[<span class="num">0</span>]++;
+
+<span class="kw">while</span> (!q.empty()) {
+  <span class="type">int</span> u = q.front();
+  q.pop();
+  <span class="kw">for</span> (<span class="type">int</span> v : adj[u]) {
+    <span class="kw">if</span> (color[v] == -<span class="num">1</span>) {
+      color[v] = color[u] ^ <span class="num">1</span>;
+      cnt[color[v]]++;
+      q.push(v);
+    }
+  }
+}
+
+<span class="cmt">// 输出答案</span>
+<span class="kw">for</span> (<span class="type">int</span> i = <span class="num">1</span>; i &lt;= n; i++)
+  cout &lt;&lt; cnt[color[i]] &lt;&lt; <span class="str">' '</span>;</pre>
+    </div>
+  </div>
+
+  <div class="step-desc" id="colorStepDesc">点击「播放」开始 BFS 染色动画</div>
+
+  <div class="data-structure">
+    <span class="ds-label">BFS 队列：</span>
+    <div id="colorQueue" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-item"><span class="label">偶数层(紫)：</span><span class="value" id="evenCount">0</span></div>
+    <div class="status-item"><span class="label">奇数层(绿)：</span><span class="value" id="oddCount">0</span></div>
+    <div class="status-item"><span class="label">当前步：</span><span class="value" id="colorStep">0</span></div>
+  </div>
+
+  <div class="speed-control">
+    <span>速度：</span>
+    <input type="range" id="colorSpeed" min="300" max="2000" value="900" step="100">
+    <span id="speedLabel">中速</span>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-primary" onclick="colorPlay()">▶ 播放</button>
+    <button class="btn btn-outline" onclick="colorStep(-1)">⏮ 上一步</button>
+    <button class="btn btn-outline" onclick="colorStep(1)">⏭ 下一步</button>
+    <button class="btn btn-outline" onclick="colorReset()">🔄 重置</button>
+  </div>
+</div>
+
+<!-- ===== 4. 奇偶距离 ===== -->
+<div class="section" id="parity">
+  <h2><span class="icon">📐</span> 第四关：奇偶距离可视化</h2>
+  <p>选一个起点，看看树上每个结点到它的距离是奇还是偶。你会发现：<strong>同色 = 偶数距离，异色 = 奇数距离</strong>。</p>
+
+  <div class="box box-info">
+    <strong>🎮 操作方式：</strong>点击树上的任意结点选为起点，系统会自动计算并显示每个结点到起点的距离和奇偶性。
+  </div>
+
+  <svg class="tree-canvas" id="paritySvg" width="100%" height="340" viewBox="0 0 400 340"></svg>
+
+  <div class="step-desc" id="parityDesc">点击树上任意结点，查看距离奇偶性分布</div>
+
+  <div class="box box-success" id="parityConclusion" style="display:none;">
+    <strong>观察结论：</strong>所有<span style="color:var(--purple);font-weight:700;">紫色结点</span>到起点的距离都是<strong>偶数</strong>，所有<span style="color:var(--green);font-weight:700;">绿色结点</span>到起点的距离都是<strong>奇数</strong>。无论选哪个起点，这个规律都成立！
+  </div>
+
+  <h3>📋 距离表</h3>
+  <div id="distanceTable" style="overflow-x:auto;"></div>
+</div>
+
+<!-- ===== 5. 代码讲解 ===== -->
+<div class="section" id="code">
+  <h2><span class="icon">💻</span> 第五关：C++ 代码逐行讲解</h2>
+
+  <div class="collapse-toggle" onclick="toggleCollapse(this)">
+    <span>📄 点击展开完整 AC 代码</span>
+    <span class="arrow">▶</span>
+  </div>
+  <div class="collapse-content">
+    <pre><span class="cmt">/*
+ * P11962 [GESP202503 六级] 树上漫步
+ * 核心思路：BFS二分图染色，同色=偶数步可达
+ * 时间复杂度 O(n)
+ */</span>
+<span class="kw">#include</span> <span class="str">&lt;bits/stdc++.h&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">const</span> <span class="type">int</span> N = <span class="num">200005</span>;
+<span class="type">vector</span>&lt;<span class="type">int</span>&gt; adj[N];  <span class="cmt">// 邻接表存树</span>
+<span class="type">int</span> color[N];        <span class="cmt">// 染色：0=偶数层, 1=奇数层</span>
+<span class="type">int</span> cnt[<span class="num">2</span>];           <span class="cmt">// cnt[0]=偶数层个数, cnt[1]=奇数层个数</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">ios</span>::sync_with_stdio(<span class="kw">false</span>);
+    cin.tie(<span class="num">0</span>);
+    
+    <span class="type">int</span> n;
+    cin &gt;&gt; n;
+    
+    <span class="cmt">// 读入 n-1 条边，建邻接表</span>
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; n - <span class="num">1</span>; i++) {
+        <span class="type">int</span> u, v;
+        cin &gt;&gt; u &gt;&gt; v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+    
+    <span class="cmt">// 初始化：所有结点未染色</span>
+    <span class="fn">memset</span>(color, -<span class="num">1</span>, <span class="kw">sizeof</span>(color));
+    
+    <span class="cmt">// BFS 从结点 1 开始染色</span>
+    queue&lt;<span class="type">int</span>&gt; q;
+    q.push(<span class="num">1</span>);
+    color[<span class="num">1</span>] = <span class="num">0</span>;  <span class="cmt">// 结点1是第0层(偶数)</span>
+    cnt[<span class="num">0</span>]++;      <span class="cmt">// 偶数层+1</span>
+    
+    <span class="kw">while</span> (!q.empty()) {
+        <span class="type">int</span> u = q.front();
+        q.pop();
+        <span class="kw">for</span> (<span class="type">int</span> v : adj[u]) {
+            <span class="kw">if</span> (color[v] == -<span class="num">1</span>) {  <span class="cmt">// 未染色</span>
+                color[v] = color[u] ^ <span class="num">1</span>;  <span class="cmt">// 异或1：0变1, 1变0</span>
+                cnt[color[v]]++;   <span class="cmt">// 对应颜色计数+1</span>
+                q.push(v);
+            }
+        }
+    }
+    
+    <span class="cmt">// 输出每个结点的答案</span>
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">1</span>; i &lt;= n; i++) {
+        cout &lt;&lt; cnt[color[i]] &lt;&lt; <span class="str">" "</span>;
+        <span class="cmt">// color[i]=0 → 输出偶数层个数</span>
+        <span class="cmt">// color[i]=1 → 输出奇数层个数</span>
+    }
+    cout &lt;&lt; endl;
+    
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+  </div>
+
+  <h3>🔑 关键代码逐行解读</h3>
+
+  <div class="box box-info">
+    <strong>第 1 步：建图</strong><br>
+    <code>adj[u].push_back(v); adj[v].push_back(u);</code><br>
+    树是无向图，每条边两个方向都要存。用 vector 邻接表，比二维数组省空间。
+  </div>
+
+  <div class="box box-info">
+    <strong>第 2 步：初始化</strong><br>
+    <code>memset(color, -1, sizeof(color));</code><br>
+    把所有结点的颜色设为 -1（未染色）。这样 BFS 时只需检查 color[v] == -1 就知道是否访问过。
+  </div>
+
+  <div class="box box-key">
+    <strong>第 3 步：BFS 染色（最核心！）</strong><br>
+    <code>color[v] = color[u] ^ 1;</code> —— 这行是灵魂！<br><br>
+    <code>^ 1</code> 是异或运算：<br>
+    • <code>0 ^ 1 = 1</code>（偶数层 → 奇数层）<br>
+    • <code>1 ^ 1 = 0</code>（奇数层 → 偶数层）<br><br>
+    父结点的颜色异或 1 就是子结点的颜色。一行代码完成交替染色！<br>
+    同时 <code>cnt[color[v]]++</code> 把对应颜色的计数器 +1。
+  </div>
+
+  <div class="box box-success">
+    <strong>第 4 步：输出答案</strong><br>
+    <code>cout &lt;&lt; cnt[color[i]] &lt;&lt; " ";</code><br>
+    结点 i 的颜色是 color[i]，直接输出该颜色的总数即可。<br>
+    • 如果 i 是紫色（color=0），答案 = cnt[0]（所有紫色结点数）<br>
+    • 如果 i 是绿色（color=1），答案 = cnt[1]（所有绿色结点数）<br>
+    <strong>不需要对每个结点单独算！</strong>只需要两个计数器！
+  </div>
+
+  <div class="box box-tip">
+    <strong>⚡ 为什么是 O(n)？</strong><br>
+    BFS 每个结点入队出队各一次，每条边被检查两次（两个方向），总共 O(n + n) = O(n)。<br>
+    n = 2×10⁵ 时只需约 0.01 秒，远快于 O(n²) 的暴力！
+  </div>
+</div>
+
+<!-- ===== 6. 样例推演 ===== -->
+<div class="section" id="walkthrough">
+  <h2><span class="icon">🎬</span> 第六关：样例推演</h2>
+
+  <h3>样例 1：3 个结点</h3>
+  <div class="box box-info">
+    边：1-3, 2-3 → 树形结构：1 — 3 — 2
+  </div>
+
+  <svg width="100%" height="180" viewBox="0 0 400 180" style="margin:12px 0;">
+    <!-- edges -->
+    <line x1="120" y1="90" x2="200" y2="90" stroke="#cbd5e1" stroke-width="3"/>
+    <line x1="200" y1="90" x2="280" y2="90" stroke="#cbd5e1" stroke-width="3"/>
+    <!-- node 1 -->
+    <circle cx="120" cy="90" r="28" fill="#8b5cf6" stroke="#7c3aed" stroke-width="3"/>
+    <text x="120" y="95" text-anchor="middle" fill="white" font-size="18" font-weight="bold">1</text>
+    <text x="120" y="140" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="bold">偶(紫)</text>
+    <!-- node 3 -->
+    <circle cx="200" cy="90" r="28" fill="#10b981" stroke="#059669" stroke-width="3"/>
+    <text x="200" y="95" text-anchor="middle" fill="white" font-size="18" font-weight="bold">3</text>
+    <text x="200" y="140" text-anchor="middle" fill="#10b981" font-size="12" font-weight="bold">奇(绿)</text>
+    <!-- node 2 -->
+    <circle cx="280" cy="90" r="28" fill="#8b5cf6" stroke="#7c3aed" stroke-width="3"/>
+    <text x="280" y="95" text-anchor="middle" fill="white" font-size="18" font-weight="bold">2</text>
+    <text x="280" y="140" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="bold">偶(紫)</text>
+  </svg>
+
+  <table>
+    <tr><th>结点</th><th>颜色</th><th>同色结点</th><th>答案</th></tr>
+    <tr><td>1</td><td>紫(偶)</td><td>1, 2</td><td><strong>2</strong></td></tr>
+    <tr><td>2</td><td>紫(偶)</td><td>1, 2</td><td><strong>2</strong></td></tr>
+    <tr><td>3</td><td>绿(奇)</td><td>3</td><td><strong>1</strong></td></tr>
+  </table>
+  <div class="box box-success">输出：<code>2 2 1</code> ✅ 与样例一致！</div>
+
+  <h3>样例 2：4 个结点</h3>
+  <div class="box box-info">
+    边：1-3, 3-2, 4-3 → 树形结构：1 — 3, 3 — 2, 3 — 4
+  </div>
+
+  <svg width="100%" height="220" viewBox="0 0 400 220" style="margin:12px 0;">
+    <!-- edges -->
+    <line x1="120" y1="110" x2="200" y2="110" stroke="#cbd5e1" stroke-width="3"/>
+    <line x1="200" y1="110" x2="280" y2="60" stroke="#cbd5e1" stroke-width="3"/>
+    <line x1="200" y1="110" x2="280" y2="160" stroke="#cbd5e1" stroke-width="3"/>
+    <!-- node 1 -->
+    <circle cx="120" cy="110" r="28" fill="#8b5cf6" stroke="#7c3aed" stroke-width="3"/>
+    <text x="120" y="115" text-anchor="middle" fill="white" font-size="18" font-weight="bold">1</text>
+    <text x="120" y="160" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="bold">偶(紫)</text>
+    <!-- node 3 -->
+    <circle cx="200" cy="110" r="28" fill="#10b981" stroke="#059669" stroke-width="3"/>
+    <text x="200" y="115" text-anchor="middle" fill="white" font-size="18" font-weight="bold">3</text>
+    <text x="200" y="160" text-anchor="middle" fill="#10b981" font-size="12" font-weight="bold">奇(绿)</text>
+    <!-- node 2 -->
+    <circle cx="310" cy="60" r="28" fill="#8b5cf6" stroke="#7c3aed" stroke-width="3"/>
+    <text x="310" y="65" text-anchor="middle" fill="white" font-size="18" font-weight="bold">2</text>
+    <text x="310" y="30" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="bold">偶(紫)</text>
+    <!-- node 4 -->
+    <circle cx="310" cy="160" r="28" fill="#8b5cf6" stroke="#7c3aed" stroke-width="3"/>
+    <text x="310" y="165" text-anchor="middle" fill="white" font-size="18" font-weight="bold">4</text>
+    <text x="310" y="200" text-anchor="middle" fill="#8b5cf6" font-size="12" font-weight="bold">偶(紫)</text>
+  </svg>
+
+  <table>
+    <tr><th>结点</th><th>颜色</th><th>同色结点</th><th>答案</th></tr>
+    <tr><td>1</td><td>紫(偶)</td><td>1, 2, 4</td><td><strong>3</strong></td></tr>
+    <tr><td>2</td><td>紫(偶)</td><td>1, 2, 4</td><td><strong>3</strong></td></tr>
+    <tr><td>3</td><td>绿(奇)</td><td>3</td><td><strong>1</strong></td></tr>
+    <tr><td>4</td><td>紫(偶)</td><td>1, 2, 4</td><td><strong>3</strong></td></tr>
+  </table>
+  <div class="box box-success">输出：<code>3 3 1 3</code> ✅ 与样例一致！</div>
+
+  <div class="box box-key">
+    <strong>🎯 观察规律：</strong>所有紫色结点的答案都一样（= 紫色总数），所有绿色结点的答案也都一样（= 绿色总数）。<br>
+    因为答案只取决于颜色，不取决于具体是哪个结点！
+  </div>
+</div>
+
+<!-- ===== 7. 互动测验 ===== -->
+<div class="section" id="quiz">
+  <h2><span class="icon">🎯</span> 第七关：互动测验</h2>
+  <p>来检验一下你的理解吧！共 6 道题。</p>
+  <div id="quizContainer"></div>
+  <div class="quiz-score" id="quizScore"></div>
+</div>
+
+<div class="footer">
+  <p>🌳 P11962 树上漫步 · GESP 2025年3月六级 · 互动教学网页</p>
+  <p>核心思想：树是二分图 → BFS染色 → 同色=偶数步可达 → O(n) 解决</p>
+</div>
+
+</div>
+
+<script>
+// ==================== 通用工具 ====================
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoBehavior = 'smooth';
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+
+function toggleCollapse(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+// ==================== 样例2的树结构 ====================
+// 节点: 1, 2, 3, 4
+// 边: 1-3, 3-2, 4-3
+// 树形（以1为根）:
+//        1(0)
+//       /
+//      3(1)
+//     / \
+//   2(2) 4(2)
+const treeNodes = {
+  1: { x: 80,  y: 50 },
+  3: { x: 200, y: 170 },
+  2: { x: 330, y: 80 },
+  4: { x: 330, y: 260 }
+};
+const treeEdges = [[1,3], [3,2], [4,3]];
+const treeAdj = {
+  1: [3],
+  2: [3],
+  3: [1, 2, 4],
+  4: [3]
+};
+
+// BFS 染色步骤预计算
+function computeColorSteps() {
+  const steps = [];
+  const color = {};
+  for (let n in treeNodes) color[n] = -1;
+  const q = [];
+  const cnt = [0, 0];
+
+  // Step 0: 初始状态
+  steps.push({
+    desc: "初始化：所有结点未染色，队列空，计数器 cnt[0]=0, cnt[1]=0",
+    queue: [],
+    color: {...color},
+    cnt: [...cnt],
+    hlLines: [0]
+  });
+
+  // Step 1: 结点1入队
+  q.push(1);
+  color[1] = 0;
+  cnt[0]++;
+  steps.push({
+    desc: "结点 1 入队，染紫色（第0层/偶数层），cnt[0]++ → cnt[0]=1",
+    queue: [...q],
+    color: {...color},
+    cnt: [...cnt],
+    hlLines: [4,5,6],
+    current: 1
+  });
+
+  // BFS
+  while (q.length > 0) {
+    const u = q.shift();
+    steps.push({
+      desc: `取出队首结点 ${u}，开始处理它的邻居`,
+      queue: [...q],
+      color: {...color},
+      cnt: [...cnt],
+      hlLines: [8,9,10],
+      current: u
+    });
+
+    for (let v of treeAdj[u]) {
+      if (color[v] === -1) {
+        color[v] = color[u] ^ 1;
+        cnt[color[v]]++;
+        q.push(v);
+        steps.push({
+          desc: `发现结点 ${v} 未染色 → 染${color[v]===0?'紫色（偶数层）':'绿色（奇数层）'}（color[${u}]^1=${color[v]}），cnt[${color[v]}]++ → cnt[${color[v]}]=${cnt[color[v]]}，入队`,
+          queue: [...q],
+          color: {...color},
+          cnt: [...cnt],
+          hlLines: [11,12,13,14],
+          current: v,
+          parent: u
+        });
+      }
+    }
+  }
+
+  // Final step
+  steps.push({
+    desc: `BFS 完成！偶数层(紫) ${cnt[0]} 个，奇数层(绿) ${cnt[1]} 个。\n结点1,2,4是紫色 → 答案=${cnt[0]}\n结点3是绿色 → 答案=${cnt[1]}\n输出：3 3 1 3`,
+    queue: [],
+    color: {...color},
+    cnt: [...cnt],
+    hlLines: [18,19,20],
+    final: true
+  });
+
+  return steps;
+}
+
+const colorSteps = computeColorSteps();
+let colorStepIdx = 0;
+let colorPlaying = false;
+let colorTimer = null;
+
+function renderColorTree(state) {
+  const svg = document.getElementById('colorSvg');
+  let html = '';
+
+  // edges
+  for (let [u, v] of treeEdges) {
+    const nu = treeNodes[u], nv = treeNodes[v];
+    html += `<line x1="${nu.x}" y1="${nu.y}" x2="${nv.x}" y2="${nv.y}" stroke="#cbd5e1" stroke-width="3"/>`;
+  }
+
+  // nodes
+  for (let n in treeNodes) {
+    const pos = treeNodes[n];
+    let fill = '#e2e8f0';
+    let stroke = '#94a3b8';
+    let textColor = '#64748b';
+    let label = '';
+
+    if (state.color[n] === 0) {
+      fill = '#8b5cf6'; stroke = '#7c3aed'; textColor = 'white'; label = '偶';
+    } else if (state.color[n] === 1) {
+      fill = '#10b981'; stroke = '#059669'; textColor = 'white'; label = '奇';
+    }
+
+    let r = 26;
+    if (state.current == n) {
+      r = 30;
+      stroke = '#f59e0b';
+      stroke = '#ef4444';
+    }
+
+    html += `<circle cx="${pos.x}" cy="${pos.y}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="3" style="transition:all 0.3s;"/>`;
+    html += `<text x="${pos.x}" y="${pos.y+5}" text-anchor="middle" fill="${textColor}" font-size="18" font-weight="bold">${n}</text>`;
+    if (label) {
+      html += `<text x="${pos.x}" y="${pos.y+45}" text-anchor="middle" fill="${label==='偶'?'#8b5cf6':'#10b981'}" font-size="11" font-weight="bold">${label}</text>`;
+    }
+  }
+
+  svg.innerHTML = html;
+}
+
+function renderColorState() {
+  const step = colorSteps[colorStepIdx];
+  renderColorTree(step);
+
+  document.getElementById('colorStepDesc').innerText = step.desc;
+  document.getElementById('evenCount').textContent = step.cnt[0];
+  document.getElementById('oddCount').textContent = step.cnt[1];
+  document.getElementById('colorStep').textContent = colorStepIdx;
+
+  // queue
+  const qDiv = document.getElementById('colorQueue');
+  qDiv.innerHTML = '';
+  if (step.queue.length === 0) {
+    qDiv.innerHTML = '<span style="color:#64748b;font-size:13px;">（空）</span>';
+  } else {
+    for (let item of step.queue) {
+      const c = step.color[item];
+      const cls = c === 0 ? 'even' : 'odd';
+      qDiv.innerHTML += `<span class="ds-item ${cls}">${item}</span>`;
+    }
+  }
+
+  // highlight code lines
+  const codeEl = document.getElementById('colorCode');
+  // remove old highlights
+  codeEl.querySelectorAll('.hl-line').forEach(el => {
+    el.classList.remove('hl-line');
+  });
+  // we can't easily highlight individual lines in a <pre>, so skip for now
+}
+
+function colorPlay() {
+  if (colorPlaying) {
+    colorPlaying = false;
+    clearTimeout(colorTimer);
+    return;
+  }
+  colorPlaying = true;
+  if (colorStepIdx >= colorSteps.length - 1) {
+    colorStepIdx = 0;
+  }
+  const tick = () => {
+    if (!colorPlaying) return;
+    if (colorStepIdx < colorSteps.length - 1) {
+      colorStepIdx++;
+      renderColorState();
+      const speed = parseInt(document.getElementById('colorSpeed').value);
+      colorTimer = setTimeout(tick, speed);
+    } else {
+      colorPlaying = false;
+    }
+  };
+  tick();
+}
+
+function colorStep(dir) {
+  colorPlaying = false;
+  clearTimeout(colorTimer);
+  colorStepIdx = Math.max(0, Math.min(colorSteps.length - 1, colorStepIdx + dir));
+  renderColorState();
+}
+
+function colorReset() {
+  colorPlaying = false;
+  clearTimeout(colorTimer);
+  colorStepIdx = 0;
+  renderColorState();
+}
+
+// Speed label
+document.getElementById('colorSpeed').addEventListener('input', function() {
+  const v = parseInt(this.value);
+  const label = v < 600 ? '快速' : v < 1200 ? '中速' : '慢速';
+  document.getElementById('speedLabel').textContent = label;
+});
+
+// ==================== 奇偶距离可视化 ====================
+function renderParityTree() {
+  const svg = document.getElementById('paritySvg');
+  let html = '';
+
+  // edges
+  for (let [u, v] of treeEdges) {
+    const nu = treeNodes[u], nv = treeNodes[v];
+    html += `<line x1="${nu.x}" y1="${nu.y}" x2="${nv.x}" y2="${nv.y}" stroke="#cbd5e1" stroke-width="3"/>`;
+  }
+
+  // nodes - clickable
+  for (let n in treeNodes) {
+    const pos = treeNodes[n];
+    // Default: show BFS coloring
+    const c = (n == 1) ? 0 : (n == 3) ? 1 : 0;
+    const fill = c === 0 ? '#8b5cf6' : '#10b981';
+    const stroke = c === 0 ? '#7c3aed' : '#059669';
+    html += `<circle cx="${pos.x}" cy="${pos.y}" r="26" fill="${fill}" stroke="${stroke}" stroke-width="3" style="cursor:pointer;transition:all 0.2s;" onclick="selectParityNode(${n})" id="parityNode${n}"/>`;
+    html += `<text x="${pos.x}" y="${pos.y+5}" text-anchor="middle" fill="white" font-size="18" font-weight="bold" style="pointer-events:none;">${n}</text>`;
+    html += `<text x="${pos.x}" y="${pos.y+45}" text-anchor="middle" fill="${fill}" font-size="11" font-weight="bold" style="pointer-events:none;" id="parityLabel${n}">${c===0?'偶':'奇'}</text>`;
+  }
+
+  svg.innerHTML = html;
+}
+
+function computeDist(start) {
+  const dist = {};
+  dist[start] = 0;
+  const q = [start];
+  while (q.length > 0) {
+    const u = q.shift();
+    for (let v of treeAdj[u]) {
+      if (!(v in dist)) {
+        dist[v] = dist[u] + 1;
+        q.push(v);
+      }
+    }
+  }
+  return dist;
+}
+
+function selectParityNode(node) {
+  const dist = computeDist(node);
+
+  // Update SVG
+  for (let n in treeNodes) {
+    const circle = document.getElementById('parityNode' + n);
+    const label = document.getElementById('parityLabel' + n);
+    const d = dist[n];
+    const isEven = d % 2 === 0;
+    const fill = isEven ? '#8b5cf6' : '#10b981';
+    const stroke = isEven ? '#7c3aed' : '#059669';
+    circle.setAttribute('fill', fill);
+    circle.setAttribute('stroke', stroke);
+
+    // Show distance number
+    const pos = treeNodes[n];
+    // Update label
+    label.textContent = `d=${d}`;
+    label.setAttribute('fill', fill);
+
+    // Highlight selected node
+    if (n == node) {
+      circle.setAttribute('r', '32');
+      circle.setAttribute('stroke', '#f59e0b');
+      circle.setAttribute('stroke-width', '4');
+    } else {
+      circle.setAttribute('r', '26');
+      circle.setAttribute('stroke-width', '3');
+    }
+  }
+
+  // Description
+  let evenNodes = [], oddNodes = [];
+  for (let n in dist) {
+    if (dist[n] % 2 === 0) evenNodes.push(n);
+    else oddNodes.push(n);
+  }
+  document.getElementById('parityDesc').innerText =
+    `起点：结点 ${node}。偶数距离结点：{${evenNodes.join(', ')}}（${evenNodes.length}个），奇数距离结点：{${oddNodes.join(', ')}}（${oddNodes.length}个）。偶数步能结束的结点数 = ${evenNodes.length}。`;
+
+  document.getElementById('parityConclusion').style.display = 'block';
+
+  // Distance table
+  let tableHtml = '<table><tr><th>结点</th><th>到起点的距离</th><th>奇偶</th><th>偶数步可达？</th></tr>';
+  for (let n in treeNodes) {
+    const d = dist[n];
+    const isEven = d % 2 === 0;
+    tableHtml += `<tr class="${n==node?'highlight-row':''}"><td>${n}${n==node?' ← 起点':''}</td><td>${d}</td><td style="color:${isEven?'var(--purple)':'var(--green)'};font-weight:700;">${isEven?'偶':'奇'}</td><td>${isEven?'✅ 是':'❌ 否'}</td></tr>`;
+  }
+  tableHtml += '</table>';
+  document.getElementById('distanceTable').innerHTML = tableHtml;
+}
+
+// ==================== 测验 ====================
+const quizData = [
+  {
+    q: "树上漫步问题中，「偶数步能到达的结点」和什么有关？",
+    options: [
+      "结点的编号大小",
+      "结点的颜色（奇偶层）",
+      "结点的度数（邻居数量）",
+      "结点在输入中的顺序"
+    ],
+    answer: 1,
+    explanation: "核心规律：偶数步能到达的 = 同色结点。树是二分图，同色结点之间距离为偶数，异色结点之间距离为奇数。"
+  },
+  {
+    q: "为什么暴力做法 O(n²) 会超时？",
+    options: [
+      "代码太长写不下",
+      "n ≤ 2×10⁵，O(n²) = 4×10¹⁰ 次运算，1秒跑不完",
+      "树的边太多存不下",
+      "BFS 的队列会爆内存"
+    ],
+    answer: 1,
+    explanation: "n = 2×10⁵ 时，n² = 4×10¹⁰，而 1 秒大约只能跑 10⁸~10⁹ 次运算，所以 O(n²) 必定 TLE。需要 O(n) 的染色方法。"
+  },
+  {
+    q: "代码中 color[v] = color[u] ^ 1 的作用是什么？",
+    options: [
+      "把颜色取反（0变1，1变0），实现交替染色",
+      "把颜色设为1",
+      "把颜色设为0",
+      "计算两个颜色的平均值"
+    ],
+    answer: 0,
+    explanation: "^ 是异或运算：0^1=1, 1^1=0。父结点的颜色异或1就是子结点的颜色，实现「相邻结点颜色不同」的交替染色。"
+  },
+  {
+    q: "为什么树一定是二分图（可以双色染色）？",
+    options: [
+      "因为树有 n-1 条边",
+      "因为树没有环，不会出现「绕一圈回到自己」导致颜色矛盾",
+      "因为树的结点编号是连续的",
+      "因为树一定有叶子结点"
+    ],
+    answer: 1,
+    explanation: "二分图要求没有奇数长度的环。树没有环（无环连通图），自然满足条件。如果图有奇数环，双色染色就会矛盾。"
+  },
+  {
+    q: "如果两个结点颜色不同（一紫一绿），它们之间的距离一定是？",
+    options: [
+      "偶数",
+      "奇数",
+      "可能是奇数也可能是偶数",
+      "等于0"
+    ],
+    answer: 1,
+    explanation: "每走一步颜色变一次。从紫色到绿色，颜色变了奇数次，所以距离一定是奇数。反之同色距离一定是偶数。"
+  },
+  {
+    q: "本题中，如果从某个紫色结点出发，答案是多少？",
+    options: [
+      "绿色结点的数量",
+      "紫色结点的数量",
+      "所有结点的数量 n",
+      "1（只能到自己）"
+    ],
+    answer: 1,
+    explanation: "偶数步能到达的 = 同色结点。紫色结点的同色就是所有紫色结点，所以答案 = cnt[0]（紫色总数）。0步也能到达自己，所以自己算在内。"
+  }
+];
+
+function renderQuiz() {
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  quizData.forEach((q, i) => {
+    html += `<div class="quiz-question">`;
+    html += `<div><span class="q-num">${i+1}</span>${q.q}</div>`;
+    html += `<div class="quiz-options">`;
+    q.options.forEach((opt, j) => {
+      html += `<button class="quiz-option" onclick="answerQuiz(${i}, ${j})" id="q${i}opt${j}">${String.fromCharCode(65+j)}. ${opt}</button>`;
+    });
+    html += `</div>`;
+    html += `<div class="quiz-explanation" id="q${i}exp">${q.explanation}</div>`;
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+}
+
+const quizAnswers = new Array(quizData.length).fill(-1);
+
+function answerQuiz(qIdx, optIdx) {
+  if (quizAnswers[qIdx] !== -1) return; // already answered
+
+  quizAnswers[qIdx] = optIdx;
+  const q = quizData[qIdx];
+
+  for (let j = 0; j < q.options.length; j++) {
+    const btn = document.getElementById(`q${qIdx}opt${j}`);
+    btn.style.cursor = 'default';
+    if (j === q.answer) {
+      btn.classList.add('correct');
+    } else if (j === optIdx) {
+      btn.classList.add('wrong');
+    }
+  }
+
+  document.getElementById(`q${qIdx}exp`).classList.add('show');
+
+  // Check if all answered
+  if (quizAnswers.every(a => a !== -1)) {
+    let score = 0;
+    quizAnswers.forEach((a, i) => {
+      if (a === quizData[i].answer) score++;
+    });
+    const scoreEl = document.getElementById('quizScore');
+    scoreEl.classList.add('show');
+    if (score === quizData.length) {
+      scoreEl.style.background = 'linear-gradient(135deg, #d1fae5, #a7f3d0)';
+      scoreEl.style.color = '#065f46';
+      scoreEl.innerHTML = `🎉 全对！${score}/${quizData.length} 你已经完全掌握这道题了！`;
+    } else {
+      scoreEl.style.background = '#fef3c7';
+      scoreEl.style.color = '#92400e';
+      scoreEl.innerHTML = `得分：${score}/${quizData.length}，看看错题的解析吧！`;
+    }
+  }
+}
+
+// ==================== 初始化 ====================
+renderColorState();
+renderParityTree();
+renderQuiz();
+</script>
+
+</body>
+</html>
