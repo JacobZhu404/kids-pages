@@ -393,8 +393,25 @@ footer {
   .hero { padding: 2rem 16px; }
 }
 </style>
+<style id="kg-nav-style">
+#kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
+#kg-nav .kg-home{color:#6d28d9;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
+#kg-nav .kg-topics{display:flex;gap:6px;}
+#kg-nav .kg-topics a{color:#475569;text-decoration:none;padding:4px 10px;border-radius:999px;font-size:12px;white-space:nowrap;transition:background .15s,color .15s;}
+#kg-nav .kg-topics a:hover{background:#ede9fe;color:#6d28d9;}
+#kg-nav .kg-topics a.kg-active{background:#7c3aed;color:#fff;}
+body{padding-top:46px;}
+@media(max-width:520px){#kg-nav .kg-home{font-size:13px;}#kg-nav .kg-topics a{padding:3px 7px;font-size:11px;}}
+</style>
 </head>
 <body>
+<!-- kg-nav-start -->
+<nav id="kg-nav">
+  <a class="kg-home" href="../index.html">🌸 秘密花园</a>
+  <div class="kg-topics"><a href="../index.html#topic-dfs" class="kg-active">① DFS/BFS</a><a href="../index.html#topic-tree">② 树基础</a><a href="../index.html#topic-p11962">③ 树上漫步</a></div>
+</nav>
+<!-- kg-nav-end -->
+
 
 <!-- ===== 导航栏 ===== -->
 <nav class="nav-bar">
