@@ -31,6 +31,8 @@
                padding:2px 9px; font-size:11px; margin-top:8px; }
   .legend { background:#fff7ed; border-left:5px solid #f97316; border-radius:10px; padding:12px 16px;
             margin:22px 0; font-size:13.5px; color:#7c2d12; line-height:1.7; }
+  @keyframes kg-flash { 0%{background:#fde68a;} 100%{background:transparent;} }
+  .kg-flash { animation: kg-flash 1.8s ease-out; border-radius:10px; }
 </style>
 </head>
 <body>
@@ -105,5 +107,26 @@
   </div>
 
 </main>
+<script>
+// 从导航栏主题标签跳来时，高亮闪烁对应主题块
+(function(){
+  function flash(hash){
+    var el = document.getElementById(hash);
+    if(!el) return;
+    var top = el.getBoundingClientRect().top + window.pageYOffset - 52;
+    window.scrollTo({ top: top, behavior: 'smooth' });
+    el.classList.remove('kg-flash');
+    void el.offsetWidth;
+    el.classList.add('kg-flash');
+  }
+  if(location.hash){
+    var h = location.hash.slice(1);
+    setTimeout(function(){ flash(h); }, 100);
+  }
+  window.addEventListener('hashchange', function(){
+    flash(location.hash.slice(1));
+  });
+})();
+</script>
 </body>
 </html>
