@@ -628,6 +628,7 @@ footer {
 </style>
 
 
+
 <style id="kg-nav-style">
 #kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
 #kg-nav .kg-home{color:#0284c7;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
@@ -651,6 +652,8 @@ body{padding-top:46px;}
   <div class="kg-topics"><a href="index.html#topic-dfs" class="kg-active">① DFS/BFS</a><a href="index.html#topic-tree">② 树基础</a><a href="index.html#topic-p11962">③ 树上漫步</a></div>
 </nav>
 <!-- kg-nav-end -->
+
+
 
 
 
@@ -2349,18 +2352,26 @@ body{padding-top:46px;}
 })();
 </script>
 
+
+
 <!-- kg-eggy-start -->
 <div id="kg-eggy" title="点我玩！">
-  <svg width="64" height="72" viewBox="0 0 64 72">
-    <ellipse class="kg-egg-body" cx="32" cy="40" rx="28" ry="30" fill="#fde047" stroke="#0ea5e9" stroke-width="3"/>
+  <svg width="72" height="80" viewBox="0 0 100 110">
+    <ellipse class="kg-egg-body" cx="50" cy="58" rx="42" ry="46" fill="#fde047" stroke="#0ea5e9" stroke-width="4"/>
+    <ellipse cx="38" cy="34" rx="12" ry="8" fill="#fef9c3" opacity=".6"/>
     <g id="kg-eggy-eyes">
-      <circle cx="24" cy="36" r="6" fill="#fff"/><circle cx="42" cy="36" r="6" fill="#fff"/>
-      <circle id="kg-pupil-l" cx="24" cy="36" r="3" fill="#1e293b"/>
-      <circle id="kg-pupil-r" cx="42" cy="36" r="3" fill="#1e293b"/>
+      <ellipse cx="42" cy="50" rx="13" ry="15" fill="#fff" stroke="#0284c7" stroke-width="2.5"/>
+      <ellipse cx="58" cy="50" rx="13" ry="15" fill="#fff" stroke="#0284c7" stroke-width="2.5"/>
+      <circle id="kg-pupil-l" cx="42" cy="52" r="6.5" fill="#1e293b"/>
+      <circle id="kg-pupil-r" cx="58" cy="52" r="6.5" fill="#1e293b"/>
+      <circle cx="44" cy="49" r="2.5" fill="#fff"/>
+      <circle cx="60" cy="49" r="2.5" fill="#fff"/>
     </g>
-    <path id="kg-eggy-mouth" d="M24 48 Q32 54 40 48" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-    <circle cx="18" cy="44" r="3" fill="#fb7185" opacity=".5"/>
-    <circle cx="48" cy="44" r="3" fill="#fb7185" opacity=".5"/>
+    <circle cx="22" cy="62" r="6" fill="#fb7185" opacity=".55"/>
+    <circle cx="78" cy="62" r="6" fill="#fb7185" opacity=".55"/>
+    <path id="kg-eggy-mouth" d="M42 74 Q50 82 58 74" stroke="#1e293b" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <ellipse cx="8" cy="66" rx="6" ry="9" fill="#fde047" stroke="#0ea5e9" stroke-width="3"/>
+    <ellipse cx="92" cy="66" rx="6" ry="9" fill="#fde047" stroke="#0ea5e9" stroke-width="3"/>
   </svg>
 </div>
 <!-- kg-eggy-end -->
@@ -2373,11 +2384,11 @@ body{padding-top:46px;}
   var pr=document.getElementById('kg-pupil-r');
   var mouth=document.getElementById('kg-eggy-mouth');
   var body=eggy.querySelector('.kg-egg-body');
-  var faces=[["#fde047","M24 48 Q32 54 40 48"],["#fca5a5","M24 50 Q32 44 40 50"],["#86efac","M24 47 Q32 56 40 47"],["#93c5fd","M24 52 Q32 48 40 52"]];
+  var faces=[["#fde047","M42 74 Q50 82 58 74"],["#fca5a5","M42 76 Q50 70 58 76"],["#86efac","M42 72 Q50 84 58 72"],["#93c5fd","M42 78 Q50 74 58 78"]];
   var fi=0;
-  function mp(p,cx,cy,mx,my){var r=eggy.getBoundingClientRect();var dx=mx-(r.left+cx+32),dy=my-(r.top+cy+40);var d=Math.sqrt(dx*dx+dy*dy)||1,max=2.5;p.setAttribute('cx',cx+Math.min(max,dx/d*max));p.setAttribute('cy',cy+Math.min(max,dy/d*max));}
-  document.addEventListener('mousemove',function(e){mp(pl,24,36,e.clientX,e.clientY);mp(pr,42,36,e.clientX,e.clientY);});
-  document.addEventListener('touchmove',function(e){if(e.touches[0]){mp(pl,24,36,e.touches[0].clientX,e.touches[0].clientY);mp(pr,42,36,e.touches[0].clientX,e.touches[0].clientY);}},{passive:true});
+  function mp(p,cx,cy,mx,my){var r=eggy.getBoundingClientRect();var dx=mx-(r.left+cx*0.72+36),dy=my-(r.top+cy*0.72+42);var d=Math.sqrt(dx*dx+dy*dy)||1,max=4;p.setAttribute('cx',cx+Math.min(max,dx/d*max));p.setAttribute('cy',cy+Math.min(max,dy/d*max));}
+  document.addEventListener('mousemove',function(e){mp(pl,42,52,e.clientX,e.clientY);mp(pr,58,52,e.clientX,e.clientY);});
+  document.addEventListener('touchmove',function(e){if(e.touches[0]){mp(pl,42,52,e.touches[0].clientX,e.touches[0].clientY);mp(pr,58,52,e.touches[0].clientX,e.touches[0].clientY);}},{passive:true});
   eggy.addEventListener('click',function(){fi=(fi+1)%faces.length;body.setAttribute('fill',faces[fi][0]);mouth.setAttribute('d',faces[fi][1]);eggy.classList.remove('kg-bounce');void eggy.offsetWidth;eggy.classList.add('kg-bounce');});
 })();
 </script>
