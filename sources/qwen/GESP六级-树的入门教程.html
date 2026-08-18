@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌳 树的入门 · 交互教程（GESP 六级前置）</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+         background:#f1f5f9; color:#1e293b; line-height:1.75; }
+  header { background:linear-gradient(135deg,#15803d,#16a34a 55%,#0e7490); color:#fff;
+           padding:42px 20px 34px; text-align:center; }
+  header h1 { font-size:32px; letter-spacing:1px; }
+  header p { margin-top:10px; font-size:16px; opacity:.93; }
+  .badge { display:inline-block; background:rgba(255,255,255,.22); border:1px solid rgba(255,255,255,.5);
+           border-radius:999px; padding:2px 14px; font-size:13px; margin-top:12px; }
+  nav { position:sticky; top:0; z-index:50; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.08);
+        padding:10px 8px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  nav a { text-decoration:none; color:#15803d; background:#f0fdf4; border:1px solid #bbf7d0;
+          border-radius:999px; padding:4px 13px; font-size:13px; }
+  nav a:hover { background:#15803d; color:#fff; }
+  main { max-width:1000px; margin:0 auto; padding:18px 16px 60px; }
+  section { background:#fff; border-radius:16px; padding:26px 26px 30px; margin:22px 0;
+            box-shadow:0 1px 6px rgba(15,23,42,.06); }
+  h2 { font-size:24px; margin-bottom:6px; color:#166534; }
+  h2 .num { display:inline-block; background:linear-gradient(135deg,#15803d,#0e7490); color:#fff;
+            border-radius:10px; padding:0 10px; margin-right:8px; font-size:20px; }
+  h3 { font-size:18px; margin:22px 0 8px; color:#166534; }
+  p { margin:8px 0; }
+  .lead { font-size:17px; }
+  .tagline { background:#f0fdf4; border-left:5px solid #22c55e; border-radius:8px;
+             padding:12px 16px; margin:14px 0; }
+  .warn { background:#fff7ed; border-left:5px solid #f97316; border-radius:8px; padding:12px 16px; margin:14px 0; }
+  .tip  { background:#f0fdf4; border-left:5px solid #22c55e; border-radius:8px; padding:12px 16px; margin:14px 0; }
+  .key  { background:#f5f3ff; border-left:5px solid #7c3aed; border-radius:8px; padding:12px 16px; margin:14px 0; }
+  .link { background:#ecfeff; border-left:5px solid #0891b2; border-radius:8px; padding:12px 16px; margin:14px 0; }
+  ul,ol { margin:8px 0 8px 26px; }
+  li { margin:4px 0; }
+  table { border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; }
+  th,td { border:1px solid #e2e8f0; padding:8px 10px; text-align:center; }
+  th { background:#f0fdf4; color:#166534; }
+  .mono, code, pre { font-family:"SF Mono",Menlo,Consolas,"Courier New",monospace; }
+  code { background:#f0fdf4; color:#15803d; padding:1px 6px; border-radius:5px; font-size:13.5px; }
+  pre { background:#0f172a; color:#e2e8f0; border-radius:12px; padding:16px 18px; overflow-x:auto; margin:12px 0; }
+  pre code { background:none; color:inherit; padding:0; font-size:13.5px; line-height:1.65; }
+  .c { color:#6ee7b7; } .k { color:#7dd3fc; } .n { color:#fdba74; } .pp { color:#d8b4fe; } .s { color:#fcd34d; }
+  .controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:14px 0 6px; }
+  .controls button, .controls select { font-size:14px; padding:7px 14px; border-radius:999px; border:1px solid #bbf7d0;
+    background:#fff; color:#15803d; cursor:pointer; }
+  .controls button:hover { background:#f0fdf4; }
+  .controls button:disabled { opacity:.4; cursor:not-allowed; }
+  .status { font-size:13.5px; color:#475569; background:#f8fafc; border:1px dashed #cbd5e1;
+            border-radius:10px; padding:8px 12px; margin:10px 0; }
+  .container-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 12px; margin:10px 0;
+                   font-size:13.5px; overflow-x:auto; white-space:nowrap; }
+  .container-box b { color:#166534; }
+  .chip { display:inline-block; background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; border-radius:6px;
+          padding:1px 8px; margin:0 3px; font-family:"SF Mono",Menlo,monospace; font-size:13px; }
+  .lbl { font-size:12px; color:#64748b; margin:0 4px; }
+  .lbl.hot { color:#db2777; font-weight:600; }
+  .legend { font-size:13px; color:#475569; margin:10px 0; display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+  .legend span { display:inline-flex; align-items:center; gap:5px; }
+  .lg { display:inline-block; width:14px; height:14px; border-radius:3px; }
+  .opt { display:inline-block; margin:4px 8px 4px 0; padding:7px 16px; border-radius:999px; border:1px solid #bbf7d0;
+         background:#fff; color:#15803d; font-size:14px; cursor:pointer; }
+  .opt:hover { background:#f0fdf4; }
+  .opt.ok { background:#22c55e; color:#fff; border-color:#22c55e; }
+  .opt.no { background:#fca5a5; color:#fff; border-color:#ef4444; }
+  .expl { display:none; background:#f0fdf4; border-left:5px solid #22c55e; border-radius:8px;
+          padding:10px 14px; margin:10px 0; font-size:14px; }
+  .expl.bad { background:#fef2f2; border-left-color:#ef4444; }
+  details { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 14px; margin:12px 0; }
+  summary { cursor:pointer; color:#166534; font-weight:600; }
+  .tree-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:10px; margin:10px 0; }
+  .info-card { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:12px; padding:12px 18px; margin:10px 0;
+               font-size:14.5px; min-height:60px; }
+  .info-card b { color:#166534; }
+  .stuck { cursor:pointer; }
+  .stuck:hover { opacity:.85; }
+  .mini { display:inline-block; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;
+          padding:6px; margin:6px 10px 6px 0; vertical-align:middle; }
+  footer { text-align:center; color:#94a3b8; font-size:13px; padding:10px 0 40px; }
+  .bubble { background:#f0fdf4; border:1px dashed #4ade80; border-radius:14px; padding:14px 18px; margin:12px 0; }
+  .bubble b { color:#15803d; }
+  .bigformula { text-align:center; font-size:18px; margin:12px 0; }
+  @media (max-width:600px){ header h1{font-size:24px;} }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌳 树的入门 · 交互教程</h1>
+  <p>从零开始学树 ｜ 定义 · 术语 · 存储 · 遍历 · 深度 · 距离</p>
+  <span class="badge">GESP 六级前置知识 · 五年级友好</span>
+</header>
+
+<nav>
+  <a href="#sec0">0 什么是树</a>
+  <a href="#sec1">1 树的术语</a>
+  <a href="#sec2">2 树的存储</a>
+  <a href="#sec3">3 树的遍历</a>
+  <a href="#sec4">4 深度与染色</a>
+  <a href="#sec5">5 路径与距离</a>
+  <a href="#sec6">6 小测验</a>
+  <a href="#sec7">7 总结</a>
+</nav>
+
+<main>
+
+<!-- ============ 第 0 节 ============ -->
+<section id="sec0">
+  <h2><span class="num">0</span>什么是树？</h2>
+  <p class="lead">树不是「长在地上的植物」，而是一种<b>特殊的图</b>。它长这样（下面这棵就是本课的演示树，9 个点）：</p>
+  <div class="tree-box">
+    <svg id="demo_svg" width="100%" style="max-width:460px;display:block;margin:0 auto;"></svg>
+  </div>
+  <h3>树的三个定义（满足任意两个就能推出第三个）</h3>
+  <ul>
+    <li><b>① 连通：</b>任意两个点之间都有路可走（没有「孤岛」）。</li>
+    <li><b>② 无环：</b>任何地方都没有「圈圈」（没有绕一圈回到原点的路）。</li>
+    <li><b>③ n 个点恰好 n−1 条边。</b></li>
+  </ul>
+  <div class="key"><b>最重要的性质：树里任意两个点之间有且只有一条简单路径。</b>这一点让「两点距离」有了唯一答案，树的题目都离不开它。</div>
+
+  <h3>🔍 判定小测试：下面这些图，哪些是树？（点选项看对错）</h3>
+
+  <div class="quiz-q" data-ans="no">
+    <p>① <svg class="mini" id="dg1" width="120" height="90" style="vertical-align:middle"></svg> 这个图是树吗？（3 个点 3 条边，围成三角形）</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 不是！三角形有「环」——1→2→3→1 绕一圈回来了。树不能有环。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="yes">
+    <p>② <svg class="mini" id="dg2" width="140" height="90" style="vertical-align:middle"></svg> 一条链（4 个点 3 条边排成一行）呢？</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 是树！连通、无环、4 点 3 边，全满足。链是最朴素的树。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="yes">
+    <p>③ <svg class="mini" id="dg3" width="130" height="100" style="vertical-align:middle"></svg> 一颗星星（中心 + 3 片叶子，4 点 3 边）？</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 是树！星星、链、Y 字形……都是树，只要连通无环就行。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="no">
+    <p>④ <svg class="mini" id="dg4" width="140" height="100" style="vertical-align:middle"></svg> 两个分开的三角形（6 个点 6 条边）？</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 不是！它根本不连通——左边到不了右边。虽然每个小三角形都是 3 点 3 边，但整张图不是树。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="no">
+    <p>⑤ <svg class="mini" id="dg5" width="130" height="110" style="vertical-align:middle"></svg> 一个正方形（4 点 4 边围成圈）？</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 不是！4 点 4 边 = 多了一条边，围成了环。树必须是 n 点 n−1 边。</div>
+  </div>
+
+  <div class="bubble"><b>🎯 记法：</b>树 = 连通 + 无环 = 任意两点只有一条路径 = n 点 n−1 边。看到题目说「n 个点，n−1 条边」→ 立刻想到树！</div>
+</section>
+
+<!-- ============ 第 1 节 ============ -->
+<section id="sec1">
+  <h2><span class="num">1</span>树的术语（点一点就懂）</h2>
+  <p>我们可以<b>任选一个点当「根」</b>（就像把树拎起来）。选 1 号点当根后，每个点就有了爸爸、孩子、深度这些身份。<b>点击下面树上的任意节点</b>，看它的「身份档案」！</p>
+  <div class="legend">
+    <span><span class="lg" style="background:#f59e0b"></span>选中的节点</span>
+    <span><span class="lg" style="background:#93c5fd;border:2px solid #1d4ed8"></span>祖先（含根）</span>
+    <span><span class="lg" style="background:#86efac;border:2px solid #15803d"></span>孩子</span>
+  </div>
+  <div class="tree-box">
+    <svg id="term_svg" width="100%" style="max-width:460px;display:block;margin:0 auto;"></svg>
+  </div>
+  <div class="info-card" id="term_info">👆 点一个节点试试！</div>
+  <table>
+    <tr><th>术语</th><th>意思</th><th>在这棵树上</th></tr>
+    <tr><td>根</td><td>我们选来「挂」整棵树的点</td><td>1</td></tr>
+    <tr><td>父节点 / 孩子</td><td>深度差 1、直接相连、往根的方向是父</td><td>2 的父是 1，2 的孩子是 4、5</td></tr>
+    <tr><td>叶子</td><td>没有孩子的节点</td><td>4、7、8、9</td></tr>
+    <tr><td>深度</td><td>到根的距离（根 = 0）</td><td>5 的深度是 2</td></tr>
+    <tr><td>祖先</td><td>自己到根路径上的点（不含自己）</td><td>8 的祖先是 5、2、1</td></tr>
+    <tr><td>子树</td><td>自己 + 所有后代</td><td>2 的子树是 {2,4,5,7,8}</td></tr>
+  </table>
+  <div class="warn"><b>⚠️ 根可以随便选！</b>选不同的根，爸爸和孩子会变，但「两点间距离」永远不会变。</div>
+</section>
+
+<!-- ============ 第 2 节 ============ -->
+<section id="sec2">
+  <h2><span class="num">2</span>树的存储：邻接表</h2>
+  <p>程序里怎么存树？最常用<b>邻接表</b>：每个点开一个列表，记下所有和它相连的点。</p>
+<pre><code class="cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+const int N = 200005;
+vector&lt;int&gt; g[N];      // g[u] 里存所有和 u 相连的点（邻居）
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+    for (int i = 1; i &lt; n; i++) {   // 树有 n-1 条边
+        int u, v;
+        cin &gt;&gt; u &gt;&gt; v;
+        g[u].push_back(v);          // u 和 v 相连
+        g[v].push_back(u);          // 无向，双向都记
+    }
+    // 例：输出节点 2 的所有邻居
+    for (int i = 0; i &lt; (int)g[2].size(); i++) cout &lt;&lt; g[2][i] &lt;&lt; " ";
+    return 0;
+}</code></pre>
+  <div class="tip"><b>💡 二叉树特例：</b>如果题目保证每个点最多两个孩子，也可以直接用 <code>lc[i]</code>、<code>rc[i]</code> 两个数组存左右孩子，更省空间。</div>
+</section>
+
+<!-- ============ 第 3 节 ============ -->
+<section id="sec3">
+  <h2><span class="num">3</span>树的遍历：DFS 前序 &amp; BFS 层序</h2>
+  <p>遍历 = 把每个点都走一遍。两种走法都要会（GESP 六级直接考）：</p>
+  <ul>
+    <li><b>前序遍历（DFS 递归）</b>：先访问自己，再访问孩子，一个孩子的整棵子树走完才轮到下一个。</li>
+    <li><b>层序遍历（BFS 队列）</b>：先访问第 0 层，再第 1 层……一层一层从左到右。</li>
+  </ul>
+
+  <h3>动画①：前序遍历（DFS）</h3>
+  <div class="legend">
+    <span><span class="lg" style="background:#93c5fd"></span>已访问</span>
+    <span><span class="lg" style="background:#cbd5e1"></span>已出栈(子树走完)</span>
+    <span><span class="lg" style="background:#f59e0b"></span>当前节点</span>
+  </div>
+  <div class="tree-box"><svg id="pre_svg" width="100%" style="max-width:460px;display:block;margin:0 auto;"></svg></div>
+  <div class="container-box" id="stk_pre"><b>调用栈：</b><span class="lbl">空</span></div>
+  <div class="container-box" id="seq_pre"><b>前序序列：</b><span class="lbl">（还没开始）</span></div>
+  <div class="controls">
+    <button type="button" data-p="pre" data-a="reset">↺ 重置</button>
+    <button type="button" data-p="pre" data-a="prev">◀ 上一步</button>
+    <button type="button" data-p="pre" data-a="play">▶ 播放</button>
+    <button type="button" data-p="pre" data-a="next">下一步 ▶</button>
+    <select data-speed="pre">
+      <option value="750">慢速</option>
+      <option value="330" selected>中速</option>
+      <option value="100">快速</option>
+    </select>
+  </div>
+  <div class="status" id="st_pre"></div>
+
+  <h3>动画②：层序遍历（BFS）</h3>
+  <p>颜色深浅 = 层数，越远越暖色。队头出队，把孩子入队，波纹式扩散。</p>
+  <div class="legend">
+    <span><span class="lg" style="background:hsl(215,85%,72%)"></span>第 0 层(根)</span>
+    <span><span class="lg" style="background:hsl(150,85%,72%)"></span>第 1 层</span>
+    <span><span class="lg" style="background:hsl(70,85%,72%)"></span>第 2 层</span>
+    <span><span class="lg" style="background:hsl(15,85%,72%)"></span>第 3 层</span>
+    <span><span class="lg" style="background:#f59e0b"></span>当前</span>
+  </div>
+  <div class="tree-box"><svg id="lay_svg" width="100%" style="max-width:460px;display:block;margin:0 auto;"></svg></div>
+  <div class="container-box" id="stk_lay"><b>队列：</b><span class="lbl">空</span></div>
+  <div class="container-box" id="seq_lay"><b>层序序列：</b><span class="lbl">（还没开始）</span></div>
+  <div class="controls">
+    <button type="button" data-p="lay" data-a="reset">↺ 重置</button>
+    <button type="button" data-p="lay" data-a="prev">◀ 上一步</button>
+    <button type="button" data-p="lay" data-a="play">▶ 播放</button>
+    <button type="button" data-p="lay" data-a="next">下一步 ▶</button>
+    <select data-speed="lay">
+      <option value="750">慢速</option>
+      <option value="330" selected>中速</option>
+      <option value="100">快速</option>
+    </select>
+  </div>
+  <div class="status" id="st_lay"></div>
+
+  <h3>代码对照</h3>
+<pre><code class="cpp">// 前序遍历（DFS 递归）：先自己，再孩子
+void preorder(int u, int fa) {
+    cout &lt;&lt; u &lt;&lt; " ";                    // 访问自己
+    for (int v : g[u]) {
+        if (v == fa) continue;          // 别走回爸爸
+        preorder(v, u);                 // 递归访问孩子
+    }
+}
+
+// 层序遍历（BFS 队列）：一层一层
+void levelorder() {
+    queue&lt;int&gt; q;
+    q.push(1);                          // 根入队
+    vis[1] = true;
+    while (!q.empty()) {
+        int u = q.front(); q.pop();
+        cout &lt;&lt; u &lt;&lt; " ";               // 访问自己
+        for (int v : g[u]) {
+            if (vis[v]) continue;
+            vis[v] = true;
+            q.push(v);                  // 孩子入队
+        }
+    }
+}</code></pre>
+  <div class="tip"><b>💡 遍历能顺手算出深度：</b>把 <code>depth[v] = depth[u] + 1</code> 加进上面的代码，一次遍历就得到所有点的深度——非常常用，一定要记住！</div>
+</section>
+
+<!-- ============ 第 4 节 ============ -->
+<section id="sec4">
+  <h2><span class="num">4</span>深度与染色：树是「二部图」</h2>
+  <p>给树染两种颜色：<b>偶数深度的点染蓝色，奇数深度的点染橙色</b>。你马上会发现一个超强规律。</p>
+  <div class="legend">
+    <span><span class="lg" style="background:#93c5fd"></span>偶数深度（蓝）</span>
+    <span><span class="lg" style="background:#fdba74"></span>奇数深度（橙）</span>
+    <span><span class="lg" style="background:#f59e0b"></span>当前</span>
+  </div>
+  <div class="tree-box"><svg id="col_svg" width="100%" style="max-width:460px;display:block;margin:0 auto;"></svg></div>
+  <div class="controls">
+    <button type="button" data-p="col" data-a="reset">↺ 重置</button>
+    <button type="button" data-p="col" data-a="prev">◀ 上一步</button>
+    <button type="button" data-p="col" data-a="play">▶ 播放</button>
+    <button type="button" data-p="col" data-a="next">下一步 ▶</button>
+    <select data-speed="col">
+      <option value="750">慢速</option>
+      <option value="330" selected>中速</option>
+      <option value="100">快速</option>
+    </select>
+  </div>
+  <div class="status" id="st_col"></div>
+  <div class="key"><b>🏁 规律：树上任何相邻的两个点，颜色一定不同！</b>（因为走一条边，深度 +1，奇偶翻转。）这种能两色染好的图叫<b>二部图</b>（也叫二分图），树一定是二部图。</div>
+</section>
+
+<!-- ============ 第 5 节 ============ -->
+<section id="sec5">
+  <h2><span class="num">5</span>路径与距离：LCA 的魔法公式</h2>
+  <p>树上两点 u、v 的距离怎么算？先找到它们的<b>最近公共祖先</b>（LCA，Lowest Common Ancestor）——就是离它们俩都最近的公共祖先。然后套公式：</p>
+  <p class="bigformula"><code>dist(u,v) = depth[u] + depth[v] − 2 × depth[LCA(u,v)]</code></p>
+  <p><b>👇 玩法：先点一个节点（绿色=起点），再点第二个节点（红色=终点）</b>，路径会亮起来，公式也会自动代入数字算给你看！</p>
+  <div class="legend">
+    <span><span class="lg" style="background:#86efac"></span>起点</span>
+    <span><span class="lg" style="background:#f87171"></span>终点</span>
+    <span><span class="lg" style="background:#fde047"></span>路径上的点</span>
+    <span><span class="lg" style="background:#3b82f6"></span>路径上的边</span>
+  </div>
+  <div class="tree-box"><svg id="path_svg" width="100%" style="max-width:460px;display:block;margin:0 auto;"></svg></div>
+  <div class="controls">
+    <button type="button" onclick="pathReset()">↺ 清除选择</button>
+  </div>
+  <div class="info-card" id="path_info">👆 点两个节点试试！</div>
+  <div class="tip"><b>💡 试试点 5 和 9：</b>LCA = 1，dist = depth[5]+depth[9]−0 = 2+3 = 5（奇数）→ 5 和 9 之间只能奇数步到达。再试试点 4 和 7：LCA = 2，dist = 2+3−2 = 3（奇数）。点 7 和 8：LCA = 5，dist = 3+3−4 = 2（偶数）→ 偶数步可以到！</div>
+  <h3>朴素 LCA 代码（一步一步往上爬）</h3>
+<pre><code class="cpp">// 前提：depth[] 和 fa[]（爸爸）已经算好了
+int lca(int u, int v) {
+    while (depth[u] &gt; depth[v]) u = fa[u];   // 深的先往上爬到同一层
+    while (depth[v] &gt; depth[u]) v = fa[v];
+    while (u != v) {                          // 再一起往上爬
+        u = fa[u];
+        v = fa[v];
+    }
+    return u;                                 // 相遇点就是 LCA
+}
+
+// 距离公式
+int dist = depth[u] + depth[v] - 2 * depth[lca(u, v)];</code></pre>
+  <div class="warn"><b>⚠️ 范围提醒：</b>朴素 LCA 每次 O(深度)，题目要求 n ≤ 2×10⁵ 且只问一个点时没问题；如果问很多组距离，就要用七级的倍增法了（本课不展开）。</div>
+</section>
+
+<!-- ============ 第 6 节 ============ -->
+<section id="sec6">
+  <h2><span class="num">6</span>综合小测验</h2>
+
+  <div class="quiz-q" data-ans="6">
+    <p>1️⃣ 一棵有 7 个节点的树，一共有几条边？</p>
+    <button class="opt" data-v="6">6 条</button>
+    <button class="opt" data-v="7">7 条</button>
+    <button class="opt" data-v="8">8 条</button>
+    <div class="expl">✔️ 6 条！n 个点的树一定有 n−1 条边。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="1">
+    <p>2️⃣ 树上两个不同点之间，有几条不重复走点的路径？</p>
+    <button class="opt" data-v="1">恰好 1 条</button>
+    <button class="opt" data-v="2">2 条</button>
+    <button class="opt" data-v="无数条">无数条</button>
+    <div class="expl">✔️ 恰好 1 条！这是树的灵魂性质，距离才有唯一答案。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="y">
+    <p>3️⃣ 判断题：任何树都可以用两种颜色染好，让相邻节点不同色。</p>
+    <button class="opt" data-v="y">对</button>
+    <button class="opt" data-v="n">错</button>
+    <div class="expl">✔️ 对！树一定是二部图：按深度奇偶染就行，相邻深度必差 1、奇偶必相反。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="5">
+    <p>4️⃣ 本课演示树中（以 1 为根），depth[5]=2，depth[9]=3。节点 5 和 9 的距离是？</p>
+    <button class="opt" data-v="3">3</button>
+    <button class="opt" data-v="5">5</button>
+    <button class="opt" data-v="4">4</button>
+    <button class="opt" data-v="2">2</button>
+    <div class="expl">✔️ 5！路径 5-2-1-3-6-9 共 5 条边。LCA(5,9)=1，公式：2+3−2×0=5。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="even">
+    <p>5️⃣ 两个节点的深度<b>同为偶数</b>，它们的距离是？</p>
+    <button class="opt" data-v="even">偶数</button>
+    <button class="opt" data-v="odd">奇数</button>
+    <button class="opt" data-v="any">不一定</button>
+    <div class="expl">✔️ 偶数！dist = depth[u]+depth[v]−2×depth[LCA]，两个偶数加起来是偶数，再减偶数还是偶数 → 它们可以偶数步互相到达！</div>
+  </div>
+
+  <div class="quiz-q" data-ans="disconnect">
+    <p>6️⃣ 树去掉任意一条边，会发生什么？</p>
+    <button class="opt" data-v="nothing">什么都没有</button>
+    <button class="opt" data-v="cycle">出现一个环</button>
+    <button class="opt" data-v="disconnect">树分成两半（不连通）</button>
+    <div class="expl">✔️ 分成两半！树没有多余的边，每条边都是「命根子」。反之，给树随便加一条边，一定会出现环。</div>
+  </div>
+</section>
+
+<!-- ============ 第 7 节 ============ -->
+<section id="sec7">
+  <h2><span class="num">7</span>总结 &amp; 下一步</h2>
+  <table>
+    <tr><th>知识点</th><th>一句话</th><th>用在哪</th></tr>
+    <tr><td>树的定义</td><td>连通 + 无环 = n 点 n−1 边</td><td>读题识别树</td></tr>
+    <tr><td>邻接表</td><td>vector&lt;int&gt; g[N]，双向存边</td><td>建树</td></tr>
+    <tr><td>DFS 前序</td><td>先自己再孩子，递归</td><td>求 depth、fa、子树大小</td></tr>
+    <tr><td>BFS 层序</td><td>队列一层层走</td><td>求 depth、最短路</td></tr>
+    <tr><td>深度与染色</td><td>深度奇偶翻转染色，树是二部图</td><td>判断两点能否偶数步到达</td></tr>
+    <tr><td>距离公式</td><td>dist = depth[u]+depth[v]−2×depth[LCA]</td><td>判断偶数步可达</td></tr>
+  </table>
+  <p>如果这一课玩熟了，下一课可以挑战：<b>树的直径</b>（最远的两点有多远）、<b>树的重心</b>（把树切在哪最平衡），还有<b>倍增 LCA</b>（七级内容）。想学哪个，跟我说！</p>
+</section>
+
+<footer>把树的地基打牢，后面的题就稳了 🎉 有不懂的随时回来问我！</footer>
+</main>
+
+<script>
+/*__PURE_START__*/
+// 演示树：9 个点（1 为根）
+// 1-2, 1-3, 2-4, 2-5, 5-7, 5-8, 3-6, 6-9
+const T9 = [[],[2,3],[1,4,5],[1,6],[2],[2,7,8],[3,9],[5],[5],[6]];
+const T9N = 9;
+const T9_POS = {
+  1:[230,40], 2:[120,115], 3:[340,115], 4:[60,190], 5:[180,190],
+  6:[300,190], 7:[140,265], 8:[220,265], 9:[360,265]
+};
+const T9_EDGES = [[1,2],[1,3],[2,4],[2,5],[5,7],[5,8],[3,6],[6,9]];
+
+// 一次 BFS 算出 parent / depth / order，再逆序累加子树大小
+function computeTreeData(adj, n){
+  const parent = new Array(n+1).fill(0);
+  const depth = new Array(n+1).fill(-1);
+  const order = [];
+  const q = [1]; depth[1] = 0; parent[1] = 0; let h = 0;
+  while (h < q.length){
+    const u = q[h++]; order.push(u);
+    for (let i=0;i<adj[u].length;i++){
+      const v = adj[u][i];
+      if (depth[v] === -1){ depth[v] = depth[u]+1; parent[v] = u; q.push(v); }
+    }
+  }
+  const children = Array.from({length:n+1}, () => []);
+  for (let i=2;i<=n;i++) children[parent[i]].push(i);
+  const sz = new Array(n+1).fill(1);
+  for (let i=order.length-1;i>=1;i--){ const u = order[i]; sz[parent[u]] += sz[u]; }
+  return {parent, depth, order, children, sz};
+}
+
+// 朴素 LCA：深的先爬平，再一起爬
+function lcaNaive(u, v, depth, parent){
+  while (depth[u] > depth[v]) u = parent[u];
+  while (depth[v] > depth[u]) v = parent[v];
+  while (u !== v){ u = parent[u]; v = parent[v]; }
+  return u;
+}
+function pathBetween(u, v, parent, depth){
+  const w = lcaNaive(u, v, depth, parent);
+  const path = [];
+  let x = u;
+  while (x !== w){ path.push(x); x = parent[x]; }
+  path.push(w);
+  const tmp = [];
+  x = v;
+  while (x !== w){ tmp.push(x); x = parent[x]; }
+  for (let i=tmp.length-1;i>=0;i--) path.push(tmp[i]);
+  return path;
+}
+
+// 前序遍历帧（DFS）
+function preorderFrames(adj, n){
+  const frames = [];
+  const visited = new Set([1]);
+  const pre = [1];
+  const closed = new Set();
+  const stack = [{u:1, dir:0}];
+  const mk = (type, u, msg) => ({type, u, pre:pre.slice(), stack:stack.map(o=>o.u), closed:[...closed], msg});
+  frames.push(mk('visit', 1, '从根 1 开始前序遍历：先访问 1，再走进它的子树'));
+  while (stack.length){
+    const top = stack[stack.length-1];
+    let moved = false;
+    while (top.dir < adj[top.u].length){
+      const v = adj[top.u][top.dir++];
+      if (visited.has(v)) continue;
+      visited.add(v); pre.push(v);
+      stack.push({u:v, dir:0});
+      frames.push(mk('visit', v, '访问 ' + v + '（前序 = 先爸爸后孩子）→ 序列加上 ' + v));
+      moved = true; break;
+    }
+    if (!moved){
+      const popped = stack.pop();
+      closed.add(popped);
+      frames.push(mk('leave', popped, popped + ' 的孩子全走完了 → 出栈回溯（前序里已经记过 ' + popped + ' 啦）'));
+    }
+  }
+  frames.push({type:'done', u:0, pre:pre.slice(), stack:[], closed:[...closed],
+    msg:'🎉 前序遍历完成！结果：' + pre.join(' ')});
+  return frames;
+}
+
+// 层序遍历帧（BFS）
+function layerFrames(adj, n){
+  const frames = [];
+  const dist = new Array(n+1).fill(-1);
+  dist[1] = 0;
+  const queue = [1]; let head = 0;
+  const mk = (type, u, msg) => ({type, u, dist:dist.slice(), queue:queue.slice(head).map(x=>x), msg});
+  frames.push(mk('start', 1, '根 1 入队（第 0 层）。每次取出队头，把孩子入队'));
+  while (head < queue.length){
+    const cur = queue[head++];
+    frames.push(mk('visit', cur, '取出队头 ' + cur + '（第 ' + dist[cur] + ' 层），访问它，把孩子入队'));
+    for (let i=0;i<adj[cur].length;i++){
+      const v = adj[cur][i];
+      if (dist[v] !== -1) continue;
+      dist[v] = dist[cur] + 1;
+      queue.push(v);
+      frames.push(mk('discover', v, '发现孩子 ' + v + '（第 ' + dist[v] + ' 层），入队'));
+    }
+  }
+  const layers = {};
+  for (let i=1;i<=n;i++) (layers[dist[i]] = layers[dist[i]] || []).push(i);
+  let s = '';
+  for (let L=0;L<=3;L++) s += '第' + L + '层: ' + layers[L].join(' ') + ' ｜ ';
+  frames.push({type:'done', u:0, dist:dist.slice(), queue:[], msg:'🎉 层序遍历完成！' + s});
+  return frames;
+}
+
+// 染色帧（BFS + 深度奇偶）
+function colorFrames(adj, n){
+  const frames = [];
+  const depth = new Array(n+1).fill(-1);
+  const cnt = [0,0];
+  const queue = [1]; depth[1] = 0; cnt[0] = 1; let head = 0;
+  const mk = (type, u, msg) => ({type, u, depth:depth.slice(), cnt:cnt.slice(), queue:queue.slice(head).map(x=>x), msg});
+  frames.push(mk('start', 1, '染色开始：根 1 深度 0（偶数）→ 染蓝色。cntE=1'));
+  while (head < queue.length){
+    const cur = queue[head++];
+    const even = depth[cur]%2===0;
+    let nbMsg = '';
+    const nbOdd = [], nbEven = [];
+    for (let i=0;i<adj[cur].length;i++){
+      const v = adj[cur][i];
+      if (depth[v] === -1) continue;
+      (depth[v]%2===0 ? nbEven : nbOdd).push(v);
+    }
+    if (nbOdd.length) nbMsg = '它的奇数深度邻居: ' + nbOdd.join('、') + '（橙）';
+    else if (nbEven.length) nbMsg = '它的偶数深度邻居: ' + nbEven.join('、') + '（蓝）';
+    frames.push(mk('visit', cur, '检查 ' + cur + '：深度 ' + depth[cur] + '（' + (even?'偶数→蓝':'奇数→橙') + '）。' + nbMsg + ' —— 相邻颜色永远不同！'));
+    for (let i=0;i<adj[cur].length;i++){
+      const v = adj[cur][i];
+      if (depth[v] !== -1) continue;
+      depth[v] = depth[cur] + 1;
+      cnt[depth[v]%2]++;
+      queue.push(v);
+      frames.push(mk('color', v, '给 ' + v + ' 染色：深度 ' + depth[v] + '（' + (depth[v]%2?'奇→橙':'偶→蓝') + '）'));
+    }
+  }
+  frames.push({type:'done', u:0, depth:depth.slice(), cnt:cnt.slice(), queue:[],
+    msg:'🎉 染色完成！蓝(偶数深度)=' + cnt[0] + ' 个，橙(奇数深度)=' + cnt[1] + ' 个。相邻节点全部异色 → 树是二部图！'});
+  return frames;
+}
+/*__PURE_END__*/
+
+/* ============ 通用面板框架 ============ */
+const panels = {};
+function registerPanel(name, frames, render){
+  panels[name] = {frames, idx:0, playing:false, timer:null, speed:330, render};
+  render(name);
+}
+function goTo(name, i){
+  const p = panels[name];
+  p.idx = Math.max(0, Math.min(p.frames.length-1, i));
+  p.render(name);
+  updateBtns(name);
+}
+function stopPlay(name){
+  const p = panels[name];
+  p.playing = false;
+  if (p.timer){ clearInterval(p.timer); p.timer = null; }
+  updateBtns(name);
+}
+function togglePlay(name){
+  const p = panels[name];
+  if (p.playing){ stopPlay(name); return; }
+  p.playing = true;
+  if (p.idx >= p.frames.length-1) goTo(name, 0);
+  p.timer = setInterval(()=>{
+    if (p.idx >= p.frames.length-1) stopPlay(name);
+    else goTo(name, p.idx+1);
+  }, p.speed);
+  updateBtns(name);
+}
+function resetP(name){ stopPlay(name); goTo(name, 0); }
+function prevP(name){ stopPlay(name); goTo(name, panels[name].idx-1); }
+function nextP(name){ if (panels[name].idx < panels[name].frames.length-1) goTo(name, panels[name].idx+1); else stopPlay(name); }
+function updateBtns(name){
+  const p = panels[name];
+  document.querySelectorAll('[data-p="'+name+'"]').forEach(b=>{
+    const a = b.getAttribute('data-a');
+    if (a==='prev') b.disabled = p.idx <= 0;
+    if (a==='next') b.disabled = p.idx >= p.frames.length-1;
+    if (a==='play') b.textContent = p.playing ? '⏸ 暂停' : '▶ 播放';
+  });
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-p][data-a]');
+  if (!b) return;
+  const name = b.getAttribute('data-p'), a = b.getAttribute('data-a');
+  if (a==='reset') resetP(name);
+  else if (a==='prev') prevP(name);
+  else if (a==='next') nextP(name);
+  else if (a==='play') togglePlay(name);
+});
+document.addEventListener('change', e=>{
+  if (e.target.getAttribute('data-speed')){
+    const name = e.target.getAttribute('data-speed');
+    panels[name].speed = parseInt(e.target.value, 10);
+    if (panels[name].playing){ stopPlay(name); togglePlay(name); }
+  }
+});
+
+/* ============ 画树 SVG ============ */
+function drawTree(svgId, prefix, clickable){
+  const svg = document.getElementById(svgId);
+  svg.setAttribute('viewBox', '0 0 460 300');
+  let html = '';
+  T9_EDGES.forEach(e => {
+    const a = T9_POS[e[0]], b = T9_POS[e[1]];
+    html += '<line id="'+prefix+'e'+e[0]+'_'+e[1]+'" x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="#cbd5e1" stroke-width="2"/>';
+  });
+  for (let u=1;u<=T9N;u++){
+    html += '<g id="'+prefix+'g'+u+'" class="'+(clickable?'stuck':'')+'">'+
+      '<circle id="'+prefix+'n'+u+'" cx="'+T9_POS[u][0]+'" cy="'+T9_POS[u][1]+'" r="19" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>'+
+      '<text x="'+T9_POS[u][0]+'" y="'+(T9_POS[u][1]+5)+'" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">'+u+'</text>'+
+      '</g>';
+  }
+  svg.innerHTML = html;
+}
+
+/* ============ 术语交互 ============ */
+const TD = computeTreeData(T9, T9N);
+function renderTerm(u){
+  for (let i=1;i<=T9N;i++){
+    const el = document.getElementById('tr_n'+i);
+    el.setAttribute('fill', '#e2e8f0');
+    el.setAttribute('stroke', '#94a3b8');
+    el.setAttribute('stroke-width', 2);
+  }
+  // 祖先 + 自己 + 孩子
+  let x = TD.parent[u];
+  while (x !== 0){ document.getElementById('tr_n'+x).setAttribute('fill','#93c5fd'); x = TD.parent[x]; }
+  document.getElementById('tr_n'+u).setAttribute('fill','#f59e0b');
+  TD.children[u].forEach(c => document.getElementById('tr_n'+c).setAttribute('fill','#86efac'));
+  const anc = [];
+  x = TD.parent[u];
+  while (x !== 0){ anc.unshift(x); x = TD.parent[x]; }
+  const isLeaf = TD.children[u].length === 0;
+  document.getElementById('term_info').innerHTML =
+    '<b>节点 ' + u + '</b> ｜ 深度 ' + TD.depth[u] + '（根=0）<br>' +
+    '父节点：' + (TD.parent[u]===0 ? '无（我是根）' : TD.parent[u]) + '　|　' +
+    '孩子：' + (isLeaf ? '无（我是叶子）' : TD.children[u].join('、')) + '<br>' +
+    '祖先（到根）：' + (anc.length ? anc.join(' → ') : '无') + '<br>' +
+    '子树大小：' + TD.sz[u] + '（自己 + 所有后代）';
+}
+
+/* ============ 路径交互 ============ */
+let pathA = 0, pathB = 0, pathPath = [];
+function renderPath(){
+  for (let i=1;i<=T9N;i++){
+    const el = document.getElementById('pa_n'+i);
+    el.setAttribute('fill', '#e2e8f0');
+    el.setAttribute('stroke', '#94a3b8');
+    el.setAttribute('stroke-width', 2);
+  }
+  T9_EDGES.forEach(e => {
+    const el = document.getElementById('pa_e'+e[0]+'_'+e[1]);
+    el.setAttribute('stroke','#cbd5e1'); el.setAttribute('stroke-width',2);
+  });
+  if (!pathA && !pathB){ document.getElementById('path_info').innerHTML = '👆 点两个节点试试！'; return; }
+  if (pathA && !pathB){
+    document.getElementById('pa_n'+pathA).setAttribute('fill','#86efac');
+    document.getElementById('path_info').innerHTML = '<b>起点 = ' + pathA + '</b>，再点一个节点当终点（点其他节点可换起点）';
+    return;
+  }
+  pathPath = pathBetween(pathA, pathB, TD.parent, TD.depth);
+  const w = lcaNaive(pathA, pathB, TD.depth, TD.parent);
+  const dist = TD.depth[pathA] + TD.depth[pathB] - 2*TD.depth[w];
+  for (let i=1;i<=T9N;i++){
+    if (pathPath.indexOf(i) >= 0) document.getElementById('pa_n'+i).setAttribute('fill','#fde047');
+  }
+  document.getElementById('pa_n'+pathA).setAttribute('fill','#86efac');
+  document.getElementById('pa_n'+pathB).setAttribute('fill','#f87171');
+  for (let i=0;i<pathPath.length-1;i++){
+    const a = pathPath[i], b = pathPath[i+1];
+    const key = a<b ? a+'_'+b : b+'_'+a;
+    const el = document.getElementById('pa_e'+key);
+    if (el){ el.setAttribute('stroke','#3b82f6'); el.setAttribute('stroke-width',4); }
+  }
+  document.getElementById('path_info').innerHTML =
+    '<b>路径：' + pathPath.join(' → ') + '</b><br>' +
+    'LCA(' + pathA + ',' + pathB + ') = ' + w + '<br>' +
+    '距离 = depth[' + pathA + '] + depth[' + pathB + '] − 2×depth[' + w + '] = ' + TD.depth[pathA] + ' + ' + TD.depth[pathB] + ' − 2×' + TD.depth[w] + ' = <b>' + dist + '</b>（' + (dist%2?'奇':'偶') + '数）<br>' +
+    '→ ' + pathA + ' 到 ' + pathB + (dist%2 ? ' 只能走奇数步到达' : ' 可以走偶数步到达');
+}
+function pathPick(u){
+  if (!pathA){ pathA = u; }
+  else if (!pathB){ if (u === pathA) return; pathB = u; }
+  else { pathA = u; pathB = 0; }
+  renderPath();
+}
+function pathReset(){ pathA = 0; pathB = 0; renderPath(); }
+
+/* ============ 遍历动画渲染 ============ */
+function renderPre(name){
+  const p = panels[name], f = p.frames[p.idx];
+  const closed = new Set(f.closed);
+  const visited = new Set(f.pre);
+  for (let i=1;i<=T9N;i++){
+    const el = document.getElementById('pr_n'+i);
+    let fill = '#e2e8f0';
+    if (closed.has(i)) fill = '#cbd5e1';
+    else if (visited.has(i)) fill = '#93c5fd';
+    el.setAttribute('fill', fill);
+    el.setAttribute('stroke', f.u===i ? '#f59e0b' : '#94a3b8');
+    el.setAttribute('stroke-width', f.u===i ? 4 : 2);
+  }
+  let sh = '<b>递归调用栈：</b>';
+  if (!f.stack.length) sh += '<span class="lbl">空</span>';
+  f.stack.forEach(u => sh += '<span class="chip">'+u+'</span>');
+  document.getElementById('stk_pre').innerHTML = sh;
+  let qh = '<b>前序序列：</b>';
+  if (!f.pre.length) qh += '<span class="lbl">（空）</span>';
+  f.pre.forEach(u => qh += '<span class="chip">'+u+'</span>');
+  document.getElementById('seq_pre').innerHTML = qh;
+  document.getElementById('st_pre').textContent = '第 '+(p.idx+1)+' / '+p.frames.length+' 步 ｜ '+f.msg;
+}
+function renderLay(name){
+  const p = panels[name], f = p.frames[p.idx];
+  for (let i=1;i<=T9N;i++){
+    const el = document.getElementById('ly_n'+i);
+    let fill = '#e2e8f0';
+    if (f.dist[i] >= 0){
+      const L = f.dist[i];
+      fill = 'hsl('+Math.max(0, 215-65*L)+',85%,72%)';
+    }
+    el.setAttribute('fill', fill);
+    el.setAttribute('stroke', f.u===i ? '#f59e0b' : '#94a3b8');
+    el.setAttribute('stroke-width', f.u===i ? 4 : 2);
+  }
+  let sh = '<b>队列（前→后）：</b>';
+  if (!f.queue.length) sh += '<span class="lbl">空</span>';
+  f.queue.forEach(u => sh += '<span class="chip">'+u+'</span>');
+  document.getElementById('stk_lay').innerHTML = sh;
+  const order = [];
+  for (let i=0;i<=p.idx;i++){
+    const ev = p.frames[i];
+    if (ev.type==='visit' || ev.type==='start') order.push(ev.u);
+    if (ev.type==='done') order.length = 0;
+  }
+  if (f.type==='done'){ order.length = 0; for (let i=1;i<=T9N;i++) order.push(i); }
+  let qh = '<b>层序序列：</b>';
+  if (!order.length) qh += '<span class="lbl">（还没访问）</span>';
+  order.forEach(u => qh += '<span class="chip">'+u+'</span>');
+  document.getElementById('seq_lay').innerHTML = qh;
+  document.getElementById('st_lay').textContent = '第 '+(p.idx+1)+' / '+p.frames.length+' 步 ｜ '+f.msg;
+}
+function renderCol(name){
+  const p = panels[name], f = p.frames[p.idx];
+  for (let i=1;i<=T9N;i++){
+    const el = document.getElementById('co_n'+i);
+    let fill = '#e2e8f0';
+    if (f.depth[i] >= 0) fill = f.depth[i]%2===0 ? '#93c5fd' : '#fdba74';
+    el.setAttribute('fill', fill);
+    el.setAttribute('stroke', f.u===i ? '#f59e0b' : '#94a3b8');
+    el.setAttribute('stroke-width', f.u===i ? 4 : 2);
+  }
+  document.getElementById('st_col').textContent = '第 '+(p.idx+1)+' / '+p.frames.length+' 步 ｜ '+f.msg;
+}
+
+/* ============ 判定小测试图 ============ */
+function drawMini(svgId, pts, edges){
+  const svg = document.getElementById(svgId);
+  let html = '';
+  edges.forEach(e => {
+    html += '<line x1="'+pts[e[0]][0]+'" y1="'+pts[e[0]][1]+'" x2="'+pts[e[1]][0]+'" y2="'+pts[e[1]][1]+'" stroke="#475569" stroke-width="2"/>';
+  });
+  pts.forEach((p,i) => {
+    html += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="9" fill="#93c5fd" stroke="#1d4ed8" stroke-width="2"/>'+
+      '<text x="'+p[0]+'" y="'+(p[1]+4)+'" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">'+(i+1)+'</text>';
+  });
+  svg.innerHTML = html;
+}
+
+/* ============ 初始化 ============ */
+drawTree('demo_svg', 'dm_', false);
+drawTree('term_svg', 'tr_', true);
+for (let u=1;u<=T9N;u++){
+  document.getElementById('tr_g'+u).addEventListener('click', ()=>renderTerm(u));
+}
+drawTree('path_svg', 'pa_', true);
+for (let u=1;u<=T9N;u++){
+  document.getElementById('pa_g'+u).addEventListener('click', ()=>pathPick(u));
+}
+drawTree('pre_svg', 'pr_', false);
+drawTree('lay_svg', 'ly_', false);
+drawTree('col_svg', 'co_', false);
+
+drawMini('dg1', [[60,18],[18,68],[102,68]], [[0,1],[1,2],[2,0]]);
+drawMini('dg2', [[20,45],[55,45],[90,45],[125,45]], [[0,1],[1,2],[2,3]]);
+drawMini('dg3', [[65,50],[22,15],[110,15],[70,80]], [[0,1],[0,2],[0,3]]);
+drawMini('dg4', [[20,28],[40,8],[55,33],[80,28],[100,8],[115,33]], [[0,1],[1,2],[2,0],[3,4],[4,5],[5,3]]);
+drawMini('dg5', [[25,15],[105,15],[105,95],[25,95]], [[0,1],[1,2],[2,3],[3,0]]);
+
+registerPanel('pre', preorderFrames(T9, T9N), renderPre);
+registerPanel('lay', layerFrames(T9, T9N), renderLay);
+registerPanel('col', colorFrames(T9, T9N), renderCol);
+
+/* ============ 小测验 ============ */
+document.querySelectorAll('.quiz-q').forEach(qq => {
+  qq.querySelectorAll('.opt').forEach(o => {
+    o.addEventListener('click', () => {
+      if (qq.getAttribute('data-done')) return;
+      qq.setAttribute('data-done','1');
+      const ans = qq.getAttribute('data-ans'), val = o.getAttribute('data-v');
+      if (val === ans){
+        o.classList.add('ok');
+        qq.querySelector('.expl').classList.remove('bad');
+      } else {
+        o.classList.add('no');
+        qq.querySelector('.expl').classList.add('bad');
+        const right = qq.querySelector('.opt[data-v="'+ans+'"]');
+        if (right) right.classList.add('ok');
+      }
+      qq.querySelector('.expl').style.display = 'block';
+    });
+  });
+});
+
+/* ============ 代码高亮 ============ */
+const KW = new Set(['#include','include','using','namespace','std','int','char','long','bool','void','return','if','else','for','while','do','break','continue','struct','class','typedef','true','false','const','new','delete','NULL','nullptr','main','cin','cout','endl','queue','stack','vector','pair','make_pair','push','pop','front','top','back','empty','size','memset','push_back']);
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function hl(code){
+  const s = esc(code);
+  const parts = s.split(/(\/\/[^\n]*|"[^"]*"|#[^\n]*|&lt;[^&]*?&gt;|\b\d+\b|\b[A-Za-z_]\w*\b)/g);
+  return parts.map(t => {
+    if (t.startsWith('//')) return '<span class="c">'+t+'</span>';
+    if (t.startsWith('"')) return '<span class="s">'+t+'</span>';
+    if (t.charAt(0)==='#') return '<span class="pp">'+t+'</span>';
+    if (t.startsWith('&lt;') && t.endsWith('&gt;')) return '<span class="pp">'+t+'</span>';
+    if (/^\d+$/.test(t)) return '<span class="n">'+t+'</span>';
+    if (KW.has(t)) return '<span class="k">'+t+'</span>';
+    return t;
+  }).join('');
+}
+document.querySelectorAll('pre code.cpp').forEach(el => { el.innerHTML = hl(el.textContent); });
+</script>
+</body>
+</html>

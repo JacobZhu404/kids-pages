@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>树的基础教程 | GESP 六级备考</title>
+<style>
+/* ===== 字体 ===== */
+@font-face { font-family: 'Outfit'; src: url('./_shared/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Outfit'; src: url('./_shared/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Bricolage'; src: url('./_shared/fonts/BricolageGrotesque-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Bricolage'; src: url('./_shared/fonts/BricolageGrotesque-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'JetBrains'; src: url('./_shared/fonts/JetBrainsMono-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'JetBrains'; src: url('./_shared/fonts/JetBrainsMono-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+
+/* ===== 颜色变量 ===== */
+:root {
+  --bg: #f0f4ff;
+  --bg2: #ffffff;
+  --ink: #1a1a2e;
+  --muted: #6b7280;
+  --rule: #e2e8f0;
+  --accent: #6366f1;
+  --accent2: #f59e0b;
+  --accent3: #10b981;
+  --accent4: #ec4899;
+  --accent-light: #e0e7ff;
+  --accent2-light: #fef3c7;
+  --accent3-light: #d1fae5;
+  --accent4-light: #fce7f3;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+}
+
+/* ===== 全局 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+body::before {
+  content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(99,102,241,0.08), transparent 50%),
+    radial-gradient(ellipse at 85% 30%, rgba(16,185,129,0.06), transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(245,158,11,0.05), transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+/* ===== 排版 ===== */
+h1, h2, h3, h4 { font-family: 'Bricolage', sans-serif; line-height: 1.3; }
+h1 { font-size: 2.6rem; font-weight: 700; }
+h2 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+h3 { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.6rem; }
+h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+p { margin-bottom: 1rem; }
+strong { font-weight: 700; }
+mark.key { background: none; color: var(--accent); font-weight: 600; }
+mark.green { background: none; color: var(--accent3); font-weight: 600; }
+mark.amber { background: none; color: var(--accent2); font-weight: 600; }
+mark.pink { background: none; color: var(--accent4); font-weight: 600; }
+a { color: var(--accent); text-decoration: none; }
+code { font-family: 'JetBrains', monospace; background: var(--accent-light); padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.9em; }
+
+/* ===== Hero ===== */
+.hero { text-align: center; padding: 4rem 24px 3rem; position: relative; z-index: 1; }
+.hero h1 {
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 0.5rem;
+}
+.hero .subtitle { font-size: 1.2rem; color: var(--muted); margin-bottom: 1.5rem; }
+.hero .badges { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+.badge {
+  padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+  background: var(--bg2); border: 1px solid var(--rule); box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* ===== 导航 ===== */
+.nav-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(240,244,255,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule); padding: 0.5rem 0;
+}
+.nav-bar .container { display: flex; gap: 0.4rem; overflow-x: auto; padding: 0.5rem 24px; }
+.nav-bar a {
+  white-space: nowrap; padding: 0.4rem 0.9rem; border-radius: 999px;
+  font-size: 0.85rem; font-weight: 600; color: var(--muted); transition: all 0.2s;
+}
+.nav-bar a:hover { background: var(--bg2); color: var(--ink); }
+.nav-bar a.active { background: var(--accent); color: #fff; }
+
+/* ===== Section ===== */
+section { padding: 3rem 0; position: relative; z-index: 1; }
+.section-tag {
+  display: inline-block; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; padding: 0.25rem 0.75rem; border-radius: 999px;
+  margin-bottom: 0.8rem;
+}
+.section-tag.t1 { background: var(--accent-light); color: var(--accent); }
+.section-tag.t2 { background: var(--accent3-light); color: var(--accent3); }
+.section-tag.t3 { background: var(--accent2-light); color: var(--accent2); }
+.section-tag.t4 { background: var(--accent4-light); color: var(--accent4); }
+
+/* ===== 卡片 ===== */
+.card {
+  background: rgba(255,255,255,0.75); backdrop-filter: blur(10px);
+  border: 1px solid rgba(99,102,241,0.1); border-radius: 16px;
+  padding: 1.5rem; margin: 1.5rem 0;
+  box-shadow: 0 4px 24px rgba(99,102,241,0.06);
+}
+.card.tip { border-left: 4px solid var(--success); }
+.card.warn { border-left: 4px solid var(--accent2); }
+.card.info { border-left: 4px solid var(--accent); }
+.card.danger { border-left: 4px solid var(--danger); }
+.card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+/* ===== 代码块 ===== */
+.code-block {
+  background: #1e1e2e; border-radius: 12px; margin: 1.5rem 0; overflow: hidden;
+}
+.code-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.6rem 1rem; background: rgba(0,0,0,0.2);
+}
+.code-header .lang { color: #94a3b8; font-size: 0.8rem; font-family: 'JetBrains', monospace; }
+.code-header .dots { display: flex; gap: 6px; }
+.code-header .dot { width: 12px; height: 12px; border-radius: 50%; }
+.code-header .dot:nth-child(1) { background: #ff5f56; }
+.code-header .dot:nth-child(2) { background: #ffbd2e; }
+.code-header .dot:nth-child(3) { background: #27c93f; }
+.code-block pre {
+  padding: 1.2rem; overflow-x: auto; font-family: 'JetBrains', monospace;
+  font-size: 0.85rem; line-height: 1.6; color: #e2e8f0;
+}
+.code-block .kw { color: #c792ea; }
+.code-block .type { color: #82aaff; }
+.code-block .str { color: #c3e88d; }
+.code-block .num { color: #f78c6c; }
+.code-block .cmt { color: #546e7a; font-style: italic; }
+.code-block .fn { color: #82aaff; }
+
+/* ===== 动画区域 ===== */
+.anim-wrapper {
+  background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
+  border: 1px solid var(--rule); border-radius: 16px;
+  padding: 1.5rem; margin: 1.5rem 0;
+}
+.anim-canvas-wrap { position: relative; }
+.anim-canvas-wrap svg { width: 100%; height: auto; display: block; }
+.anim-controls {
+  display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;
+  margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--rule);
+}
+.btn {
+  padding: 0.5rem 1.2rem; border-radius: 10px; border: none; cursor: pointer;
+  font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.9rem;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.3rem;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: #4f46e5; transform: translateY(-1px); }
+.btn-green { background: var(--accent3); color: #fff; }
+.btn-green:hover:not(:disabled) { background: #059669; transform: translateY(-1px); }
+.btn-warn { background: var(--accent2); color: #fff; }
+.btn-warn:hover:not(:disabled) { background: #d97706; transform: translateY(-1px); }
+.btn-pink { background: var(--accent4); color: #fff; }
+.btn-pink:hover:not(:disabled) { background: #db2777; transform: translateY(-1px); }
+.btn-ghost { background: var(--bg2); color: var(--ink); border: 1px solid var(--rule); }
+.btn-ghost:hover:not(:disabled) { background: var(--accent-light); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn.active { box-shadow: 0 0 0 3px rgba(99,102,241,0.3); }
+.speed-control { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.speed-control label { font-size: 0.85rem; color: var(--muted); }
+.speed-control input[type="range"] { width: 120px; }
+
+.step-info {
+  padding: 0.8rem 1rem; border-radius: 10px; background: var(--accent-light);
+  font-size: 0.9rem; min-height: 50px; display: flex; align-items: center;
+  margin-top: 0.8rem;
+}
+
+/* SVG 节点样式 */
+.node-circle {
+  fill: #cbd5e1; stroke: #94a3b8; stroke-width: 1.5px;
+  transition: all 0.4s ease; cursor: pointer;
+}
+.node-circle.visited { fill: var(--accent) !important; stroke: none; }
+.node-circle.visited-green { fill: var(--accent3) !important; stroke: none; }
+.node-circle.visited-amber { fill: var(--accent2) !important; stroke: none; }
+.node-circle.visited-pink { fill: var(--accent4) !important; stroke: none; }
+.node-circle.current { fill: #ef4444 !important; stroke: #fff; stroke-width: 3px; }
+.node-circle.current { animation: node-pulse 1s ease-in-out infinite; }
+@keyframes node-pulse {
+  0%, 100% { r: 26; }
+  50% { r: 29; }
+}
+.node-circle.highlight { stroke: var(--accent4); stroke-width: 4px; stroke-dasharray: 5,3; }
+.node-circle.selected { stroke: var(--accent3); stroke-width: 4px; }
+.node-circle.lca { fill: var(--accent4) !important; stroke: #fff; stroke-width: 3px; }
+.node-circle.path-node { fill: var(--accent2) !important; stroke: none; }
+.node-label { font-family: 'JetBrains', monospace; font-weight: 700; font-size: 16px; pointer-events: none; user-select: none; }
+.depth-label { font-family: 'JetBrains', monospace; font-size: 11px; fill: var(--muted); pointer-events: none; user-select: none; }
+.edge-line { stroke: #cbd5e1; stroke-width: 2; transition: all 0.3s; }
+.edge-line.active { stroke: var(--accent); stroke-width: 3; }
+.edge-line.path { stroke: var(--accent2); stroke-width: 3.5; }
+
+/* ===== 图例 ===== */
+.legend { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 0.8rem; font-size: 0.85rem; }
+.legend-item { display: flex; align-items: center; gap: 0.4rem; }
+.legend-dot { width: 16px; height: 16px; border-radius: 50%; }
+
+/* ===== 术语表 ===== */
+.term-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.term-card {
+  background: rgba(255,255,255,0.75); backdrop-filter: blur(10px);
+  border: 1px solid var(--rule); border-radius: 12px; padding: 1.2rem;
+  transition: transform 0.2s;
+}
+.term-card:hover { transform: translateY(-2px); }
+.term-card .term-name { font-weight: 700; font-size: 1rem; color: var(--accent); margin-bottom: 0.3rem; }
+.term-card .term-desc { font-size: 0.9rem; color: var(--muted); }
+
+/* ===== 遍历切换按钮 ===== */
+.traversal-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.traversal-tab {
+  padding: 0.5rem 1rem; border-radius: 10px; border: 2px solid var(--rule);
+  background: var(--bg2); cursor: pointer; font-weight: 600; font-size: 0.9rem;
+  font-family: 'Outfit', sans-serif; transition: all 0.2s;
+}
+.traversal-tab:hover { border-color: var(--accent); }
+.traversal-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ===== 访问顺序 ===== */
+.visit-order {
+  margin-top: 1rem; padding: 0.8rem 1rem; border-radius: 10px;
+  background: var(--bg2); border: 1px solid var(--rule);
+  display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap;
+}
+.visit-order .label { font-weight: 700; font-size: 0.85rem; color: var(--muted); }
+.visit-order .order-item {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 50%; font-weight: 700; font-size: 0.85rem;
+  color: #fff; animation: pop 0.3s ease;
+}
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+.visit-order .arrow { color: var(--muted); font-size: 0.8rem; }
+
+/* ===== 递归栈 ===== */
+.call-stack {
+  border: 1px solid var(--rule); border-radius: 12px; padding: 0.8rem;
+  background: var(--bg2); min-height: 100px; margin-top: 1rem;
+}
+.call-stack .cs-title {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--muted); margin-bottom: 0.6rem;
+}
+.stack-frames { display: flex; flex-direction: column-reverse; gap: 4px; align-items: center; }
+.stack-frame {
+  padding: 0.4rem 1rem; border-radius: 8px; font-weight: 700; font-size: 0.85rem;
+  color: #fff; min-width: 120px; text-align: center;
+  animation: pop 0.3s ease;
+}
+
+/* ===== 属性面板 ===== */
+.prop-panel {
+  border: 1px solid var(--rule); border-radius: 12px; padding: 1rem;
+  background: var(--bg2); margin-top: 1rem;
+}
+.prop-row { display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px solid var(--rule); font-size: 0.9rem; }
+.prop-row:last-child { border-bottom: none; }
+.prop-row .prop-name { color: var(--muted); }
+.prop-row .prop-val { font-weight: 700; }
+
+/* ===== LCA 交互 ===== */
+.lca-layout { display: grid; grid-template-columns: 1fr 250px; gap: 1.5rem; }
+.lca-side { display: flex; flex-direction: column; gap: 1rem; }
+
+/* ===== 对比表 ===== */
+.compare-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; }
+.compare-table th, .compare-table td {
+  padding: 0.8rem 1rem; text-align: left; border-bottom: 1px solid var(--rule);
+}
+.compare-table th { font-family: 'Bricolage', sans-serif; font-weight: 700; font-size: 0.95rem; }
+.compare-table tr:hover { background: var(--bg2); }
+
+/* ===== Footer ===== */
+footer { text-align: center; padding: 3rem 24px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--rule); margin-top: 2rem; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.6rem; }
+  .lca-layout { grid-template-columns: 1fr; }
+  .container { padding: 0 16px; }
+  .hero { padding: 2rem 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 导航栏 ===== -->
+<nav class="nav-bar">
+  <div class="container">
+    <a href="#basics">树的概念</a>
+    <a href="#traversal">树的遍历</a>
+    <a href="#subtree">子树与递归</a>
+    <a href="#lca">LCA与距离</a>
+    <a href="#summary">总结</a>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <h1>树的基础教程</h1>
+  <p class="subtitle">GESP 六级备考 · 从零理解树的所有核心概念</p>
+  <div class="badges">
+    <span class="badge">树的概念</span>
+    <span class="badge">四种遍历</span>
+    <span class="badge">子树递归</span>
+    <span class="badge">LCA 与距离</span>
+  </div>
+</header>
+
+<!-- ===== 1. 树的基础概念 ===== -->
+<section id="basics">
+  <div class="container">
+    <span class="section-tag t1">第一课</span>
+    <h2>什么是树？</h2>
+    <p>在学 DFS/BFS 的时候，你已经在树上做过搜索了。但"树"到底有哪些性质？这一节我们从零开始，把树的核心概念一次讲清楚。</p>
+
+    <div class="card info">
+      <div class="card-title">树的定义</div>
+      <p><mark class="key">树（Tree）</mark>是一种特殊的有向/无向图，它满足：</p>
+      <p>1. <strong>连通</strong>：任意两个节点之间都有路径相连</p>
+      <p>2. <strong>无环</strong>：没有回路，不会绕一圈走回来</p>
+      <p>3. <strong>n 个节点，n-1 条边</strong>：这是树的标志性性质</p>
+      <p>如果你去掉一条边，树就会变成两棵更小的树（断开连通）；如果加一条边，就会出现环（不再无环）。所以 <strong>n-1 条边</strong>恰好是"连通且无环"的黄金数量。</p>
+    </div>
+
+    <h3>核心术语一览</h3>
+    <p>下面这些术语在所有树相关题目中都会反复出现。先看一遍定义，然后在互动树里亲手感受。</p>
+
+    <div class="term-grid">
+      <div class="term-card">
+        <div class="term-name">根节点 (Root)</div>
+        <div class="term-desc">树的"起点"，深度为 0。一棵树选不同的根，结构会不同。</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name">叶子节点 (Leaf)</div>
+        <div class="term-desc">没有子节点的节点。一棵 n 个节点的树至少有 1 个叶子。</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name">父节点 (Parent)</div>
+        <div class="term-desc">节点 u 的上一级节点。根节点没有父节点。</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name">子节点 (Child)</div>
+        <div class="term-desc">节点 u 的下一级节点。一个节点可以有多个子节点。</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name">深度 (Depth)</div>
+        <div class="term-desc">从根到该节点的边数。根的深度为 0。</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name">高度 (Height)</div>
+        <div class="term-desc">树中最深的叶子节点的深度。也就是树有几"层"。</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name">度 (Degree)</div>
+        <div class="term-desc">一个节点的子节点个数。叶子节点的度为 0。</div>
+      </div>
+      <div class="term-card">
+        <div class="term-name">兄弟 (Sibling)</div>
+        <div class="term-desc">拥有同一个父节点的节点互为兄弟。</div>
+      </div>
+    </div>
+
+    <h3>互动树：点击节点查看属性</h3>
+    <p>点击树上的任意节点，右侧面板会显示它的深度、度数、父节点和子节点。试着找出根节点、叶子节点，看看不同节点的属性有什么不同。</p>
+
+    <div class="anim-wrapper">
+      <div style="display: grid; grid-template-columns: 1fr 250px; gap: 1.5rem;">
+        <div class="anim-canvas-wrap">
+          <svg id="basicsTree" viewBox="0 0 600 400"></svg>
+        </div>
+        <div>
+          <div class="prop-panel" id="propPanel">
+            <div class="card-title">节点属性</div>
+            <p style="color: var(--muted); font-size: 0.85rem;">点击树上的任意节点查看属性</p>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>根节点</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent3)"></span>叶子节点</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#cbd5e1;border:1.5px solid #94a3b8"></span>内部节点</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span>选中节点</div>
+      </div>
+    </div>
+
+    <div class="card tip">
+      <div class="card-title">重要性质</div>
+      <p>1. 树中任意两个节点之间有且仅有<strong>唯一路径</strong>（因为没有环）。</p>
+      <p>2. 这条唯一路径的长度 = 两点之间的<strong>距离</strong>。</p>
+      <p>3. 选不同的根节点，树的"形状"会不同，但边的连接关系不变。这叫做<strong>有根树</strong> vs <strong>无根树</strong>。</p>
+      <p>4. 竞赛中最常用的存储方式是 <strong>邻接表</strong>：<code>vector&lt;int&gt; adj[MAXN]</code>，每条边存两次（双向）。</p>
+    </div>
+
+    <h3>树的邻接表表示</h3>
+    <div class="code-block">
+      <div class="code-header">
+        <span class="lang">C++ · 邻接表建树</span>
+        <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+<pre><span class="kw">const int</span> MAXN = <span class="num">200005</span>;
+<span class="type">vector</span>&lt;<span class="type">int</span>&gt; adj[MAXN];  <span class="cmt">// 邻接表</span>
+
+<span class="cmt">// 读入 n-1 条边</span>
+<span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; n - <span class="num">1</span>; i++) {
+    <span class="type">int</span> u, v;
+    cin &gt;&gt; u &gt;&gt; v;
+    adj[u].<span class="fn">push_back</span>(v);  <span class="cmt">// 双向存边</span>
+    adj[v].<span class="fn">push_back</span>(u);
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. 树的遍历 ===== -->
+<section id="traversal">
+  <div class="container">
+    <span class="section-tag t2">第二课</span>
+    <h2>树的遍历：四种方式</h2>
+    <p>树的遍历就是按某种顺序访问所有节点。不同的遍历方式，访问顺序不同，用途也不同。下面用同一棵树，对比四种遍历方式。</p>
+
+    <div class="traversal-tabs">
+      <button class="traversal-tab active" id="tabPreorder">前序遍历</button>
+      <button class="traversal-tab" id="tabInorder">中序遍历</button>
+      <button class="traversal-tab" id="tabPostorder">后序遍历</button>
+      <button class="traversal-tab" id="tabLevel">层序遍历</button>
+    </div>
+
+    <div class="anim-wrapper">
+      <div class="anim-canvas-wrap">
+        <svg id="traversalTree" viewBox="0 0 600 400"></svg>
+      </div>
+      <div class="step-info" id="travStepInfo">选择一种遍历方式，点击"播放"开始动画。</div>
+      <div class="anim-controls">
+        <button class="btn btn-primary" id="travPlay">▶ 播放</button>
+        <button class="btn btn-ghost" id="travPause">⏸ 暂停</button>
+        <button class="btn btn-ghost" id="travStep">⏭ 单步</button>
+        <button class="btn btn-ghost" id="travReset">↺ 重置</button>
+        <div class="speed-control">
+          <label>速度</label>
+          <input type="range" id="travSpeed" min="300" max="2000" value="800" step="100">
+        </div>
+      </div>
+      <div class="visit-order" id="travOrder">
+        <span class="label">访问顺序：</span>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>已访问</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span>当前访问</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#cbd5e1;border:1.5px solid #94a3b8"></span>未访问</div>
+      </div>
+    </div>
+
+    <div class="card info">
+      <div class="card-title" id="travTitle">前序遍历 (Preorder)</div>
+      <div id="travDesc">
+        <p><strong>访问顺序：根 → 左子树 → 右子树</strong></p>
+        <p>先访问根节点，然后递归遍历左子树，最后递归遍历右子树。这是最"自然"的 DFS 顺序。</p>
+        <p>用途：复制一棵树、输出目录结构、表达式树的前缀表达式（波兰表达式）。</p>
+      </div>
+    </div>
+
+    <h3>四种遍历对比</h3>
+    <table class="compare-table">
+      <tr>
+        <th>遍历方式</th>
+        <th>访问顺序</th>
+        <th>核心特点</th>
+        <th>典型用途</th>
+      </tr>
+      <tr>
+        <td><strong>前序</strong></td>
+        <td>根 → 左 → 右</td>
+        <td>根在第一个</td>
+        <td>复制树、目录结构</td>
+      </tr>
+      <tr>
+        <td><strong>中序</strong></td>
+        <td>左 → 根 → 右</td>
+        <td>根在中间</td>
+        <td>二叉搜索树排序</td>
+      </tr>
+      <tr>
+        <td><strong>后序</strong></td>
+        <td>左 → 右 → 根</td>
+        <td>根在最后</td>
+        <td>删除树、子树计算</td>
+      </tr>
+      <tr>
+        <td><strong>层序</strong></td>
+        <td>逐层从左到右</td>
+        <td>BFS 方式</td>
+        <td>求深度、最短路径</td>
+      </tr>
+    </table>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="lang">C++ · DFS 遍历模板</span>
+        <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+<pre><span class="type">void</span> <span class="fn">dfs</span>(<span class="type">int</span> u, <span class="type">int</span> fa) {
+    <span class="cmt">// 前序：在这里访问 u（根→左→右）</span>
+    <span class="fn">visit</span>(u);
+
+    <span class="kw">for</span> (<span class="type">int</span> v : adj[u]) {
+        <span class="kw">if</span> (v != fa) {       <span class="cmt">// 不走回头路</span>
+            <span class="fn">dfs</span>(v, u);
+        }
+    }
+    <span class="cmt">// 后序：在这里访问 u（左→右→根）</span>
+}
+
+<span class="type">void</span> <span class="fn">bfs</span>(<span class="type">int</span> root) {      <span class="cmt">// 层序遍历</span>
+    <span class="type">queue</span>&lt;<span class="type">int</span>&gt; q;
+    q.<span class="fn">push</span>(root);
+    <span class="kw">while</span> (!q.<span class="fn">empty</span>()) {
+        <span class="type">int</span> u = q.<span class="fn">front</span>(); q.<span class="fn">pop</span>();
+        <span class="fn">visit</span>(u);
+        <span class="kw">for</span> (<span class="type">int</span> v : adj[u])
+            <span class="kw">if</span> (!vis[v]) { vis[v] = <span class="kw">true</span>; q.<span class="fn">push</span>(v); }
+    }
+}</pre>
+    </div>
+
+    <div class="card tip">
+      <div class="card-title">关键技巧：fa 参数</div>
+      <p>在无根树（邻接表存储）上做 DFS 时，需要传入 <code>fa</code>（父节点）参数，避免"走回头路"。这是树上 DFS 最重要的模板，几乎所有树题都会用到。</p>
+      <p>如果是有根树（每个节点知道自己的子节点列表），则不需要 <code>fa</code>，直接遍历 <code>children[u]</code> 即可。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. 子树与递归 ===== -->
+<section id="subtree">
+  <div class="container">
+    <span class="section-tag t3">第三课</span>
+    <h2>子树与递归：自底向上的思考</h2>
+    <p>树上很多问题都需要用到<strong>递归</strong>：先解决子问题（子树），再把结果合并到当前节点。这种"自底向上"的思考方式是树形 DP 的基础。</p>
+
+    <h3>什么是子树？</h3>
+    <p>选一个根节点后，对于树上任意节点 u，<mark class="amber">子树(u)</mark> 包含 u 本身以及 u 的所有后代节点。如果 u 是叶子，它的子树只有自己。</p>
+
+    <div class="card info">
+      <div class="card-title">经典问题：求每棵子树的大小</div>
+      <p><strong>定义：</strong>size[u] = 以 u 为根的子树中节点的个数（包括 u 自身）。</p>
+      <p><strong>递推：</strong>size[u] = 1 + sum(size[v])，其中 v 是 u 的所有子节点。</p>
+      <p><strong>边界：</strong>叶子节点的 size = 1。</p>
+      <p>这就是典型的"后序遍历"思想——先算子节点，再算自己。</p>
+    </div>
+
+    <h3>动画演示：计算子树大小</h3>
+    <p>点击"播放"，看 DFS 如何从叶子开始，自底向上计算每个节点的子树大小。注意右侧的递归调用栈，它展示了递归的"深度"。</p>
+
+    <div class="anim-wrapper">
+      <div style="display: grid; grid-template-columns: 1fr 200px; gap: 1.5rem;">
+        <div class="anim-canvas-wrap">
+          <svg id="subtreeTree" viewBox="0 0 600 400"></svg>
+        </div>
+        <div class="call-stack">
+          <div class="cs-title">递归调用栈</div>
+          <div class="stack-frames" id="subtreeStack"></div>
+        </div>
+      </div>
+      <div class="step-info" id="subtreeStepInfo">点击"播放"开始动画，看子树大小如何自底向上计算。</div>
+      <div class="anim-controls">
+        <button class="btn btn-warn" id="subPlay">▶ 播放</button>
+        <button class="btn btn-ghost" id="subPause">⏸ 暂停</button>
+        <button class="btn btn-ghost" id="subStep">⏭ 单步</button>
+        <button class="btn btn-ghost" id="subReset">↺ 重置</button>
+        <div class="speed-control">
+          <label>速度</label>
+          <input type="range" id="subSpeed" min="300" max="2000" value="800" step="100">
+        </div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent2)"></span>已计算 size</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span>正在计算</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#cbd5e1;border:1.5px solid #94a3b8"></span>未访问</div>
+      </div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="lang">C++ · 子树大小计算</span>
+        <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+<pre><span class="type">int</span> size[MAXN];
+
+<span class="type">void</span> <span class="fn">calcSize</span>(<span class="type">int</span> u, <span class="type">int</span> fa) {
+    size[u] = <span class="num">1</span>;  <span class="cmt">// 先算上自己</span>
+    <span class="kw">for</span> (<span class="type">int</span> v : adj[u]) {
+        <span class="kw">if</span> (v != fa) {
+            <span class="fn">calcSize</span>(v, u);    <span class="cmt">// 递归计算子节点</span>
+            size[u] += size[v];  <span class="cmt">// 累加子树大小</span>
+        }
+    }
+}
+
+<span class="cmt">// 调用：calcSize(1, 0);</span>
+<span class="cmt">// 此时 size[1] = n（整棵树的大小）</span></pre>
+    </div>
+
+    <div class="card tip">
+      <div class="card-title">举一反三</div>
+      <p>同样的"后序递推"模式可以解决很多子树问题：</p>
+      <p>1. <strong>子树最大值</strong>：<code>mx[u] = max(val[u], max(mx[v]))</code></p>
+      <p>2. <strong>子树节点和</strong>：<code>sum[u] = val[u] + sum(sum[v])</code></p>
+      <p>3. <strong>子树深度</strong>：<code>h[u] = 1 + max(h[v])</code>（叶子 h=1）</p>
+      <p>4. <strong>子树中满足条件的节点数</strong>：根据条件调整递推关系</p>
+      <p>核心模板都是：<strong>先递归子节点，再合并结果到当前节点</strong>。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. LCA与树上距离 ===== -->
+<section id="lca">
+  <div class="container">
+    <span class="section-tag t4">第四课</span>
+    <h2>LCA 与树上距离</h2>
+    <p>树上任意两点之间有唯一路径。理解这条路径，是解决很多树题的关键。<mark class="pink">最近公共祖先（LCA）</mark>是这条路径上的关键枢纽。</p>
+
+    <h3>什么是 LCA？</h3>
+    <p>对于节点 u 和 v，它们的 <mark class="pink">LCA(u, v)</mark> 是同时是 u 和 v 祖先的节点中，深度最大的那个（离 u、v 最近的）。</p>
+
+    <div class="card info">
+      <div class="card-title">直观理解</div>
+      <p>想象一棵家谱树，你是节点 u，你朋友是节点 v。你们的 LCA 就是你们<strong>最近的共同祖先</strong>——可能是你们的爷爷，也可能是更上面的人。</p>
+      <p>特例：如果 u 是 v 的祖先，那么 LCA(u, v) = u。</p>
+    </div>
+
+    <h3>互动演示：选两个节点，看 LCA 和路径</h3>
+    <p>点击树上的两个节点，系统会高亮它们的路径，并标出 LCA。观察路径的走向：它从 u 上行到 LCA，再从 LCA 下行到 v。</p>
+
+    <div class="anim-wrapper">
+      <div class="lca-layout">
+        <div class="anim-canvas-wrap">
+          <svg id="lcaTree" viewBox="0 0 600 400"></svg>
+        </div>
+        <div class="lca-side">
+          <div class="prop-panel" id="lcaPanel">
+            <div class="card-title">LCA 查询</div>
+            <p style="color: var(--muted); font-size: 0.85rem;">点击树上的两个节点</p>
+          </div>
+          <div>
+            <h4>操作</h4>
+            <button class="btn btn-ghost" id="lcaResetBtn">↺ 重置选择</button>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent4)"></span>LCA 节点</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent2)"></span>路径上的节点</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#cbd5e1;border:1.5px solid #94a3b8"></span>其他节点</div>
+      </div>
+    </div>
+
+    <div class="card tip">
+      <div class="card-title">树上距离公式</div>
+      <p>因为树上任意两点之间有唯一路径，所以距离 = 路径长度。而路径一定经过 LCA：</p>
+      <p style="text-align: center; font-size: 1.3rem; font-family: 'JetBrains', monospace; color: var(--accent); margin: 1rem 0;">
+        dist(u, v) = depth[u] + depth[v] - 2 * depth[LCA]
+      </p>
+      <p>解释：u 到 LCA 的距离 = depth[u] - depth[LCA]，LCA 到 v 的距离 = depth[v] - depth[LCA]。加起来就是：</p>
+      <p><mark class="key">(depth[u] - depth[LCA]) + (depth[v] - depth[LCA]) = depth[u] + depth[v] - 2*depth[LCA]</mark></p>
+    </div>
+
+    <div class="card warn">
+      <div class="card-title">与"树上漫步"的联系</div>
+      <p>回到 P11962 树上漫步：偶数步能到达 ⟺ 距离为偶数 ⟺ <code>depth[u] + depth[v] - 2*depth[LCA]</code> 为偶数。</p>
+      <p>而 <code>2*depth[LCA]</code> 一定是偶数，所以距离的奇偶性只取决于 <code>depth[u] + depth[v]</code> 的奇偶性，即 <mark class="key">depth[u] 和 depth[v] 奇偶性相同</mark>。</p>
+      <p>这就是为什么"偶数步到达 ⟺ 深度奇偶性相同"——LCA 是理解这个结论的关键一步！</p>
+    </div>
+
+    <h3>如何求 LCA？</h3>
+    <div class="card info">
+      <div class="card-title">方法一：向上标记法（朴素）</div>
+      <p>1. 先 BFS 求出每个节点的深度和父节点。</p>
+      <p>2. 把 u 和 v 中较深的那个向上走，直到和另一个一样深。</p>
+      <p>3. 两个一起向上走，直到相遇——相遇点就是 LCA。</p>
+      <p>时间复杂度 O(n) 每次查询。适合 n 较小的题。</p>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="lang">C++ · 朴素 LCA</span>
+        <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+      </div>
+<pre><span class="type">int</span> depth[MAXN], parent[MAXN];
+
+<span class="type">void</span> <span class="fn">bfs</span>(<span class="type">int</span> root) {  <span class="cmt">// BFS 求深度和父节点</span>
+    <span class="type">queue</span>&lt;<span class="type">int</span>&gt; q;
+    q.<span class="fn">push</span>(root);
+    depth[root] = <span class="num">0</span>; parent[root] = <span class="num">0</span>;
+    <span class="kw">while</span> (!q.<span class="fn">empty</span>()) {
+        <span class="type">int</span> u = q.<span class="fn">front</span>(); q.<span class="fn">pop</span>();
+        <span class="kw">for</span> (<span class="type">int</span> v : adj[u])
+            <span class="kw">if</span> (v != parent[u]) {
+                parent[v] = u; depth[v] = depth[u] + <span class="num">1</span>;
+                q.<span class="fn">push</span>(v);
+            }
+    }
+}
+
+<span class="type">int</span> <span class="fn">lca</span>(<span class="type">int</span> u, <span class="type">int</span> v) {
+    <span class="kw">while</span> (depth[u] &gt; depth[v]) u = parent[u];  <span class="cmt">// 深的先走</span>
+    <span class="kw">while</span> (depth[v] &gt; depth[u]) v = parent[v];
+    <span class="kw">while</span> (u != v) { u = parent[u]; v = parent[v]; }  <span class="cmt">// 一起走</span>
+    <span class="kw">return</span> u;
+}</pre>
+    </div>
+
+    <div class="card tip">
+      <div class="card-title">方法二：倍增法（进阶）</div>
+      <p>对于 n 很大的题（如 n ≤ 2×10^5，q ≤ 10^5 次查询），朴素法 O(n) 每次查询太慢。倍增法预处理 O(n log n)，每次查询 O(log n)。</p>
+      <p>核心思想：让 <code>fa[u][k]</code> 表示 u 向上走 2^k 步到达的节点。利用二进制分解，把"向上走 d 步"变成 log d 次跳跃。</p>
+      <p>这是 GESP 六级以上的进阶内容，理解朴素法后再学倍增会轻松很多。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. 总结 ===== -->
+<section id="summary">
+  <div class="container">
+    <span class="section-tag t1">总结</span>
+    <h2>知识总结与学习路径</h2>
+
+    <div class="card info">
+      <div class="card-title">核心知识点回顾</div>
+      <p>1. <strong>树的定义</strong>：连通无环图，n 个节点 n-1 条边，任意两点唯一路径</p>
+      <p>2. <strong>树的概念</strong>：根、叶子、父/子、深度、高度、度——选根后这些才有意义</p>
+      <p>3. <strong>四种遍历</strong>：前序（根→左→右）、中序（左→根→右）、后序（左→右→根）、层序（BFS）</p>
+      <p>4. <strong>子树递归</strong>：先递归子节点，再合并到当前节点——后序遍历的思想</p>
+      <p>5. <strong>LCA</strong>：两节点最近公共祖先，是树上路径的枢纽</p>
+      <p>6. <strong>树上距离</strong>：<code>dist(u,v) = depth[u] + depth[v] - 2*depth[LCA]</code></p>
+    </div>
+
+    <div class="card tip">
+      <div class="card-title">学习建议</div>
+      <p>1. 先掌握<strong>邻接表建树</strong>和<strong>DFS 遍历模板</strong>（fa 参数），这是所有树题的基础。</p>
+      <p>2. 理解<strong>后序遍历</strong>的"先子后根"思想，这是子树计算和树形 DP 的核心。</p>
+      <p>3. 把 LCA 和树上距离公式记住，很多树题都间接用到这个公式。</p>
+      <p>4. 回到"树上漫步"：现在你应该能完整理解为什么偶数步到达 ⟺ 深度奇偶性相同了——它就是 LCA 距离公式的直接推论。</p>
+    </div>
+
+    <div class="card warn">
+      <div class="card-title">推荐练习顺序</div>
+      <p>1. 树的遍历（模板题）→ 2. 子树大小计算 → 3. 树上漫步 P11962（深度奇偶性）→ 4. LCA 模板题 → 5. 倍增 LCA → 6. 树形 DP 入门</p>
+      <p>每一步都建立在前一步的基础上。不要跳步，扎扎实实走完这条线，树相关的题就不再可怕了。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <p>树的基础教程 · GESP 六级备考 · 配合"树上漫步"教程食用效果更佳</p>
+</footer>
+
+<script src="assets/tutorial.js"></script>
+</body>
+</html>

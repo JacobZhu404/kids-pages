@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌳 树的基础教程 · 从树到树上漫步</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --purple: #8b5cf6;
+  --green: #10b981;
+  --blue: #3b82f6;
+  --orange: #f59e0b;
+  --red: #ef4444;
+  --pink: #ec4899;
+  --teal: #14b8a6;
+  --gray: #6b7280;
+  --light-bg: #f8fafc;
+  --card-bg: #ffffff;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --text-light: #64748b;
+  --even-color: #8b5cf6;
+  --odd-color: #10b981;
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: linear-gradient(135deg, #f0fdf4 0%, #f0f4ff 100%);
+  color: var(--text);
+  line-height: 1.8;
+  min-height: 100vh;
+}
+.container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+
+/* Header */
+.header {
+  text-align: center;
+  padding: 44px 20px 32px;
+  background: linear-gradient(135deg, #059669 0%, #4f46e5 100%);
+  border-radius: 20px;
+  color: white;
+  margin-bottom: 30px;
+  box-shadow: 0 8px 32px rgba(79, 70, 229, 0.3);
+}
+.header h1 { font-size: 30px; margin-bottom: 8px; }
+.header .subtitle { font-size: 16px; opacity: 0.92; }
+.header .tags { margin-top: 14px; }
+.header .tag {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin: 0 4px;
+}
+
+/* Nav */
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+.nav a {
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: white;
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 13px;
+  border: 1px solid var(--border);
+  transition: all 0.3s;
+  cursor: pointer;
+}
+.nav a:hover, .nav a.active {
+  background: var(--green);
+  color: white;
+  border-color: var(--green);
+}
+
+/* Section */
+.section {
+  background: var(--card-bg);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.section h2 {
+  font-size: 22px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.section h2 .icon { font-size: 28px; }
+.section h3 {
+  font-size: 18px;
+  margin: 22px 0 10px;
+  color: var(--green);
+}
+.section p { margin-bottom: 12px; font-size: 15px; }
+
+/* Boxes */
+.box {
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 15px;
+}
+.box-info { background: #eff6ff; border-left: 4px solid var(--blue); }
+.box-tip { background: #fffbeb; border-left: 4px solid var(--orange); }
+.box-success { background: #ecfdf5; border-left: 4px solid var(--green); }
+.box-key {
+  background: linear-gradient(135deg, #d1fae5 0%, #dbeafe 100%);
+  border-left: 4px solid var(--green);
+  font-size: 16px;
+}
+.box-bridge {
+  background: linear-gradient(135deg, #fef3c7 0%, #fce7f3 100%);
+  border-left: 4px solid var(--pink);
+  font-size: 16px;
+}
+
+/* Code */
+pre {
+  background: #1e293b;
+  color: #e2e8f0;
+  padding: 20px;
+  border-radius: 12px;
+  overflow-x: auto;
+  font-family: "SF Mono", "Fira Code", Consolas, monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  margin: 12px 0;
+}
+pre .kw { color: #c084fc; }
+pre .type { color: #67e8f9; }
+pre .str { color: #fcd34d; }
+pre .num { color: #fca5a5; }
+pre .cmt { color: #64748b; font-style: italic; }
+pre .fn { color: #93c5fd; }
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 22px;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-primary { background: var(--green); color: white; }
+.btn-primary:hover { background: #059669; transform: translateY(-1px); }
+.btn-outline { background: white; color: var(--text); border: 2px solid var(--border); }
+.btn-outline:hover { border-color: var(--green); color: var(--green); }
+.btn-group { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0; }
+
+/* Speed */
+.speed-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  font-size: 14px;
+}
+.speed-control input[type=range] { width: 150px; cursor: pointer; }
+
+/* SVG */
+.svg-canvas {
+  background: #fafbff;
+  border-radius: 12px;
+  border: 2px solid var(--border);
+  margin: 16px 0;
+  display: block;
+}
+
+/* Status */
+.status-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+  font-size: 14px;
+}
+.status-item {
+  background: var(--light-bg);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.status-item .label { color: var(--text-light); }
+.status-item .value { font-weight: 700; margin-left: 6px; }
+
+/* Split */
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 768px) {
+  .split { grid-template-columns: 1fr; }
+}
+
+/* Data structure */
+.data-structure {
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 12px 0;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ds-label {
+  color: #94a3b8;
+  font-size: 13px;
+  margin-right: 8px;
+  white-space: nowrap;
+}
+.ds-item {
+  background: var(--green);
+  color: white;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  animation: pop 0.3s ease;
+}
+.ds-item.even { background: var(--purple); }
+.ds-item.odd { background: var(--green); }
+@keyframes pop {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+/* Step desc */
+.step-desc {
+  background: linear-gradient(135deg, #d1fae5 0%, #dbeafe 100%);
+  border-radius: 10px;
+  padding: 14px 18px;
+  margin: 12px 0;
+  font-size: 15px;
+  min-height: 50px;
+  border-left: 4px solid var(--green);
+}
+
+/* Legend */
+.legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+  font-size: 13px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid;
+}
+.legend-dot.unvisited { background: white; border-color: #cbd5e1; }
+.legend-dot.even { background: var(--purple); border-color: var(--purple); }
+.legend-dot.odd { background: var(--green); border-color: var(--green); }
+.legend-dot.current { background: var(--orange); border-color: var(--red); }
+.legend-dot.path { background: var(--pink); border-color: var(--pink); }
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+th, td {
+  border: 1px solid var(--border);
+  padding: 10px 14px;
+  text-align: center;
+}
+th { background: var(--green); color: white; font-weight: 600; }
+tr:nth-child(even) td { background: #f8fafc; }
+.highlight-row td { background: #fef3c7 !important; font-weight: 600; }
+
+/* Quiz */
+.quiz-question {
+  background: var(--light-bg);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 16px 0;
+  border: 1px solid var(--border);
+}
+.quiz-question .q-num {
+  display: inline-block;
+  background: var(--green);
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 28px;
+  font-size: 14px;
+  margin-right: 8px;
+}
+.quiz-options { margin-top: 12px; }
+.quiz-option {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px 16px;
+  margin: 8px 0;
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+.quiz-option:hover { border-color: var(--green); }
+.quiz-option.correct { background: #ecfdf5; border-color: var(--green); }
+.quiz-option.wrong { background: #fef2f2; border-color: var(--red); }
+.quiz-explanation {
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  display: none;
+}
+.quiz-explanation.show { display: block; }
+.quiz-score {
+  text-align: center;
+  font-size: 20px;
+  font-weight: 700;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 20px;
+  display: none;
+}
+.quiz-score.show { display: block; }
+
+/* Toggle */
+.collapse-toggle {
+  cursor: pointer;
+  padding: 12px 16px;
+  background: var(--light-bg);
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s;
+}
+.collapse-toggle:hover { background: #ecfdf5; }
+.collapse-toggle .arrow { transition: transform 0.3s; }
+.collapse-toggle.open .arrow { transform: rotate(90deg); }
+.collapse-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease;
+}
+.collapse-content.open { max-height: 4000px; }
+
+/* Term card */
+.term-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+.term-card {
+  background: var(--light-bg);
+  border-radius: 10px;
+  padding: 14px;
+  border-left: 4px solid var(--green);
+}
+.term-card .term-name {
+  font-weight: 700;
+  color: var(--green);
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+.term-card .term-desc { font-size: 13px; color: var(--text-light); }
+
+/* Property card */
+.prop-card {
+  background: white;
+  border-radius: 12px;
+  padding: 18px;
+  margin: 12px 0;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--blue);
+  transition: all 0.2s;
+}
+.prop-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+.prop-card .prop-num {
+  display: inline-block;
+  background: var(--blue);
+  color: white;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 26px;
+  font-size: 13px;
+  margin-right: 8px;
+  font-weight: 700;
+}
+.prop-card .prop-title { font-weight: 700; font-size: 16px; }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-light);
+  font-size: 14px;
+}
+
+/* Inline code */
+code {
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: "SF Mono", Consolas, monospace;
+  color: var(--purple);
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>🌳 树的基础教程</h1>
+  <div class="subtitle">从「树是什么」到「树上漫步」的桥梁 · GESP 六级预备</div>
+  <div class="tags">
+    <span class="tag">树的定义</span>
+    <span class="tag">术语</span>
+    <span class="tag">五大性质</span>
+    <span class="tag">遍历</span>
+    <span class="tag">二分图染色</span>
+  </div>
+</div>
+
+<!-- ===== NAV ===== -->
+<div class="nav">
+  <a onclick="scrollToSection('what')">1. 什么是树</a>
+  <a onclick="scrollToSection('terms')">2. 术语</a>
+  <a onclick="scrollToSection('props')">3. 五大性质</a>
+  <a onclick="scrollToSection('storage')">4. 存储与遍历</a>
+  <a onclick="scrollToSection('bfs-layer')">5. BFS分层动画</a>
+  <a onclick="scrollToSection('path')">6. 唯一路径</a>
+  <a onclick="scrollToSection('bridge')">7. 桥接漫步</a>
+  <a onclick="scrollToSection('quiz')">8. 互动测验</a>
+</div>
+
+<!-- ===== 1. 什么是树 ===== -->
+<div class="section" id="what">
+  <h2><span class="icon">🌲</span> 第一关：什么是「树」？</h2>
+
+  <p>在学 DFS 和 BFS 时，我们搜索的是「图」——节点之间用边连起来，可能有环、可能不连通。而<strong>树</strong>是一种<strong>非常特殊的图</strong>，特殊到它有自己的一整套理论和术语。</p>
+
+  <div class="box box-key">
+    <strong>🌳 树的严格定义：</strong>树是一个<strong>连通</strong>且<strong>无环</strong>的无向图。<br>
+    也就是说：任意两个节点之间都能走到（连通），而且<strong>没有回路</strong>（无环）。
+  </div>
+
+  <h3>🏠 生活比喻</h3>
+  <div class="box box-info">
+    <strong>家谱树：</strong>你是你爸妈的孩子，爸妈是爷爷奶奶的孩子……每个人都只有一个「上一代」，不会有「你既是A的孩子又是B的孩子」还形成环的情况。<br><br>
+    <strong>公司组织架构：</strong>CEO 在最上面，下面是各部门总监，再下面是经理、员工。每个人只有一个直接上级，不会出现「A管B，B管C，C又管A」的循环。<br><br>
+    <strong>文件目录：</strong>文件夹里套文件夹，不会有一个文件夹最终又包含自己。
+  </div>
+
+  <h3>📊 树 vs 普通图，差在哪？</h3>
+  <table>
+    <tr><th>对比项</th><th>普通图</th><th>树</th></tr>
+    <tr><td>有没有环</td><td>可能有</td><td><strong>一定没有</strong></td></tr>
+    <tr><td>两点间路径</td><td>可能有多条</td><td><strong>恰好一条</strong>（唯一路径）</td></tr>
+    <tr><td>边数</td><td>任意</td><td><strong>恰好 n-1 条</strong>（n个节点）</td></tr>
+    <tr><td>连通性</td><td>可能不连通</td><td><strong>一定连通</strong></td></tr>
+    <tr><td>断一条边</td><td>可能还连通</td><td><strong>一定变成两棵树</strong>（断开）</td></tr>
+  </table>
+
+  <div class="box box-tip">
+    <strong>💡 一个超有用的等价说法：</strong>下面 5 句话互相等价，满足任意一条就是树——<br>
+    ① 连通且无环　② 连通且有 n-1 条边　③ 无环且有 n-1 条边　④ 任意两点间恰有一条路径　⑤ 连通，且删掉任意一条边就不连通了
+  </div>
+
+  <h3>🔍 判断练习：下面哪些是树？</h3>
+  <div class="split">
+    <div>
+      <svg width="100%" height="180" viewBox="0 0 200 180">
+        <line x1="100" y1="40" x2="50" y2="100" stroke="#cbd5e1" stroke-width="2.5"/>
+        <line x1="100" y1="40" x2="150" y2="100" stroke="#cbd5e1" stroke-width="2.5"/>
+        <line x1="50" y1="100" x2="100" y2="150" stroke="#cbd5e1" stroke-width="2.5"/>
+        <line x1="150" y1="100" x2="100" y2="150" stroke="#cbd5e1" stroke-width="2.5"/>
+        <circle cx="100" cy="40" r="18" fill="white" stroke="#94a3b8" stroke-width="2.5"/>
+        <circle cx="50" cy="100" r="18" fill="white" stroke="#94a3b8" stroke-width="2.5"/>
+        <circle cx="150" cy="100" r="18" fill="white" stroke="#94a3b8" stroke-width="2.5"/>
+        <circle cx="100" cy="150" r="18" fill="white" stroke="#94a3b8" stroke-width="2.5"/>
+      </svg>
+      <p style="text-align:center;font-size:14px;"><strong style="color:var(--red);">❌ 不是树</strong>（有环：50→100→150→100→50 形成回路）</p>
+    </div>
+    <div>
+      <svg width="100%" height="180" viewBox="0 0 200 180">
+        <line x1="100" y1="40" x2="50" y2="100" stroke="#10b981" stroke-width="2.5"/>
+        <line x1="100" y1="40" x2="150" y2="100" stroke="#10b981" stroke-width="2.5"/>
+        <line x1="50" y1="100" x2="50" y2="150" stroke="#10b981" stroke-width="2.5"/>
+        <circle cx="100" cy="40" r="18" fill="#d1fae5" stroke="#10b981" stroke-width="2.5"/>
+        <circle cx="50" cy="100" r="18" fill="#d1fae5" stroke="#10b981" stroke-width="2.5"/>
+        <circle cx="150" cy="100" r="18" fill="#d1fae5" stroke="#10b981" stroke-width="2.5"/>
+        <circle cx="50" cy="150" r="18" fill="#d1fae5" stroke="#10b981" stroke-width="2.5"/>
+      </svg>
+      <p style="text-align:center;font-size:14px;"><strong style="color:var(--green);">✅ 是树</strong>（4个节点，3条边，连通无环）</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== 2. 术语 ===== -->
+<div class="section" id="terms">
+  <h2><span class="icon">📚</span> 第二关：树的术语词典</h2>
+  <p>做树的题目，先得认识这些词。下面这张图标注了所有常用术语，<strong>鼠标悬停或点击节点</strong>可以高亮它的角色。</p>
+
+  <svg class="svg-canvas" id="termSvg" width="100%" height="340" viewBox="0 0 500 340"></svg>
+  <div class="step-desc" id="termDesc">👆 点击树上的任意节点，查看它的术语角色</div>
+
+  <div class="term-grid">
+    <div class="term-card"><div class="term-name">根节点 (root)</div><div class="term-desc">树最顶端的节点，没有父节点。一棵树只有一个根。</div></div>
+    <div class="term-card"><div class="term-name">叶子节点 (leaf)</div><div class="term-desc">没有子节点的节点，长在树的最底端。</div></div>
+    <div class="term-card"><div class="term-name">父节点 (parent)</div><div class="term-desc">某个节点往上一层的直接邻居（在根的方向）。</div></div>
+    <div class="term-card"><div class="term-name">子节点 (child)</div><div class="term-desc">某个节点往下一层的直接邻居。</div></div>
+    <div class="term-card"><div class="term-name">深度 (depth)</div><div class="term-desc">从根到该节点的边数。根的深度是 0。</div></div>
+    <div class="term-card"><div class="term-name">层 (level)</div><div class="term-desc">深度相同的所有节点在同一层。第 0 层只有根。</div></div>
+    <div class="term-card"><div class="term-name">边 (edge)</div><div class="term-desc">连接两个节点的线。n 个节点的树有 n-1 条边。</div></div>
+    <div class="term-card"><div class="term-name">度 (degree)</div><div class="term-desc">一个节点的子节点数量。叶子的度是 0。</div></div>
+  </div>
+
+  <div class="box box-tip">
+    <strong>⚠️ 注意：</strong>「父/子」和「深度」都依赖于你<strong>选哪个节点当根</strong>。同一棵树，选不同节点当根，父子和深度的关系会变！但「两点间的路径」和「距离」不会变。
+  </div>
+</div>
+
+<!-- ===== 3. 五大性质 ===== -->
+<div class="section" id="props">
+  <h2><span class="icon">💎</span> 第三关：树的五大黄金性质</h2>
+  <p>这五条性质几乎出现在每一道树题里，必须刻在脑子里。</p>
+
+  <div class="prop-card">
+    <span class="prop-num">1</span><span class="prop-title">唯一路径定理</span>
+    <p style="margin-top:8px;">树上任意两个节点之间，<strong>有且仅有一条路径</strong>。</p>
+    <div class="box box-info" style="margin:8px 0;">
+      <strong>为什么重要：</strong>这是 P11962 的根基！因为路径唯一，所以两点间的距离是<strong>确定的</strong>，奇偶性也是确定的——这才能用「染色」一招解决。
+    </div>
+  </div>
+
+  <div class="prop-card">
+    <span class="prop-num">2</span><span class="prop-title">边数定理</span>
+    <p style="margin-top:8px;">n 个节点的树，恰好有 <strong>n-1 条边</strong>。</p>
+    <div class="box box-info" style="margin:8px 0;">
+      <strong>直觉理解：</strong>第一个节点是孤立的，每加一条边就多连一个节点进来。要连 n 个节点，正好需要 n-1 条边。多一条就有环，少一条就不连通。
+    </div>
+  </div>
+
+  <div class="prop-card">
+    <span class="prop-num">3</span><span class="prop-title">无环定理</span>
+    <p style="margin-top:8px;">树里<strong>没有任何环</strong>（回路）。从任意节点出发，不可能走一圈回到自己。</p>
+    <div class="box box-info" style="margin:8px 0;">
+      <strong>推论：</strong>在树上做 DFS/BFS 时，<strong>不需要 visited 数组</strong>防环！只需要记住「从哪个父节点来的」，不往回走就行。这让树上遍历比图上简单得多。
+    </div>
+  </div>
+
+  <div class="prop-card">
+    <span class="prop-num">4</span><span class="prop-title">二分图定理（⭐ 核心中的核心）</span>
+    <p style="margin-top:8px;">树一定是<strong>二分图</strong>：可以把所有节点染成两种颜色，使得<strong>每条边连接的两个节点颜色不同</strong>。</p>
+    <div class="box box-key" style="margin:8px 0;">
+      <strong>染色方法：</strong>从根开始，根染紫色（第0层），它的孩子染绿色（第1层），孙子又染紫色（第2层）……交替染色。<br>
+      <strong>为什么树一定能染成功？</strong>因为树<strong>没有奇数长度的环</strong>（根本没有环！），不会出现「绕一圈回来颜色矛盾」的情况。普通图如果有奇环就染不了。
+    </div>
+  </div>
+
+  <div class="prop-card">
+    <span class="prop-num">5</span><span class="prop-title">断边定理</span>
+    <p style="margin-top:8px;">删掉树上的任意一条边，树会<strong>断成两棵不连通的树</strong>。</p>
+    <div class="box box-info" style="margin:8px 0;">
+      <strong>对比：</strong>普通图删一条边可能还连通（有别的路绕过去）。但树的唯一路径意味着没有「备选路线」，断一条就彻底分家。
+    </div>
+  </div>
+
+  <div class="box box-bridge">
+    <strong>🌉 记住这五条，P11962 的解法就自然浮现了：</strong><br>
+    性质1（唯一路径）→ 距离确定 → 奇偶性确定<br>
+    性质4（二分图）→ 可以染色 → 同色=偶距离，异色=奇距离<br>
+    两条合起来 → 答案只跟颜色有关 → O(n) 搞定！
+  </div>
+</div>
+
+<!-- ===== 4. 存储与遍历 ===== -->
+<div class="section" id="storage">
+  <h2><span class="icon">💾</span> 第四关：树的存储与遍历</h2>
+
+  <h3>📦 怎么存一棵树？</h3>
+  <p>树是无向图，用<strong>邻接表</strong>存最方便。每条边存两次（两个方向）。</p>
+
+  <div class="collapse-toggle" onclick="toggleCollapse(this)">
+    <span>📄 点击展开：建树代码</span>
+    <span class="arrow">▶</span>
+  </div>
+  <div class="collapse-content">
+    <pre><span class="kw">#include</span> <span class="str">&lt;bits/stdc++.h&gt;</span>
+<span class="kw">using</span> <span class="kw">namespace</span> std;
+
+<span class="kw">const</span> <span class="type">int</span> N = <span class="num">200005</span>;
+<span class="type">vector</span>&lt;<span class="type">int</span>&gt; adj[N];  <span class="cmt">// 邻接表</span>
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    <span class="type">int</span> n;
+    cin &gt;&gt; n;
+    <span class="kw">for</span> (<span class="type">int</span> i = <span class="num">0</span>; i &lt; n - <span class="num">1</span>; i++) {  <span class="cmt">// 树有 n-1 条边</span>
+        <span class="type">int</span> u, v;
+        cin &gt;&gt; u &gt;&gt; v;
+        adj[u].push_back(v);  <span class="cmt">// 双向存</span>
+        adj[v].push_back(u);
+    }
+    <span class="cmt">// 接下来遍历...</span>
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+  </div>
+
+  <h3>🚶 树上 DFS：不需要 visited！</h3>
+  <div class="box box-key">
+    <strong>关键区别：</strong>在图上做 DFS 必须有 <code>visited</code> 数组防环。但树<strong>没有环</strong>，只需要传一个 <code>parent</code>（父节点）参数，避免「往回走到父节点」就行！
+  </div>
+
+  <pre><span class="cmt">// 树上 DFS：传 parent 防止回头，不需要 visited 数组</span>
+<span class="type">void</span> <span class="fn">dfs</span>(<span class="type">int</span> u, <span class="type">int</span> parent) {
+    <span class="kw">for</span> (<span class="type">int</span> v : adj[u]) {
+        <span class="kw">if</span> (v != parent) {       <span class="cmt">// 不往父节点走</span>
+            <span class="fn">dfs</span>(v, u);            <span class="cmt">// 递归，u 是 v 的父</span>
+        }
+    }
+}
+
+<span class="cmt">// 调用：从根节点 1 开始，父节点设为 0（不存在）</span>
+<span class="fn">dfs</span>(<span class="num">1</span>, <span class="num">0</span>);</pre>
+
+  <div class="box box-tip">
+    <strong>💡 对比图上的 DFS：</strong><br>
+    图上：<code>if (!visited[v]) { visited[v] = true; dfs(v); }</code><br>
+    树上：<code>if (v != parent) { dfs(v, u); }</code><br>
+    少一个数组，少一步标记，简单清爽！
+  </div>
+
+  <h3>🌊 树上 BFS：分层遍历</h3>
+  <p>树上的 BFS 就是<strong>层序遍历</strong>——一层一层往下走。同样不需要 visited，用 parent 就行。</p>
+
+  <pre><span class="cmt">// 树上 BFS（层序遍历）</span>
+queue&lt;<span class="type">int</span>&gt; q;
+<span class="type">int</span> depth[N];  <span class="cmt">// 记录每个节点的深度</span>
+
+q.push(<span class="num">1</span>);          <span class="cmt">// 根节点入队</span>
+depth[<span class="num">1</span>] = <span class="num">0</span>;       <span class="cmt">// 根的深度是 0</span>
+
+<span class="kw">while</span> (!q.empty()) {
+    <span class="type">int</span> u = q.front(); q.pop();
+    <span class="kw">for</span> (<span class="type">int</span> v : adj[u]) {
+        <span class="kw">if</span> (v != parent_of[u]) {  <span class="cmt">// 不回头</span>
+            depth[v] = depth[u] + <span class="num">1</span>;  <span class="cmt">// 深度 = 父深度 + 1</span>
+            q.push(v);
+        }
+    }
+}</pre>
+
+  <div class="box box-success">
+    <strong>🎯 depth 数组就是天然的染色！</strong><br>
+    <code>depth[v] % 2 == 0</code> → 偶数层（紫色）<br>
+    <code>depth[v] % 2 == 1</code> → 奇数层（绿色）<br>
+    这就是 P11962 里 BFS 染色的来历——depth 的奇偶性 = 颜色！
+  </div>
+</div>
+
+<!-- ===== 5. BFS 分层动画 ===== -->
+<div class="section" id="bfs-layer">
+  <h2><span class="icon">🎨</span> 第五关：BFS 分层染色动画</h2>
+  <p>来看一棵 8 个节点的树，BFS 从根节点 1 出发，一层一层染色。偶数层染紫色，奇数层染绿色。</p>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot unvisited"></div> 未访问</div>
+    <div class="legend-item"><div class="legend-dot even"></div> 偶数层（紫）</div>
+    <div class="legend-item"><div class="legend-dot odd"></div> 奇数层（绿）</div>
+    <div class="legend-item"><div class="legend-dot current"></div> 当前处理</div>
+  </div>
+
+  <svg class="svg-canvas" id="bfsSvg" width="100%" height="380" viewBox="0 0 560 380"></svg>
+
+  <div class="step-desc" id="bfsStepDesc">点击「播放」开始 BFS 分层染色</div>
+
+  <div class="data-structure">
+    <span class="ds-label">BFS 队列：</span>
+    <div id="bfsQueue" style="display:flex;gap:6px;flex-wrap:wrap;"></div>
+  </div>
+
+  <div class="status-bar">
+    <div class="status-item"><span class="label">偶数层(紫)：</span><span class="value" id="bfsEvenCnt">0</span></div>
+    <div class="status-item"><span class="label">奇数层(绿)：</span><span class="value" id="bfsOddCnt">0</span></div>
+    <div class="status-item"><span class="label">当前步：</span><span class="value" id="bfsStepNum">0</span></div>
+  </div>
+
+  <div class="speed-control">
+    <span>速度：</span>
+    <input type="range" id="bfsSpeed" min="300" max="2000" value="800" step="100">
+    <span id="bfsSpeedLabel">中速</span>
+  </div>
+
+  <div class="btn-group">
+    <button class="btn btn-primary" onclick="bfsPlay()">▶ 播放</button>
+    <button class="btn btn-outline" onclick="bfsStep(-1)">⏮ 上一步</button>
+    <button class="btn btn-outline" onclick="bfsStep(1)">⏭ 下一步</button>
+    <button class="btn btn-outline" onclick="bfsReset()">🔄 重置</button>
+  </div>
+
+  <div class="box box-key">
+    <strong>👀 观察重点：</strong>每一步处理的节点和它的父节点<strong>颜色一定不同</strong>。这就是二分图染色的过程！<br>
+    动画结束后，数一下紫色和绿色各有多少个——这就是 P11962 的两个答案值。
+  </div>
+</div>
+
+<!-- ===== 6. 唯一路径 ===== -->
+<div class="section" id="path">
+  <h2><span class="icon">🛤️</span> 第六关：唯一路径演示</h2>
+  <p>树上两点之间<strong>只有一条路径</strong>。<strong>点击两个节点</strong>（先点起点，再点终点），系统会画出这条唯一路径，并告诉你路径长度和奇偶性。</p>
+
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot path"></div> 路径上的节点</div>
+    <div class="legend-item"><div class="legend-dot even"></div> 偶数层</div>
+    <div class="legend-item"><div class="legend-dot odd"></div> 奇数层</div>
+  </div>
+
+  <svg class="svg-canvas" id="pathSvg" width="100%" height="380" viewBox="0 0 560 380"></svg>
+
+  <div class="step-desc" id="pathDesc">👆 先点击一个节点作为<strong>起点</strong>，再点击另一个节点作为<strong>终点</strong></div>
+
+  <div id="pathResult" style="display:none;">
+    <table>
+      <tr><th>起点</th><th>终点</th><th>路径</th><th>长度</th><th>奇偶</th><th>颜色关系</th></tr>
+      <tr id="pathRow" class="highlight-row"></tr>
+    </table>
+  </div>
+
+  <div class="box box-bridge" id="pathInsight" style="display:none;">
+    <strong>🎯 发现规律了吗？</strong><br>
+    • 路径长度是<strong>偶数</strong> → 起点和终点<strong>同色</strong><br>
+    • 路径长度是<strong>奇数</strong> → 起点和终点<strong>异色</strong><br><br>
+    这不是巧合！每走一步颜色变一次，走偶数步回到同色，走奇数步变成异色。多试几组验证这个规律！
+  </div>
+</div>
+
+<!-- ===== 7. 桥接 ===== -->
+<div class="section" id="bridge">
+  <h2><span class="icon">🌉</span> 第七关：从树到树上漫步</h2>
+  <p>现在把前面学的全部串起来，看 P11962 的思路是怎么一步步「长出来」的。</p>
+
+  <div class="box box-bridge">
+    <strong>第 1 步：题目要什么？</strong><br>
+    从每个节点出发，走偶数步能到达哪些节点？对所有 n 个节点都要求答案。
+  </div>
+
+  <div class="box box-bridge">
+    <strong>第 2 步：暴力为什么不行？</strong><br>
+    对每个节点做 BFS 算距离 → O(n²)，n=2×10⁵ 时 4×10¹⁰ 次运算，1 秒跑不完，TLE。
+  </div>
+
+  <div class="box box-bridge">
+    <strong>第 3 步：用树的性质 1（唯一路径）</strong><br>
+    树上两点间路径唯一 → 距离确定 → 奇偶性确定。<br>
+    「偶数步能到达」等价于「距离是偶数」。<br>
+    <span style="color:var(--text-light);">（为什么绕路也不改变奇偶性？走过去再走回来 +2 步，奇偶不变）</span>
+  </div>
+
+  <div class="box box-bridge">
+    <strong>第 4 步：用树的性质 4（二分图）</strong><br>
+    树可以双色染色 → 偶数层一色，奇数层另一色。<br>
+    走偶数步 = 颜色变偶数次 = 回到同色。<br>
+    所以「距离是偶数」=「同色」！
+  </div>
+
+  <div class="box box-key" style="font-size:17px;">
+    <strong>第 5 步：最终结论</strong><br>
+    • 紫色节点的答案 = 紫色节点的总数 cnt[0]<br>
+    • 绿色节点的答案 = 绿色节点的总数 cnt[1]<br>
+    只需一次 BFS 染色，O(n) 搞定！
+  </div>
+
+  <h3>📋 完整知识链条</h3>
+  <table>
+    <tr><th>环节</th><th>知识点</th><th>在本教程的哪一关</th></tr>
+    <tr><td>树是什么</td><td>连通无环图</td><td>第1关</td></tr>
+    <tr><td>路径唯一</td><td>性质1：唯一路径</td><td>第3关 + 第6关演示</td></tr>
+    <tr><td>距离确定</td><td>路径唯一→距离确定→奇偶确定</td><td>第6关</td></tr>
+    <tr><td>可以染色</td><td>性质4：树是二分图</td><td>第3关 + 第5关动画</td></tr>
+    <tr><td>同色=偶距离</td><td>走一步颜色变一次</td><td>第6关规律</td></tr>
+    <tr><td>答案只看颜色</td><td>cnt[0] 和 cnt[1]</td><td>第7关桥接</td></tr>
+    <tr><td>代码实现</td><td>BFS + depth奇偶</td><td>P11962 教程第5关</td></tr>
+  </table>
+</div>
+
+<!-- ===== 8. 测验 ===== -->
+<div class="section" id="quiz">
+  <h2><span class="icon">🎯</span> 第八关：互动测验</h2>
+  <p>8 道题，检验你对树的掌握。全对就可以冲 P11962 了！</p>
+  <div id="quizContainer"></div>
+  <div class="quiz-score" id="quizScore"></div>
+</div>
+
+<div class="footer">
+  <p>🌳 树的基础教程 · 从树到树上漫步的桥梁 · GESP 六级预备</p>
+  <p>核心：树是连通无环图 → 唯一路径 → 二分图染色 → 同色=偶距离</p>
+</div>
+
+</div>
+
+<script>
+// ==================== 工具函数 ====================
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+}
+function toggleCollapse(el) {
+  el.classList.toggle('open');
+  el.nextElementSibling.classList.toggle('open');
+}
+
+// ==================== 示例树定义（8个节点） ====================
+// 树结构（以1为根）:
+//            1
+//          / | \
+//         2  3  4
+//        / \     \
+//       5   6     7
+//      /
+//     8
+const treeNodes = {
+  1: { x: 280, y: 50 },
+  2: { x: 130, y: 130 },
+  3: { x: 280, y: 130 },
+  4: { x: 430, y: 130 },
+  5: { x: 70,  y: 230 },
+  6: { x: 190, y: 230 },
+  7: { x: 470, y: 230 },
+  8: { x: 70,  y: 320 }
+};
+const treeEdges = [[1,2],[1,3],[1,4],[2,5],[2,6],[4,7],[5,8]];
+const treeAdj = {
+  1: [2,3,4],
+  2: [1,5,6],
+  3: [1],
+  4: [1,7],
+  5: [2,8],
+  6: [2],
+  7: [4],
+  8: [5]
+};
+// BFS 深度（以1为根）
+const treeDepth = { 1:0, 2:1, 3:1, 4:1, 5:2, 6:2, 7:2, 8:3 };
+
+// ==================== 第二关：术语标注 ====================
+function renderTermTree() {
+  const svg = document.getElementById('termSvg');
+  let html = '';
+  // edges
+  for (let [u,v] of treeEdges) {
+    const nu = treeNodes[u], nv = treeNodes[v];
+    html += `<line x1="${nu.x}" y1="${nu.y}" x2="${nv.x}" y2="${nv.y}" stroke="#cbd5e1" stroke-width="3"/>`;
+  }
+  // depth labels on left
+  html += `<text x="20" y="55" fill="#94a3b8" font-size="11">深度0</text>`;
+  html += `<text x="20" y="135" fill="#94a3b8" font-size="11">深度1</text>`;
+  html += `<text x="20" y="235" fill="#94a3b8" font-size="11">深度2</text>`;
+  html += `<text x="20" y="325" fill="#94a3b8" font-size="11">深度3</text>`;
+  // nodes
+  for (let n in treeNodes) {
+    const pos = treeNodes[n];
+    const d = treeDepth[n];
+    const fill = d % 2 === 0 ? '#ede9fe' : '#d1fae5';
+    const stroke = d % 2 === 0 ? '#8b5cf6' : '#10b981';
+    html += `<circle cx="${pos.x}" cy="${pos.y}" r="22" fill="${fill}" stroke="${stroke}" stroke-width="2.5" style="cursor:pointer;" onclick="selectTermNode(${n})" id="termNode${n}"/>`;
+    html += `<text x="${pos.x}" y="${pos.y+5}" text-anchor="middle" fill="${stroke}" font-size="16" font-weight="bold" style="pointer-events:none;">${n}</text>`;
+  }
+  svg.innerHTML = html;
+}
+
+function selectTermNode(node) {
+  // reset all
+  for (let n in treeNodes) {
+    const d = treeDepth[n];
+    const fill = d % 2 === 0 ? '#ede9fe' : '#d1fae5';
+    const stroke = d % 2 === 0 ? '#8b5cf6' : '#10b981';
+    const c = document.getElementById('termNode'+n);
+    c.setAttribute('fill', fill);
+    c.setAttribute('stroke', stroke);
+    c.setAttribute('r', '22');
+  }
+  // highlight selected
+  const sel = document.getElementById('termNode'+node);
+  sel.setAttribute('fill', '#f59e0b');
+  sel.setAttribute('stroke', '#ef4444');
+  sel.setAttribute('r', '26');
+
+  // describe
+  const d = treeDepth[node];
+  const neighbors = treeAdj[node];
+  const children = neighbors.filter(v => treeDepth[v] > d);
+  const parent = neighbors.find(v => treeDepth[v] < d);
+  const isLeaf = children.length === 0;
+  const isRoot = d === 0;
+
+  let desc = `节点 ${node}：`;
+  if (isRoot) desc += `是<strong style="color:var(--orange)">根节点</strong>（深度 ${d}），`;
+  else desc += `深度 ${d}（第 ${d} 层），父节点是 <strong>${parent}</strong>，`;
+  desc += `有 ${children.length} 个子节点：{${children.join(', ') || '无'}}。`;
+  if (isLeaf) desc += ` 它是<strong style="color:var(--pink)">叶子节点</strong>（没有子节点）。`;
+  else if (isRoot) desc += ` 度 = ${neighbors.length}（根的度=子节点数）。`;
+  document.getElementById('termDesc').innerHTML = desc;
+}
+
+// ==================== 第五关：BFS 分层动画 ====================
+function computeBfsSteps() {
+  const steps = [];
+  const visited = {};
+  const depth = {};
+  const q = [];
+  const cnt = [0, 0];
+
+  steps.push({
+    desc: "初始化：所有节点未访问，队列空，cnt[0]=0, cnt[1]=0",
+    queue: [], visited: {}, depth: {}, cnt: [0,0], current: -1
+  });
+
+  q.push(1);
+  visited[1] = true;
+  depth[1] = 0;
+  cnt[0]++;
+  steps.push({
+    desc: "根节点 1 入队，深度=0（偶数层，紫色），cnt[0]++ → cnt[0]=1",
+    queue: [...q], visited: {...visited}, depth: {...depth}, cnt: [...cnt], current: 1
+  });
+
+  while (q.length > 0) {
+    const u = q.shift();
+    steps.push({
+      desc: `取出队首 ${u}（深度${depth[u]}），处理它的邻居`,
+      queue: [...q], visited: {...visited}, depth: {...depth}, cnt: [...cnt], current: u
+    });
+    for (let v of treeAdj[u]) {
+      if (!visited[v]) {
+        visited[v] = true;
+        depth[v] = depth[u] + 1;
+        cnt[depth[v] % 2]++;
+        q.push(v);
+        const colorName = depth[v] % 2 === 0 ? '紫色（偶数层）' : '绿色（奇数层）';
+        steps.push({
+          desc: `邻居 ${v} 未访问 → 深度=${depth[v]}（${colorName}），cnt[${depth[v]%2}]++ → cnt[${depth[v]%2}]=${cnt[depth[v]%2]}，入队`,
+          queue: [...q], visited: {...visited}, depth: {...depth}, cnt: [...cnt], current: v
+        });
+      }
+    }
+  }
+
+  steps.push({
+    desc: `BFS 完成！偶数层(紫) ${cnt[0]} 个：节点 1,4,6,8；奇数层(绿) ${cnt[1]} 个：节点 2,3,5,7。\n→ P11962 答案：紫色节点都输出 ${cnt[0]}，绿色节点都输出 ${cnt[1]}`,
+    queue: [], visited: {...visited}, depth: {...depth}, cnt: [...cnt], current: -1, final: true
+  });
+
+  return steps;
+}
+
+const bfsSteps = computeBfsSteps();
+let bfsStepIdx = 0;
+let bfsPlaying = false;
+let bfsTimer = null;
+
+function renderBfsTree(state) {
+  const svg = document.getElementById('bfsSvg');
+  let html = '';
+  // edges
+  for (let [u,v] of treeEdges) {
+    const nu = treeNodes[u], nv = treeNodes[v];
+    html += `<line x1="${nu.x}" y1="${nu.y}" x2="${nv.x}" y2="${nv.y}" stroke="#cbd5e1" stroke-width="3"/>`;
+  }
+  // depth labels
+  html += `<text x="20" y="55" fill="#94a3b8" font-size="11">第0层</text>`;
+  html += `<text x="20" y="135" fill="#94a3b8" font-size="11">第1层</text>`;
+  html += `<text x="20" y="235" fill="#94a3b8" font-size="11">第2层</text>`;
+  html += `<text x="20" y="325" fill="#94a3b8" font-size="11">第3层</text>`;
+  // nodes
+  for (let n in treeNodes) {
+    const pos = treeNodes[n];
+    let fill = '#f1f5f9', stroke = '#cbd5e1', textColor = '#94a3b8';
+    let r = 22;
+
+    if (state.visited[n]) {
+      const d = state.depth[n];
+      if (d % 2 === 0) { fill = '#8b5cf6'; stroke = '#7c3aed'; textColor = 'white'; }
+      else { fill = '#10b981'; stroke = '#059669'; textColor = 'white'; }
+    }
+    if (state.current == n) {
+      r = 28; stroke = '#ef4444'; stroke = '#f59e0b';
+    }
+
+    html += `<circle cx="${pos.x}" cy="${pos.y}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="3" style="transition:all 0.3s;"/>`;
+    html += `<text x="${pos.x}" y="${pos.y+5}" text-anchor="middle" fill="${textColor}" font-size="16" font-weight="bold" style="pointer-events:none;">${n}</text>`;
+    if (state.visited[n]) {
+      const d = state.depth[n];
+      html += `<text x="${pos.x}" y="${pos.y - 32}" text-anchor="middle" fill="${d%2===0?'#8b5cf6':'#10b981'}" font-size="10" font-weight="bold" style="pointer-events:none;">d=${d}</text>`;
+    }
+  }
+  svg.innerHTML = html;
+}
+
+function renderBfsState() {
+  const step = bfsSteps[bfsStepIdx];
+  renderBfsTree(step);
+  document.getElementById('bfsStepDesc').innerText = step.desc;
+  document.getElementById('bfsEvenCnt').textContent = step.cnt[0];
+  document.getElementById('bfsOddCnt').textContent = step.cnt[1];
+  document.getElementById('bfsStepNum').textContent = bfsStepIdx;
+
+  const qDiv = document.getElementById('bfsQueue');
+  qDiv.innerHTML = '';
+  if (step.queue.length === 0) {
+    qDiv.innerHTML = '<span style="color:#64748b;font-size:13px;">（空）</span>';
+  } else {
+    for (let item of step.queue) {
+      const d = step.depth[item];
+      const cls = d % 2 === 0 ? 'even' : 'odd';
+      qDiv.innerHTML += `<span class="ds-item ${cls}">${item}</span>`;
+    }
+  }
+}
+
+function bfsPlay() {
+  if (bfsPlaying) { bfsPlaying = false; clearTimeout(bfsTimer); return; }
+  bfsPlaying = true;
+  if (bfsStepIdx >= bfsSteps.length - 1) bfsStepIdx = 0;
+  const tick = () => {
+    if (!bfsPlaying) return;
+    if (bfsStepIdx < bfsSteps.length - 1) {
+      bfsStepIdx++;
+      renderBfsState();
+      const speed = parseInt(document.getElementById('bfsSpeed').value);
+      bfsTimer = setTimeout(tick, speed);
+    } else { bfsPlaying = false; }
+  };
+  tick();
+}
+function bfsStep(dir) {
+  bfsPlaying = false; clearTimeout(bfsTimer);
+  bfsStepIdx = Math.max(0, Math.min(bfsSteps.length-1, bfsStepIdx + dir));
+  renderBfsState();
+}
+function bfsReset() {
+  bfsPlaying = false; clearTimeout(bfsTimer);
+  bfsStepIdx = 0; renderBfsState();
+}
+document.getElementById('bfsSpeed').addEventListener('input', function() {
+  const v = parseInt(this.value);
+  document.getElementById('bfsSpeedLabel').textContent = v < 600 ? '快速' : v < 1200 ? '中速' : '慢速';
+});
+
+// ==================== 第六关：唯一路径 ====================
+let pathStart = null;
+
+function renderPathTree() {
+  const svg = document.getElementById('pathSvg');
+  let html = '';
+  for (let [u,v] of treeEdges) {
+    const nu = treeNodes[u], nv = treeNodes[v];
+    html += `<line x1="${nu.x}" y1="${nu.y}" x2="${nv.x}" y2="${nv.y}" stroke="#cbd5e1" stroke-width="3"/>`;
+  }
+  for (let n in treeNodes) {
+    const pos = treeNodes[n];
+    const d = treeDepth[n];
+    const fill = d % 2 === 0 ? '#ede9fe' : '#d1fae5';
+    const stroke = d % 2 === 0 ? '#8b5cf6' : '#10b981';
+    const textColor = d % 2 === 0 ? '#8b5cf6' : '#10b981';
+    html += `<circle cx="${pos.x}" cy="${pos.y}" r="22" fill="${fill}" stroke="${stroke}" stroke-width="2.5" style="cursor:pointer;" onclick="selectPathNode(${n})" id="pathNode${n}"/>`;
+    html += `<text x="${pos.x}" y="${pos.y+5}" text-anchor="middle" fill="${textColor}" font-size="16" font-weight="bold" style="pointer-events:none;">${n}</text>`;
+  }
+  svg.innerHTML = html;
+}
+
+function findPath(start, end) {
+  // BFS to find path
+  const parent = {};
+  const visited = {};
+  visited[start] = true;
+  const q = [start];
+  while (q.length > 0) {
+    const u = q.shift();
+    if (u === end) break;
+    for (let v of treeAdj[u]) {
+      if (!visited[v]) {
+        visited[v] = true;
+        parent[v] = u;
+        q.push(v);
+      }
+    }
+  }
+  // reconstruct
+  const path = [];
+  let cur = end;
+  while (cur !== undefined) {
+    path.unshift(cur);
+    if (cur === start) break;
+    cur = parent[cur];
+  }
+  return path;
+}
+
+function selectPathNode(node) {
+  if (pathStart === null) {
+    pathStart = node;
+    document.getElementById('pathNode'+node).setAttribute('stroke', '#f59e0b');
+    document.getElementById('pathNode'+node).setAttribute('stroke-width', '4');
+    document.getElementById('pathDesc').innerHTML = `起点已选：<strong>${node}</strong>。现在点击终点节点。`;
+  } else if (pathStart === node) {
+    // deselect
+    pathStart = null;
+    renderPathTree();
+    document.getElementById('pathDesc').innerHTML = '👆 先点击一个节点作为<strong>起点</strong>，再点击另一个节点作为<strong>终点</strong>';
+    document.getElementById('pathResult').style.display = 'none';
+    document.getElementById('pathInsight').style.display = 'none';
+  } else {
+    // find path
+    const path = findPath(pathStart, node);
+    const len = path.length - 1;
+    const isEven = len % 2 === 0;
+    const startColor = treeDepth[pathStart] % 2;
+    const endColor = treeDepth[node] % 2;
+    const sameColor = startColor === endColor;
+
+    // redraw with path highlighted
+    renderPathTree();
+    // highlight path edges
+    const svg = document.getElementById('pathSvg');
+    for (let i = 0; i < path.length - 1; i++) {
+      const u = path[i], v = path[i+1];
+      const nu = treeNodes[u], nv = treeNodes[v];
+      const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+      line.setAttribute('x1', nu.x); line.setAttribute('y1', nu.y);
+      line.setAttribute('x2', nv.x); line.setAttribute('y2', nv.y);
+      line.setAttribute('stroke', '#ec4899');
+      line.setAttribute('stroke-width', '5');
+      svg.appendChild(line);
+    }
+    // highlight path nodes
+    for (let n of path) {
+      const c = document.getElementById('pathNode'+n);
+      c.setAttribute('fill', '#ec4899');
+      c.setAttribute('stroke', '#be185d');
+      c.setAttribute('r', '24');
+    }
+
+    document.getElementById('pathDesc').innerHTML =
+      `路径：${path.join(' → ')}，长度 = <strong>${len}</strong>（<strong style="color:${isEven?'var(--purple)':'var(--green)'}">${isEven?'偶数':'奇数'}</strong>）。` +
+      ` 起点${pathStart}是${startColor===0?'紫':'绿'}色，终点${node}是${endColor===0?'紫':'绿'}色 → <strong>${sameColor?'同色':'异色'}</strong>。`;
+
+    document.getElementById('pathResult').style.display = 'block';
+    document.getElementById('pathRow').innerHTML =
+      `<td>${pathStart}</td><td>${node}</td><td>${path.join('→')}</td><td>${len}</td>` +
+      `<td style="color:${isEven?'var(--purple)':'var(--green)'};font-weight:700;">${isEven?'偶':'奇'}</td>` +
+      `<td style="color:${sameColor?'var(--purple)':'var(--green)'};font-weight:700;">${sameColor?'同色':'异色'}</td>`;
+    document.getElementById('pathInsight').style.display = 'block';
+
+    pathStart = null;
+  }
+}
+
+// ==================== 测验 ====================
+const quizData = [
+  {
+    q: "下面哪个说法最能描述「树」？",
+    options: [
+      "有环的连通图",
+      "连通且无环的无向图",
+      "边数等于节点数的图",
+      "每个节点都有至少两个邻居的图"
+    ],
+    answer: 1,
+    explanation: "树的定义：连通且无环的无向图。等价说法包括 n-1 条边、任意两点唯一路径等。"
+  },
+  {
+    q: "一棵有 10 个节点的树，有多少条边？",
+    options: ["9", "10", "11", "不确定"],
+    answer: 0,
+    explanation: "性质2：n 个节点的树恰好有 n-1 条边。10-1=9。"
+  },
+  {
+    q: "在树上做 DFS/BFS 时，为什么不需要 visited 数组？",
+    options: [
+      "因为树太小了不需要优化",
+      "因为树没有环，传 parent 参数防止回头即可",
+      "因为树的节点编号是连续的",
+      "因为树一定是二分图"
+    ],
+    answer: 1,
+    explanation: "性质3：树无环。只要记住父节点是谁、不往回走，就不会重复访问，不需要 visited 数组。"
+  },
+  {
+    q: "树上节点 A 和 B 之间的路径有几条？",
+    options: ["0 条", "恰好 1 条", "可能有多条", "看 A 和 B 是不是相邻"],
+    answer: 1,
+    explanation: "性质1：唯一路径定理。树上任意两点之间有且仅有一条路径。这是 P11962 的根基。"
+  },
+  {
+    q: "为什么树一定是二分图（可以双色染色）？",
+    options: [
+      "因为树有 n-1 条边",
+      "因为树没有环，不会出现染色矛盾",
+      "因为树的根只有一个",
+      "因为树的叶子都在最底层"
+    ],
+    answer: 1,
+    explanation: "二分图染色矛盾只会在奇数长度的环上发生。树没有环（更没有奇数环），所以一定能染成功。"
+  },
+  {
+    q: "BFS 分层后，第 0 层、第 2 层、第 4 层的节点是什么颜色？",
+    options: [
+      "都是同一种颜色（偶数层同色）",
+      "交替不同颜色",
+      "随机颜色",
+      "第0层和第2层同色，第4层不同"
+    ],
+    answer: 0,
+    explanation: "BFS 分层染色：偶数层（0,2,4...）同色，奇数层（1,3,5...）另一种颜色。因为每层颜色交替。"
+  },
+  {
+    q: "如果节点 A 和 B 是同色（都是紫色），它们之间的距离一定是？",
+    options: ["偶数", "奇数", "可能是奇也可能是偶", "等于0"],
+    answer: 0,
+    explanation: "每走一步颜色变一次。从紫色到紫色，颜色变了偶数次，所以距离一定是偶数。这就是 P11962 的核心。"
+  },
+  {
+    q: "P11962 树上漫步中，为什么答案是 cnt[color[i]] 而不是对每个节点单独算？",
+    options: [
+      "因为所有同色节点的答案相同（都等于该颜色的总数）",
+      "因为题目只要求一个答案",
+      "因为树太小不需要优化",
+      "因为 C++ 不支持循环"
+    ],
+    answer: 0,
+    explanation: "同色=偶距离=偶数步可达。所有紫色节点的答案都是紫色总数，所有绿色节点的答案都是绿色总数。只需两个计数器，O(n) 解决。"
+  }
+];
+
+function renderQuiz() {
+  const container = document.getElementById('quizContainer');
+  let html = '';
+  quizData.forEach((q, i) => {
+    html += `<div class="quiz-question">`;
+    html += `<div><span class="q-num">${i+1}</span>${q.q}</div>`;
+    html += `<div class="quiz-options">`;
+    q.options.forEach((opt, j) => {
+      html += `<button class="quiz-option" onclick="answerQuiz(${i}, ${j})" id="q${i}opt${j}">${String.fromCharCode(65+j)}. ${opt}</button>`;
+    });
+    html += `</div>`;
+    html += `<div class="quiz-explanation" id="q${i}exp">${q.explanation}</div>`;
+    html += `</div>`;
+  });
+  container.innerHTML = html;
+}
+
+const quizAnswers = new Array(quizData.length).fill(-1);
+
+function answerQuiz(qIdx, optIdx) {
+  if (quizAnswers[qIdx] !== -1) return;
+  quizAnswers[qIdx] = optIdx;
+  const q = quizData[qIdx];
+  for (let j = 0; j < q.options.length; j++) {
+    const btn = document.getElementById(`q${qIdx}opt${j}`);
+    btn.style.cursor = 'default';
+    if (j === q.answer) btn.classList.add('correct');
+    else if (j === optIdx) btn.classList.add('wrong');
+  }
+  document.getElementById(`q${qIdx}exp`).classList.add('show');
+  if (quizAnswers.every(a => a !== -1)) {
+    let score = 0;
+    quizAnswers.forEach((a, i) => { if (a === quizData[i].answer) score++; });
+    const scoreEl = document.getElementById('quizScore');
+    scoreEl.classList.add('show');
+    if (score === quizData.length) {
+      scoreEl.style.background = 'linear-gradient(135deg, #d1fae5, #a7f3d0)';
+      scoreEl.style.color = '#065f46';
+      scoreEl.innerHTML = `🎉 全对！${score}/${quizData.length} 你已经准备好挑战 P11962 了！`;
+    } else {
+      scoreEl.style.background = '#fef3c7';
+      scoreEl.style.color = '#92400e';
+      scoreEl.innerHTML = `得分：${score}/${quizData.length}，看看错题解析，再试一次！`;
+    }
+  }
+}
+
+// ==================== 初始化 ====================
+renderTermTree();
+renderBfsState();
+renderPathTree();
+renderQuiz();
+</script>
+
+</body>
+</html>
