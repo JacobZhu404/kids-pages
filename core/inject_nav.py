@@ -40,6 +40,11 @@ NAV_CSS = """<style id="kg-nav-style">
 #kg-nav .kg-topics a.kg-active{background:#0ea5e9;color:#fff;}
 body{padding-top:46px;}
 @media(max-width:520px){#kg-nav .kg-home{font-size:13px;}#kg-nav .kg-topics a{padding:3px 7px;font-size:11px;}}
+#kg-eggy{position:fixed;right:20px;bottom:20px;width:64px;height:72px;z-index:99998;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1);user-select:none;}
+#kg-eggy.kg-bounce{animation:kg-eggy-bounce .5s ease;}
+@keyframes kg-eggy-bounce{0%{transform:translateY(0) scale(1);}40%{transform:translateY(-18px) scale(1.08,.92);}70%{transform:translateY(0) scale(.95,1.05);}100%{transform:translateY(0) scale(1);}}
+#kg-eggy:hover{transform:scale(1.06);}
+#kg-eggy .kg-egg-body{transition:fill .3s;}
 </style>"""
 
 
@@ -62,6 +67,40 @@ def build_nav_html(current_topic: str, home_path: str) -> str:
     )
 
 
+EGGY_JS = """<script>
+(function(){
+  var eggy=document.getElementById('kg-eggy');
+  if(!eggy) return;
+  var pl=document.getElementById('kg-pupil-l');
+  var pr=document.getElementById('kg-pupil-r');
+  var mouth=document.getElementById('kg-eggy-mouth');
+  var body=eggy.querySelector('.kg-egg-body');
+  var faces=[["#fde047","M24 48 Q32 54 40 48"],["#fca5a5","M24 50 Q32 44 40 50"],["#86efac","M24 47 Q32 56 40 47"],["#93c5fd","M24 52 Q32 48 40 52"]];
+  var fi=0;
+  function mp(p,cx,cy,mx,my){var r=eggy.getBoundingClientRect();var dx=mx-(r.left+cx+32),dy=my-(r.top+cy+40);var d=Math.sqrt(dx*dx+dy*dy)||1,max=2.5;p.setAttribute('cx',cx+Math.min(max,dx/d*max));p.setAttribute('cy',cy+Math.min(max,dy/d*max));}
+  document.addEventListener('mousemove',function(e){mp(pl,24,36,e.clientX,e.clientY);mp(pr,42,36,e.clientX,e.clientY);});
+  document.addEventListener('touchmove',function(e){if(e.touches[0]){mp(pl,24,36,e.touches[0].clientX,e.touches[0].clientY);mp(pr,42,36,e.touches[0].clientX,e.touches[0].clientY);}},{passive:true});
+  eggy.addEventListener('click',function(){fi=(fi+1)%faces.length;body.setAttribute('fill',faces[fi][0]);mouth.setAttribute('d',faces[fi][1]);eggy.classList.remove('kg-bounce');void eggy.offsetWidth;eggy.classList.add('kg-bounce');});
+})();
+</script>"""
+
+EGGY_HTML = """<!-- kg-eggy-start -->
+<div id="kg-eggy" title="点我玩！">
+  <svg width="64" height="72" viewBox="0 0 64 72">
+    <ellipse class="kg-egg-body" cx="32" cy="40" rx="28" ry="30" fill="#fde047" stroke="#0ea5e9" stroke-width="3"/>
+    <g id="kg-eggy-eyes">
+      <circle cx="24" cy="36" r="6" fill="#fff"/><circle cx="42" cy="36" r="6" fill="#fff"/>
+      <circle id="kg-pupil-l" cx="24" cy="36" r="3" fill="#1e293b"/>
+      <circle id="kg-pupil-r" cx="42" cy="36" r="3" fill="#1e293b"/>
+    </g>
+    <path id="kg-eggy-mouth" d="M24 48 Q32 54 40 48" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <circle cx="18" cy="44" r="3" fill="#fb7185" opacity=".5"/>
+    <circle cx="48" cy="44" r="3" fill="#fb7185" opacity=".5"/>
+  </svg>
+</div>
+<!-- kg-eggy-end -->"""
+
+
 def inject_page(rel_path: str, topic: str):
     fpath = PUBLIC_DIR / rel_path
     if not fpath.exists():
@@ -77,6 +116,10 @@ def inject_page(rel_path: str, topic: str):
     html = re.sub(r'<style id="kg-nav-style">.*?</style>', "", html, flags=re.S)
     # 清除旧注入的导航栏
     html = re.sub(r"<!-- kg-nav-start -->.*?<!-- kg-nav-end -->", "", html, flags=re.S)
+    # 清除旧注入的蛋仔 HTML
+    html = re.sub(r"<!-- kg-eggy-start -->.*?<!-- kg-eggy-end -->", "", html, flags=re.S)
+    # 清除旧注入的蛋仔 JS
+    html = re.sub(r"<!-- kg-eggy-js-start -->.*?<!-- kg-eggy-js-end -->", "", html, flags=re.S)
 
     # 注入 CSS 到 </head> 前
     if "</head>" in html:
@@ -92,6 +135,13 @@ def inject_page(rel_path: str, topic: str):
         html = html[:pos] + "\n" + nav_html + "\n" + html[pos:]
     else:
         print(f"  ⚠ 无 <body> 标签，跳过导航栏注入: {rel_path}")
+
+    # 注入互动蛋仔 HTML+JS 到 </body> 前
+    eggy_block = EGGY_HTML + "\n" + "<!-- kg-eggy-js-start -->\n" + EGGY_JS + "\n<!-- kg-eggy-js-end -->"
+    if "</body>" in html:
+        html = html.replace("</body>", eggy_block + "\n</body>", 1)
+    else:
+        print(f"  ⚠ 无 </body>，跳过蛋仔注入: {rel_path}")
 
     fpath.write_text(html, encoding="utf-8")
     print(f"  ✔ 注入完成: {rel_path} (主题={topic}, home={home})")
