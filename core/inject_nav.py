@@ -33,11 +33,11 @@ TOPIC_LABELS = {
 
 NAV_CSS = """<style id="kg-nav-style">
 #kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
-#kg-nav .kg-home{color:#6d28d9;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
+#kg-nav .kg-home{color:#0284c7;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
 #kg-nav .kg-topics{display:flex;gap:6px;}
 #kg-nav .kg-topics a{color:#475569;text-decoration:none;padding:4px 10px;border-radius:999px;font-size:12px;white-space:nowrap;transition:background .15s,color .15s;}
-#kg-nav .kg-topics a:hover{background:#ede9fe;color:#6d28d9;}
-#kg-nav .kg-topics a.kg-active{background:#7c3aed;color:#fff;}
+#kg-nav .kg-topics a:hover{background:#e0f2fe;color:#0284c7;}
+#kg-nav .kg-topics a.kg-active{background:#0ea5e9;color:#fff;}
 body{padding-top:46px;}
 @media(max-width:520px){#kg-nav .kg-home{font-size:13px;}#kg-nav .kg-topics a{padding:3px 7px;font-size:11px;}}
 </style>"""
@@ -55,7 +55,7 @@ def build_nav_html(current_topic: str, home_path: str) -> str:
     return (
         "<!-- kg-nav-start -->\n"
         '<nav id="kg-nav">\n'
-        f'  <a class="kg-home" href="{home_path}">🌸 秘密花园</a>\n'
+        f'  <a class="kg-home" href="{home_path}">秘密基地</a>\n'
         f'  <div class="kg-topics">{topics_html}</div>\n'
         "</nav>\n"
         "<!-- kg-nav-end -->"
