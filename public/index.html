@@ -36,7 +36,7 @@
   /* 标题旁静态小蛋仔 */
   header h1 { display:inline-flex; align-items:center; gap:10px; }
   /* 右下角互动蛋仔 */
-  #kg-eggy{position:fixed;right:20px;bottom:20px;width:64px;height:72px;z-index:99998;cursor:pointer;
+  #kg-eggy{position:fixed;right:20px;bottom:20px;width:70px;height:84px;z-index:99998;cursor:pointer;
             transition:transform .3s cubic-bezier(.34,1.56,.64,1);user-select:none;}
   #kg-eggy.kg-bounce{animation:kg-eggy-bounce .5s ease;}
   @keyframes kg-eggy-bounce{0%{transform:translateY(0) scale(1);}40%{transform:translateY(-18px) scale(1.08,.92);}70%{transform:translateY(0) scale(.95,1.05);}100%{transform:translateY(0) scale(1);}}
@@ -46,7 +46,7 @@
 </head>
 <body>
 <header>
-  <h1><svg width="40" height="44" viewBox="0 0 100 110" style="vertical-align:middle"><ellipse cx="50" cy="58" rx="42" ry="46" fill="#fde047" stroke="#0ea5e9" stroke-width="4"/><ellipse cx="50" cy="58" rx="42" ry="46" fill="none" stroke="#fbbf24" stroke-width="2" opacity=".5"/><ellipse cx="38" cy="34" rx="12" ry="8" fill="#fef9c3" opacity=".6"/><ellipse cx="50" cy="50" rx="14" ry="16" fill="#fff"/><ellipse cx="50" cy="50" rx="14" ry="16" fill="none" stroke="#0284c7" stroke-width="2.5"/><circle cx="50" cy="52" r="7" fill="#1e293b"/><circle cx="52" cy="49" r="2.8" fill="#fff"/><circle cx="47" cy="54" r="1.2" fill="#fff"/><circle cx="22" cy="62" r="6" fill="#fb7185" opacity=".55"/><circle cx="78" cy="62" r="6" fill="#fb7185" opacity=".55"/><path d="M42 72 Q50 80 58 72" stroke="#1e293b" stroke-width="3" fill="none" stroke-linecap="round"/><ellipse cx="8" cy="64" rx="6" ry="9" fill="#fde047" stroke="#0ea5e9" stroke-width="3"/><ellipse cx="92" cy="64" rx="6" ry="9" fill="#fde047" stroke="#0ea5e9" stroke-width="3"/></svg>秘密基地</h1>
+  <h1><svg width="44" height="52" viewBox="0 0 100 120" style="vertical-align:middle"><ellipse cx="50" cy="74" rx="40" ry="42" fill="#fde047" stroke="#0ea5e9" stroke-width="3.5"/><ellipse cx="36" cy="50" rx="12" ry="8" fill="#fef9c3" opacity=".6"/><path d="M28 20 Q50 8 72 20 L66 28 Q50 22 34 28 Z" fill="#0ea5e9" stroke="#0284c7" stroke-width="2"/><circle cx="50" cy="16" r="4" fill="#fbbf24"/><circle cx="36" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="64" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="36" cy="68" r="5.5" fill="#1e293b"/><circle cx="64" cy="68" r="5.5" fill="#1e293b"/><circle cx="38" cy="65" r="2" fill="#fff"/><circle cx="66" cy="65" r="2" fill="#fff"/><path d="M28 60 Q26 54 24 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M33 58 Q33 52 35 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M67 58 Q67 52 65 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M72 60 Q74 54 76 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><circle cx="78" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><path d="M42 84 Q50 90 58 84" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="34" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="53" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="37" y="106" width="7" height="8" fill="#fde047"/><rect x="56" y="106" width="7" height="8" fill="#fde047"/></svg>秘密基地</h1>
   <p>小萝卜和爸爸的学习资料</p>
 </header>
 <main>
@@ -140,22 +140,30 @@
 
 <!-- 互动蛋仔：眼睛追鼠标，点击弹跳换表情 -->
 <div id="kg-eggy" title="点我玩！">
-  <svg width="72" height="80" viewBox="0 0 100 110">
-    <ellipse class="kg-egg-body" cx="50" cy="58" rx="42" ry="46" fill="#fde047" stroke="#0ea5e9" stroke-width="4"/>
-    <ellipse cx="38" cy="34" rx="12" ry="8" fill="#fef9c3" opacity=".6"/>
+  <svg width="70" height="84" viewBox="0 0 100 120">
+    <path d="M28 20 Q50 8 72 20 L66 28 Q50 22 34 28 Z" fill="#0ea5e9" stroke="#0284c7" stroke-width="2"/>
+    <circle cx="50" cy="16" r="4" fill="#fbbf24"/>
+    <ellipse class="kg-egg-body" cx="50" cy="74" rx="40" ry="42" fill="#fde047" stroke="#0ea5e9" stroke-width="3.5"/>
+    <ellipse cx="36" cy="50" rx="12" ry="8" fill="#fef9c3" opacity=".6"/>
     <g id="kg-eggy-eyes">
-      <ellipse cx="42" cy="50" rx="13" ry="15" fill="#fff" stroke="#0284c7" stroke-width="2.5"/>
-      <ellipse cx="58" cy="50" rx="13" ry="15" fill="#fff" stroke="#0284c7" stroke-width="2.5"/>
-      <circle id="kg-pupil-l" cx="42" cy="52" r="6.5" fill="#1e293b"/>
-      <circle id="kg-pupil-r" cx="58" cy="52" r="6.5" fill="#1e293b"/>
-      <circle cx="44" cy="49" r="2.5" fill="#fff"/>
-      <circle cx="60" cy="49" r="2.5" fill="#fff"/>
+      <circle cx="36" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/>
+      <circle cx="64" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/>
+      <circle id="kg-pupil-l" cx="36" cy="68" r="5.5" fill="#1e293b"/>
+      <circle id="kg-pupil-r" cx="64" cy="68" r="5.5" fill="#1e293b"/>
+      <circle cx="38" cy="65" r="2" fill="#fff"/>
+      <circle cx="66" cy="65" r="2" fill="#fff"/>
     </g>
-    <circle cx="22" cy="62" r="6" fill="#fb7185" opacity=".55"/>
-    <circle cx="78" cy="62" r="6" fill="#fb7185" opacity=".55"/>
-    <path id="kg-eggy-mouth" d="M42 74 Q50 82 58 74" stroke="#1e293b" stroke-width="3" fill="none" stroke-linecap="round"/>
-    <ellipse cx="8" cy="66" rx="6" ry="9" fill="#fde047" stroke="#0ea5e9" stroke-width="3"/>
-    <ellipse cx="92" cy="66" rx="6" ry="9" fill="#fde047" stroke="#0ea5e9" stroke-width="3"/>
+    <path d="M28 60 Q26 54 24 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M33 58 Q33 52 35 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M67 58 Q67 52 65 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M72 60 Q74 54 76 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <circle cx="22" cy="76" r="5.5" fill="#fb7185" opacity=".55"/>
+    <circle cx="78" cy="76" r="5.5" fill="#fb7185" opacity=".55"/>
+    <path id="kg-eggy-mouth" d="M42 84 Q50 90 58 84" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <rect x="37" y="106" width="7" height="8" fill="#fde047"/>
+    <rect x="56" y="106" width="7" height="8" fill="#fde047"/>
+    <rect x="34" y="112" width="13" height="8" rx="3" fill="#1e293b"/>
+    <rect x="53" y="112" width="13" height="8" rx="3" fill="#1e293b"/>
   </svg>
 </div>
 <script>
@@ -165,22 +173,22 @@
   var pr=document.getElementById('kg-pupil-r');
   var mouth=document.getElementById('kg-eggy-mouth');
   var body=eggy.querySelector('.kg-egg-body');
-  var faces=[["#fde047","M42 74 Q50 82 58 74"],["#fca5a5","M42 76 Q50 70 58 76"],["#86efac","M42 72 Q50 84 58 72"],["#93c5fd","M42 78 Q50 74 58 78"]];
+  var faces=[["#fde047","M42 84 Q50 90 58 84"],["#fca5a5","M42 86 Q50 80 58 86"],["#86efac","M42 82 Q50 92 58 82"],["#93c5fd","M42 88 Q50 84 58 88"]];
   var fi=0;
   function movePupil(p,cx,cy,mx,my){
     var r=eggy.getBoundingClientRect();
-    var dx=mx-(r.left+cx*0.72+36), dy=my-(r.top+cy*0.72+42);
+    var dx=mx-(r.left+cx*0.7+35), dy=my-(r.top+cy*0.7+42);
     var d=Math.sqrt(dx*dx+dy*dy)||1, max=4;
     p.setAttribute('cx',cx+Math.min(max,dx/d*max));
     p.setAttribute('cy',cy+Math.min(max,dy/d*max));
   }
   document.addEventListener('mousemove',function(e){
-    movePupil(pl,42,52,e.clientX,e.clientY);
-    movePupil(pr,58,52,e.clientX,e.clientY);
+    movePupil(pl,36,68,e.clientX,e.clientY);
+    movePupil(pr,64,68,e.clientX,e.clientY);
   });
   // 触屏也跟随
   document.addEventListener('touchmove',function(e){
-    if(e.touches[0]){movePupil(pl,42,52,e.touches[0].clientX,e.touches[0].clientY);movePupil(pr,58,52,e.touches[0].clientX,e.touches[0].clientY);}
+    if(e.touches[0]){movePupil(pl,36,68,e.touches[0].clientX,e.touches[0].clientY);movePupil(pr,64,68,e.touches[0].clientX,e.touches[0].clientY);}
   },{passive:true});
   eggy.addEventListener('click',function(){
     fi=(fi+1)%faces.length;
