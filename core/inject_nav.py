@@ -12,7 +12,10 @@ from pathlib import Path
 
 PUBLIC_DIR = Path(__file__).parent.parent / "public"
 
-# 页面 → 所属主题（dfs / tree / p11962 / cbt）
+# 当前正在注入的页面（build_sidebar_html 高亮用）
+CURRENT_PAGE = ""
+
+# 页面 → 所属主题（dfs / tree / p11962 / cbt / full）
 PAGES = {
     "gesp6-dfs-bfs.html": "dfs",
     "dsfs-bfs-walkthrough.html": "dfs",
@@ -26,6 +29,7 @@ PAGES = {
     "gesp6-cbt-counter.html": "cbt",
     "cbt-counter-tutorial.html": "cbt",
     "cbt-counter/index.html": "cbt",
+    "gesp6-full-tree-counter.html": "full",
 }
 
 TOPIC_LABELS = {
@@ -33,6 +37,24 @@ TOPIC_LABELS = {
     "tree": ("② 树基础", "topic-tree"),
     "p11962": ("③ 树上漫步", "topic-p11962"),
     "cbt": ("④ 完全二叉树", "topic-cbt"),
+    "full": ("⑤ 满二叉树", "topic-full"),
+}
+
+# 每个页面在侧边栏里显示的名字（短名）
+PAGE_SHORT_NAMES = {
+    "gesp6-dfs-bfs.html": "千问 · 深搜广搜通关站",
+    "dsfs-bfs-walkthrough.html": "WorkBuddy · 深搜广搜",
+    "dfs-bfs/index.html": "TRAE · 深搜广搜互动",
+    "gesp6-tree-intro.html": "千问 · 树入门",
+    "gesp6-tree-basics.html": "WorkBuddy · 树基础",
+    "tree-basics/index.html": "TRAE · 树基础互动",
+    "gesp6-p11962-tutorial.html": "千问 · 树上漫步",
+    "p11962-tree-walk.html": "WorkBuddy · 树上漫步",
+    "tree-stroll/index.html": "TRAE · 树上漫步互动",
+    "gesp6-cbt-counter.html": "千问 · 完全二叉计数",
+    "cbt-counter-tutorial.html": "WorkBuddy · 完全二叉计数",
+    "cbt-counter/index.html": "TRAE · 完全二叉计数互动",
+    "gesp6-full-tree-counter.html": "千问 · 满二叉子树计数",
 }
 
 NAV_CSS = """<style id="kg-nav-style">
@@ -65,6 +87,18 @@ body{padding-top:46px;}
 #kg-eggy.kg-blasted .kg-leg{fill:#27272a !important;}
 @keyframes kg-fly{0%{transform:translateY(0);}45%{transform:translateY(-26px);}100%{transform:translateY(12px);opacity:0;}}
 #kg-eggy.kg-blasted{animation:kg-fly .5s ease-in;}
+/* 左侧目录 */
+#kg-sidebar{position:fixed;left:0;top:46px;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:14px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
+#kg-sidebar::-webkit-scrollbar{width:6px;}
+#kg-sidebar::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:3px;}
+#kg-sidebar .kg-sb-home{display:block;font-weight:800;font-size:14px;color:#0369a1;text-decoration:none;padding:8px 10px;border-radius:10px;background:#e0f2fe;margin-bottom:12px;transition:background .15s;}
+#kg-sidebar .kg-sb-home:hover{background:#bae6fd;}
+#kg-sidebar .kg-sb-topic{font-weight:700;font-size:12px;color:#0f766e;padding:10px 10px 4px;letter-spacing:.5px;}
+#kg-sidebar a.kg-sb-page{display:block;font-size:12.5px;color:#334155;text-decoration:none;padding:5px 10px;border-radius:6px;margin:1px 0;line-height:1.45;}
+#kg-sidebar a.kg-sb-page:hover{background:#e0f2fe;color:#0369a1;}
+#kg-sidebar a.kg-sb-page.kg-sb-active{background:#0ea5e9;color:#fff;font-weight:600;}
+body{padding-left:206px;}
+@media(max-width:860px){#kg-sidebar{display:none;}body{padding-left:0;}}
 </style>"""
 
 
@@ -81,6 +115,26 @@ def build_nav_html(current_topic: str, home_path: str) -> str:
         "</nav>\n"
         "<!-- kg-nav-end -->"
     )
+
+
+def build_sidebar_html(current_topic: str, prefix: str) -> str:
+    """左侧目录。prefix: 相对当前页回到 public 根的路径（如 "" 或 "../"）。"""
+    parts = ["<!-- kg-sb-start -->"]
+    parts.append('<aside id="kg-sidebar">')
+    home = prefix + "index.html"
+    parts.append(f'<a class="kg-sb-home" href="{home}">🏠 秘密基地</a>')
+    for key, (label, anchor) in TOPIC_LABELS.items():
+        parts.append(f'<div class="kg-sb-topic">📍 {label}</div>')
+        # 主题下的所有页面
+        page_list = [p for p, t in PAGES.items() if t == key]
+        for rel in page_list:
+            active = ' kg-sb-active' if rel == CURRENT_PAGE else ""
+            url = prefix + rel
+            short = PAGE_SHORT_NAMES.get(rel, rel)
+            parts.append(f'<a class="kg-sb-page{active}" href="{url}">· {short}</a>')
+    parts.append("</aside>")
+    parts.append("<!-- kg-sb-end -->")
+    return "\n".join(parts)
 
 
 EGGY_JS = """<script>
@@ -183,6 +237,8 @@ EGGY_HTML = """<!-- kg-eggy-start -->
 
 
 def inject_page(rel_path: str, topic: str):
+    global CURRENT_PAGE
+    CURRENT_PAGE = rel_path
     fpath = PUBLIC_DIR / rel_path
     if not fpath.exists():
         print(f"  ✘ 缺失: {rel_path}")
@@ -201,6 +257,8 @@ def inject_page(rel_path: str, topic: str):
     html = re.sub(r"<!-- kg-eggy-start -->.*?<!-- kg-eggy-end -->", "", html, flags=re.S)
     # 清除旧注入的蛋仔 JS
     html = re.sub(r"<!-- kg-eggy-js-start -->.*?<!-- kg-eggy-js-end -->", "", html, flags=re.S)
+    # 清除旧注入的侧边栏
+    html = re.sub(r"<!-- kg-sb-start -->.*?<!-- kg-sb-end -->", "", html, flags=re.S)
 
     # 注入 CSS 到 </head> 前
     if "</head>" in html:
@@ -208,14 +266,15 @@ def inject_page(rel_path: str, topic: str):
     else:
         print(f"  ⚠ 无 </head>，跳过 CSS 注入: {rel_path}")
 
-    # 注入导航栏 HTML 到 <body ...> 后
+    # 注入导航栏 + 左侧目录 HTML 到 <body ...> 后
     nav_html = build_nav_html(topic, home)
+    side_html = build_sidebar_html(topic, "../" * depth)
     m = re.search(r"<body[^>]*>", html)
     if m:
         pos = m.end()
-        html = html[:pos] + "\n" + nav_html + "\n" + html[pos:]
+        html = html[:pos] + "\n" + nav_html + "\n" + side_html + "\n" + html[pos:]
     else:
-        print(f"  ⚠ 无 <body> 标签，跳过导航栏注入: {rel_path}")
+        print(f"  ⚠ 无 <body> 标签，跳过导航栏/侧边栏注入: {rel_path}")
 
     # 注入互动蛋仔 HTML+JS 到 </body> 前
     eggy_block = EGGY_HTML + "\n" + "<!-- kg-eggy-js-start -->\n" + EGGY_JS + "\n<!-- kg-eggy-js-end -->"
@@ -228,10 +287,61 @@ def inject_page(rel_path: str, topic: str):
     print(f"  ✔ 注入完成: {rel_path} (主题={topic}, home={home})")
 
 
+def inject_home():
+    """首页 index.html：注入左侧目录（首页无顶部 nav，sidebar top:0）。"""
+    global CURRENT_PAGE
+    fpath = PUBLIC_DIR / "index.html"
+    if not fpath.exists():
+        print("  ✘ 缺失: index.html")
+        return
+    html = fpath.read_text(encoding="utf-8")
+    # 清除旧注入
+    html = re.sub(r'<style id="kg-sb-style">.*?</style>', "", html, flags=re.S)
+    html = re.sub(r"<!-- kg-sb-start -->.*?<!-- kg-sb-end -->", "", html, flags=re.S)
+
+    sb_css = """<style id="kg-sb-style">
+#kg-sidebar{position:fixed;left:0;top:0;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:16px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
+#kg-sidebar::-webkit-scrollbar{width:6px;}
+#kg-sidebar::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:3px;}
+#kg-sidebar .kg-sb-home{display:block;font-weight:800;font-size:14px;color:#0369a1;text-decoration:none;padding:8px 10px;border-radius:10px;background:#e0f2fe;margin-bottom:12px;transition:background .15s;}
+#kg-sidebar .kg-sb-home:hover{background:#bae6fd;}
+#kg-sidebar .kg-sb-topic{font-weight:700;font-size:12px;color:#0f766e;padding:10px 10px 4px;letter-spacing:.5px;}
+#kg-sidebar a.kg-sb-page{display:block;font-size:12.5px;color:#334155;text-decoration:none;padding:5px 10px;border-radius:6px;margin:1px 0;line-height:1.45;}
+#kg-sidebar a.kg-sb-page:hover{background:#e0f2fe;color:#0369a1;}
+body{padding-left:206px;}
+@media(max-width:860px){#kg-sidebar{display:none;}body{padding-left:0;}}
+</style>"""
+    if "</head>" in html:
+        html = html.replace("</head>", sb_css + "\n</head>", 1)
+    else:
+        print("  ⚠ 首页无 </head>，跳过 CSS")
+
+    # 首页 sidebar：所有主题锚点 + 全部分页（返回自身路径无意义，直接列主题锚点）
+    parts = ["<!-- kg-sb-start -->", '<aside id="kg-sidebar">']
+    parts.append('<a class="kg-sb-home" href="#top">🏠 秘密基地</a>')
+    for key, (label, anchor) in TOPIC_LABELS.items():
+        parts.append(f'<div class="kg-sb-topic">📍 {label}</div>')
+        parts.append(f'<a class="kg-sb-page" href="#{anchor}">· 查看主题</a>')
+    parts.append("</aside>")
+    parts.append("<!-- kg-sb-end -->")
+    sb_html = "\n".join(parts)
+
+    m = re.search(r"<body[^>]*>", html)
+    if m:
+        pos = m.end()
+        html = html[:pos] + "\n" + sb_html + "\n" + html[pos:]
+    else:
+        print("  ⚠ 首页无 <body>，跳过侧边栏注入")
+
+    fpath.write_text(html, encoding="utf-8")
+    print("  ✔ 注入完成: index.html (首页左侧目录)")
+
+
 def main():
-    print("=== 注入全局导航栏 ===")
+    print("=== 注入全局导航栏 + 左侧目录 ===")
     for rel_path, topic in PAGES.items():
         inject_page(rel_path, topic)
+    inject_home()
     print("=== 完成 ===")
 
 
