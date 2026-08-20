@@ -119,21 +119,21 @@ function renderStaticTree(svgId, tree, showResult) {
 
   var data = computeTree(tree);
 
-  tree.lc.forEach(function (lc_val, i) {
-    if (i === 0) return;
-    if (lc_val !== 0) {
-      var p1 = tree.pos[i], p2 = tree.pos[lc_val];
+  for (var i = 1; i <= tree.n; i++) {
+    var pi = tree.pos[i];
+    if (tree.lc[i] !== 0) {
+      var pl = tree.pos[tree.lc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pl.x, y2: pl.y, class: 'edge-line active'
       }));
     }
     if (tree.rc[i] !== 0) {
-      var p3 = tree.pos[tree.rc[i]];
+      var pr = tree.pos[tree.rc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p3.x, y2: p3.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pr.x, y2: pr.y, class: 'edge-line active'
       }));
     }
-  });
+  }
 
   for (var i = 1; i <= tree.n; i++) {
     var node = tree.pos[i];
@@ -340,21 +340,21 @@ function initApproachExplorer() {
 
   svg.innerHTML = '';
 
-  tree.lc.forEach(function (lc_val, i) {
-    if (i === 0) return;
-    if (lc_val !== 0) {
-      var p1 = tree.pos[i], p2 = tree.pos[lc_val];
+  for (var i = 1; i <= tree.n; i++) {
+    var pi = tree.pos[i];
+    if (tree.lc[i] !== 0) {
+      var pl = tree.pos[tree.lc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pl.x, y2: pl.y, class: 'edge-line active'
       }));
     }
     if (tree.rc[i] !== 0) {
-      var p3 = tree.pos[tree.rc[i]];
+      var pr = tree.pos[tree.rc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p3.x, y2: p3.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pr.x, y2: pr.y, class: 'edge-line active'
       }));
     }
-  });
+  }
 
   for (var i = 1; i <= tree.n; i++) {
     (function (nodeIdx) {
@@ -570,21 +570,21 @@ function renderAnimStep() {
   var svg = $('animTree');
   svg.innerHTML = '';
 
-  tree.lc.forEach(function (lc_val, i) {
-    if (i === 0) return;
-    if (lc_val !== 0) {
-      var p1 = tree.pos[i], p2 = tree.pos[lc_val];
+  for (var i = 1; i <= tree.n; i++) {
+    var pi = tree.pos[i];
+    if (tree.lc[i] !== 0) {
+      var pl = tree.pos[tree.lc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pl.x, y2: pl.y, class: 'edge-line active'
       }));
     }
     if (tree.rc[i] !== 0) {
-      var p3 = tree.pos[tree.rc[i]];
+      var pr = tree.pos[tree.rc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p3.x, y2: p3.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pr.x, y2: pr.y, class: 'edge-line active'
       }));
     }
-  });
+  }
 
   for (var i = 1; i <= tree.n; i++) {
     var node = tree.pos[i];
@@ -736,21 +736,21 @@ function initInteractivePractice() {
   function render() {
     svg.innerHTML = '';
 
-    tree.lc.forEach(function (lc_val, i) {
-      if (i === 0) return;
-      if (lc_val !== 0) {
-        var p1 = tree.pos[i], p2 = tree.pos[lc_val];
+    for (var i = 1; i <= tree.n; i++) {
+      var pi = tree.pos[i];
+      if (tree.lc[i] !== 0) {
+        var pl = tree.pos[tree.lc[i]];
         svg.appendChild(createSVG('line', {
-          x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, class: 'edge-line active'
+          x1: pi.x, y1: pi.y, x2: pl.x, y2: pl.y, class: 'edge-line active'
         }));
       }
       if (tree.rc[i] !== 0) {
-        var p3 = tree.pos[tree.rc[i]];
+        var pr = tree.pos[tree.rc[i]];
         svg.appendChild(createSVG('line', {
-          x1: p1.x, y1: p1.y, x2: p3.x, y2: p3.y, class: 'edge-line active'
+          x1: pi.x, y1: pi.y, x2: pr.x, y2: pr.y, class: 'edge-line active'
         }));
       }
-    });
+    }
 
     for (var i = 1; i <= tree.n; i++) {
       (function (nodeIdx) {
@@ -858,7 +858,7 @@ var quizData = [
     explain: '只有右子没有左子，最后一层的节点不在最左边，违反了"从左到右排满"的规则。'
   },
   {
-    question: '节点有左右子，h[l]=2, h[r]=2（等高），此时 isComplete 的判定条件是什么？',
+    question: '节点有左右子，h[l]=2, h[r]=2，此时 isComplete 的判定条件是什么？',
     options: [
       'perf[l] && comp[r]',
       'comp[l] && perf[r]',
@@ -866,7 +866,7 @@ var quizData = [
       'comp[l] && comp[r]'
     ],
     answer: 0,
-    explain: '等高时左子树必须满（最后一层无缺口），右子树从最左连续填充即可（可不满）。所以条件是 perf[l] && comp[r]。若右子也满则同时是满二叉树。'
+    explain: 'h[l]==h[r] 时，左子树必须满（isPerfect），右子树可以"缺"最后一层（只需 isComplete）。所以条件是 perf[l] && comp[r]。'
   },
   {
     question: '本题（完全二叉子树计数）的时间复杂度是？',

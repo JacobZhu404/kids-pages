@@ -485,16 +485,17 @@ footer { text-align: center; padding: 3rem 24px; color: var(--muted); font-size:
     <div class="card info">
       <div class="card-title">有左右子时，isComplete 的判定</div>
       <p>设 hL = h[l]，hR = h[r]：</p>
-      <p>1. <strong>hL == hR</strong>（左右等高）：左可以"缺"最后一层，右必须满。<br>
-         isComplete = isComplete[l] && isPerfect[r]</p>
-      <p>2. <strong>hL == hR + 1</strong>（左比右高一层）：左可以"缺"最后一层，右必须满。<br>
+      <p>1. <strong>hL == hR</strong>（左右等高）：左子树必须满，右子树可以"缺"最后一层。<br>
+         isComplete = isPerfect[l] && isComplete[r]</p>
+      <p>2. <strong>hL == hR + 1</strong>（左比右高一层）：左子树可以"缺"最后一层，右子树必须满。<br>
          isComplete = isComplete[l] && isPerfect[r]</p>
       <p>3. <strong>其他</strong>（高度差过大）：isComplete = false</p>
     </div>
 
     <div class="card tip">
-      <div class="card-title">为什么右子树必须是"满"的？</div>
-      <p>想象从上到下、从左到右给节点编号。最后一层的"缺口"只能在最右边的位置。如果右子树不满，说明缺口在中间偏右——中间有空位，不符合"从左到右排满"。所以右子树必须满（isPerfect），左子树可以缺（isComplete）。</p>
+      <div class="card-title">为什么等高时左子树必须"满"？</div>
+      <p>想象从上到下、从左到右给节点编号。当左右子树等高时，最后一层横跨两棵子树。如果左子树有"缺口"（不满），而右子树还有节点，就违反了"从左到右排满"——左边的位置空着，右边却有节点。所以等高时左子树必须满（isPerfect），右子树可以缺（isComplete）。</p>
+      <p>而左比右高一层时，最后一层只在左子树里，右子树是倒数第二层——必须满。左子树可以缺（isComplete），右子树必须满（isPerfect）。</p>
     </div>
 
     <h3>互动：点击节点查看属性</h3>
@@ -627,7 +628,7 @@ footer { text-align: center; padding: 3rem 24px; color: var(--muted); font-size:
         h[u] = max(h[l], h[r]) + <span class="num">1</span>;
         perf[u] = perf[l] && perf[r] && (h[l] == h[r]);
         <span class="kw">if</span> (h[l] == h[r]) {
-            comp[u] = comp[l] && perf[r];
+            comp[u] = perf[l] && comp[r];
         } <span class="kw">else if</span> (h[l] == h[r] + <span class="num">1</span>) {
             comp[u] = comp[l] && perf[r];
         } <span class="kw">else</span> {

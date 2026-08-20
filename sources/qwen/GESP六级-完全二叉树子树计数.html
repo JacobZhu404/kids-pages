@@ -534,9 +534,9 @@ function dpFrames(lc, rc, n, DP){
     } else {
       computed.add(u);
       if (DP.ok[u]) cnt++;
-      frames.push(mk('compute', u,
-        '处理 '+u+'：h='+DP.h[u]+'，满='+(DP.full[u]?'✓':'✗')+'，完全='+(DP.ok[u]?'✓':'✗')+
-        (DP.ok[u] ? ' → 计数 +1（累计 '+cnt+'）' : ' → 不计')) + '。' + reasonFor(lc, rc, u, DP));
+      const msg = '处理 '+u+'：h='+DP.h[u]+'，满='+(DP.full[u]?'✓':'✗')+'，完全='+(DP.ok[u]?'✓':'✗')+
+        (DP.ok[u] ? ' → 计数 +1（累计 '+cnt+'）' : ' → 不计') + '。' + reasonFor(lc, rc, u, DP);
+      frames.push(mk('compute', u, msg));
     }
   }
   frames.push({type:'done', u:0, stack:[], computed:[...computed], cnt,

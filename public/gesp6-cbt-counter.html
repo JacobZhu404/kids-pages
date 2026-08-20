@@ -95,7 +95,6 @@
   .no-txt { color:#dc2626; font-weight:700; }
   @media (max-width:600px){ header h1{font-size:23px;} }
 </style>
-
 <style id="kg-nav-style">
 #kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
 #kg-nav .kg-home{color:#0284c7;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
@@ -121,8 +120,6 @@ body{padding-top:46px;}
   <div class="kg-topics"><a href="index.html#topic-dfs">① DFS/BFS</a><a href="index.html#topic-tree">② 树基础</a><a href="index.html#topic-p11962">③ 树上漫步</a><a href="index.html#topic-cbt" class="kg-active">④ 完全二叉树</a></div>
 </nav>
 <!-- kg-nav-end -->
-
-
 
 
 <header>
@@ -561,9 +558,9 @@ function dpFrames(lc, rc, n, DP){
     } else {
       computed.add(u);
       if (DP.ok[u]) cnt++;
-      frames.push(mk('compute', u,
-        '处理 '+u+'：h='+DP.h[u]+'，满='+(DP.full[u]?'✓':'✗')+'，完全='+(DP.ok[u]?'✓':'✗')+
-        (DP.ok[u] ? ' → 计数 +1（累计 '+cnt+'）' : ' → 不计') + '。' + reasonFor(lc, rc, u, DP)));
+      const msg = '处理 '+u+'：h='+DP.h[u]+'，满='+(DP.full[u]?'✓':'✗')+'，完全='+(DP.ok[u]?'✓':'✗')+
+        (DP.ok[u] ? ' → 计数 +1（累计 '+cnt+'）' : ' → 不计') + '。' + reasonFor(lc, rc, u, DP);
+      frames.push(mk('compute', u, msg));
     }
   }
   frames.push({type:'done', u:0, stack:[], computed:[...computed], cnt,
@@ -781,8 +778,6 @@ function hl(code){
 }
 document.querySelectorAll('pre code.cpp').forEach(el => { el.innerHTML = hl(el.textContent); });
 </script>
-
-
 <!-- kg-eggy-start -->
 <div id="kg-eggy" title="点我玩！连点10次有彩蛋">
   <svg width="70" height="84" viewBox="0 0 100 120">

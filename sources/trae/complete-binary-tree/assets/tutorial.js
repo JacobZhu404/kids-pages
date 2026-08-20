@@ -94,7 +94,7 @@ function computeTree(tree) {
       h[u] = Math.max(h[l], h[r]) + 1;
       perf[u] = perf[l] && perf[r] && (h[l] === h[r]);
       if (h[l] === h[r]) {
-        comp[u] = comp[l] && perf[r];
+        comp[u] = perf[l] && comp[r];
       } else if (h[l] === h[r] + 1) {
         comp[u] = comp[l] && perf[r];
       } else {
@@ -119,21 +119,21 @@ function renderStaticTree(svgId, tree, showResult) {
 
   var data = computeTree(tree);
 
-  tree.lc.forEach(function (lc_val, i) {
-    if (i === 0) return;
-    if (lc_val !== 0) {
-      var p1 = tree.pos[i], p2 = tree.pos[lc_val];
+  for (var i = 1; i <= tree.n; i++) {
+    var pi = tree.pos[i];
+    if (tree.lc[i] !== 0) {
+      var pl = tree.pos[tree.lc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pl.x, y2: pl.y, class: 'edge-line active'
       }));
     }
     if (tree.rc[i] !== 0) {
-      var p3 = tree.pos[tree.rc[i]];
+      var pr = tree.pos[tree.rc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p3.x, y2: p3.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pr.x, y2: pr.y, class: 'edge-line active'
       }));
     }
-  });
+  }
 
   for (var i = 1; i <= tree.n; i++) {
     var node = tree.pos[i];
@@ -340,21 +340,21 @@ function initApproachExplorer() {
 
   svg.innerHTML = '';
 
-  tree.lc.forEach(function (lc_val, i) {
-    if (i === 0) return;
-    if (lc_val !== 0) {
-      var p1 = tree.pos[i], p2 = tree.pos[lc_val];
+  for (var i = 1; i <= tree.n; i++) {
+    var pi = tree.pos[i];
+    if (tree.lc[i] !== 0) {
+      var pl = tree.pos[tree.lc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pl.x, y2: pl.y, class: 'edge-line active'
       }));
     }
     if (tree.rc[i] !== 0) {
-      var p3 = tree.pos[tree.rc[i]];
+      var pr = tree.pos[tree.rc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p3.x, y2: p3.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pr.x, y2: pr.y, class: 'edge-line active'
       }));
     }
-  });
+  }
 
   for (var i = 1; i <= tree.n; i++) {
     (function (nodeIdx) {
@@ -403,7 +403,7 @@ function initApproachExplorer() {
     if (!isLeaf && tree.lc[idx] !== 0 && tree.rc[idx] !== 0) {
       var hL = data.h[tree.lc[idx]], hR = data.h[tree.rc[idx]];
       var detail;
-      if (hL === hR) detail = 'h[l]==h[r](' + hL + '==' + hR + ') \u2192 comp[l] && perf[r]';
+      if (hL === hR) detail = 'h[l]==h[r](' + hL + '==' + hR + ') \u2192 perf[l] && comp[r]';
       else if (hL === hR + 1) detail = 'h[l]==h[r]+1(' + hL + '==' + hR + '+1) \u2192 comp[l] && perf[r]';
       else detail = 'h[l]=' + hL + ', h[r]=' + hR + ' \u2192 false';
       panel.innerHTML += '<div class="prop-row"><span class="prop-name">判定依据</span><span class="prop-val" style="font-size:0.8rem;">' + detail + '</span></div>';
@@ -506,14 +506,14 @@ function buildAnimSteps(tree) {
       h[u] = Math.max(h[l], h[r]) + 1;
       perf[u] = perf[l] && perf[r] && (h[l] === h[r]);
       if (h[l] === h[r]) {
-        comp[u] = comp[l] && perf[r];
+        comp[u] = perf[l] && comp[r];
       } else if (h[l] === h[r] + 1) {
         comp[u] = comp[l] && perf[r];
       } else {
         comp[u] = false;
       }
       var detail;
-      if (h[l] === h[r]) detail = 'h[l]==h[r]=' + h[l] + ' \u2192 comp[l] && perf[r] = ' + comp[u];
+      if (h[l] === h[r]) detail = 'h[l]==h[r]=' + h[l] + ' \u2192 perf[l] && comp[r] = ' + comp[u];
       else if (h[l] === h[r] + 1) detail = 'h[l]=' + h[l] + ', h[r]=' + h[r] + ' (左高一层) \u2192 comp[l] && perf[r] = ' + comp[u];
       else detail = 'h[l]=' + h[l] + ', h[r]=' + h[r] + ' (高度差过大) \u2192 isComplete=false';
       steps.push({
@@ -570,21 +570,21 @@ function renderAnimStep() {
   var svg = $('animTree');
   svg.innerHTML = '';
 
-  tree.lc.forEach(function (lc_val, i) {
-    if (i === 0) return;
-    if (lc_val !== 0) {
-      var p1 = tree.pos[i], p2 = tree.pos[lc_val];
+  for (var i = 1; i <= tree.n; i++) {
+    var pi = tree.pos[i];
+    if (tree.lc[i] !== 0) {
+      var pl = tree.pos[tree.lc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pl.x, y2: pl.y, class: 'edge-line active'
       }));
     }
     if (tree.rc[i] !== 0) {
-      var p3 = tree.pos[tree.rc[i]];
+      var pr = tree.pos[tree.rc[i]];
       svg.appendChild(createSVG('line', {
-        x1: p1.x, y1: p1.y, x2: p3.x, y2: p3.y, class: 'edge-line active'
+        x1: pi.x, y1: pi.y, x2: pr.x, y2: pr.y, class: 'edge-line active'
       }));
     }
-  });
+  }
 
   for (var i = 1; i <= tree.n; i++) {
     var node = tree.pos[i];
@@ -736,21 +736,21 @@ function initInteractivePractice() {
   function render() {
     svg.innerHTML = '';
 
-    tree.lc.forEach(function (lc_val, i) {
-      if (i === 0) return;
-      if (lc_val !== 0) {
-        var p1 = tree.pos[i], p2 = tree.pos[lc_val];
+    for (var i = 1; i <= tree.n; i++) {
+      var pi = tree.pos[i];
+      if (tree.lc[i] !== 0) {
+        var pl = tree.pos[tree.lc[i]];
         svg.appendChild(createSVG('line', {
-          x1: p1.x, y1: p1.y, x2: p2.x, y2: p2.y, class: 'edge-line active'
+          x1: pi.x, y1: pi.y, x2: pl.x, y2: pl.y, class: 'edge-line active'
         }));
       }
       if (tree.rc[i] !== 0) {
-        var p3 = tree.pos[tree.rc[i]];
+        var pr = tree.pos[tree.rc[i]];
         svg.appendChild(createSVG('line', {
-          x1: p1.x, y1: p1.y, x2: p3.x, y2: p3.y, class: 'edge-line active'
+          x1: pi.x, y1: pi.y, x2: pr.x, y2: pr.y, class: 'edge-line active'
         }));
       }
-    });
+    }
 
     for (var i = 1; i <= tree.n; i++) {
       (function (nodeIdx) {
@@ -860,13 +860,13 @@ var quizData = [
   {
     question: '节点有左右子，h[l]=2, h[r]=2，此时 isComplete 的判定条件是什么？',
     options: [
-      'comp[l] && comp[r]',
+      'perf[l] && comp[r]',
       'comp[l] && perf[r]',
       'perf[l] && perf[r]',
-      'comp[l] && comp[r] && perf[r]'
+      'comp[l] && comp[r]'
     ],
-    answer: 1,
-    explain: 'h[l]==h[r] 时，左可以"缺"最后一层（只需 isComplete），右必须满（需要 isPerfect）。所以条件是 comp[l] && perf[r]。'
+    answer: 0,
+    explain: 'h[l]==h[r] 时，左子树必须满（isPerfect），右子树可以"缺"最后一层（只需 isComplete）。所以条件是 perf[l] && comp[r]。'
   },
   {
     question: '本题（完全二叉子树计数）的时间复杂度是？',

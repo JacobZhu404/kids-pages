@@ -323,7 +323,6 @@ footer { text-align: center; padding: 3rem 24px; color: var(--muted); font-size:
   .hero { padding: 2rem 16px; }
 }
 </style>
-
 <style id="kg-nav-style">
 #kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
 #kg-nav .kg-home{color:#0284c7;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
@@ -349,8 +348,6 @@ body{padding-top:46px;}
   <div class="kg-topics"><a href="../index.html#topic-dfs">① DFS/BFS</a><a href="../index.html#topic-tree">② 树基础</a><a href="../index.html#topic-p11962">③ 树上漫步</a><a href="../index.html#topic-cbt" class="kg-active">④ 完全二叉树</a></div>
 </nav>
 <!-- kg-nav-end -->
-
-
 
 
 <!-- ===== 导航栏 ===== -->
@@ -512,18 +509,17 @@ body{padding-top:46px;}
     <div class="card info">
       <div class="card-title">有左右子时，isComplete 的判定</div>
       <p>设 hL = h[l]，hR = h[r]：</p>
-      <p>1. <strong>hL == hR</strong>（左右等高）：左子树必须满，右子树只需完全（可"缺"最后一层）。<br>
+      <p>1. <strong>hL == hR</strong>（左右等高）：左子树必须满，右子树可以"缺"最后一层。<br>
          isComplete = isPerfect[l] && isComplete[r]</p>
-      <p>2. <strong>hL == hR + 1</strong>（左比右高一层）：右子树必须满，左子树完全即可。<br>
+      <p>2. <strong>hL == hR + 1</strong>（左比右高一层）：左子树可以"缺"最后一层，右子树必须满。<br>
          isComplete = isComplete[l] && isPerfect[r]</p>
       <p>3. <strong>其他</strong>（高度差过大）：isComplete = false</p>
     </div>
 
     <div class="card tip">
-      <div class="card-title">等高 vs 左高一层，为什么规则不一样？</div>
-      <p>想象从上到下、从左到右给节点编号。最后一层的"缺口"只能在最右边的位置。<br>
-      ① 等高时：右子树在最右半边，它的最后一层允许缺（只要求从左到右连续）→ 右只需 <strong>isComplete</strong>；左子树在中间，最后一层一旦有缺，整层就不连续了 → 左必须 <strong>isPerfect</strong>。<br>
-      ② 左高一层时：最后一层全在左子树里 → 左只需 <strong>isComplete</strong>；右子树的深度比最后一层浅，它的每一层都必须填满 → 右必须 <strong>isPerfect</strong>。</p>
+      <div class="card-title">为什么等高时左子树必须"满"？</div>
+      <p>想象从上到下、从左到右给节点编号。当左右子树等高时，最后一层横跨两棵子树。如果左子树有"缺口"（不满），而右子树还有节点，就违反了"从左到右排满"——左边的位置空着，右边却有节点。所以等高时左子树必须满（isPerfect），右子树可以缺（isComplete）。</p>
+      <p>而左比右高一层时，最后一层只在左子树里，右子树是倒数第二层——必须满。左子树可以缺（isComplete），右子树必须满（isPerfect）。</p>
     </div>
 
     <h3>互动：点击节点查看属性</h3>
@@ -656,9 +652,9 @@ body{padding-top:46px;}
         h[u] = max(h[l], h[r]) + <span class="num">1</span>;
         perf[u] = perf[l] && perf[r] && (h[l] == h[r]);
         <span class="kw">if</span> (h[l] == h[r]) {
-            comp[u] = perf[l] && comp[r];   <span class="cmt">// 等高: 左满、右完全</span>
+            comp[u] = perf[l] && comp[r];
         } <span class="kw">else if</span> (h[l] == h[r] + <span class="num">1</span>) {
-            comp[u] = comp[l] && perf[r];   <span class="cmt">// 左高一层: 左完全、右满</span>
+            comp[u] = comp[l] && perf[r];
         } <span class="kw">else</span> {
             comp[u] = <span class="kw">false</span>;
         }
@@ -758,8 +754,6 @@ body{padding-top:46px;}
 </footer>
 
 <script src="./assets/tutorial.js"></script>
-
-
 <!-- kg-eggy-start -->
 <div id="kg-eggy" title="点我玩！连点10次有彩蛋">
   <svg width="70" height="84" viewBox="0 0 100 120">
