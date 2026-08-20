@@ -348,7 +348,8 @@ def inject_home():
 
     sb_css = """<style id="kg-sb-style">
 /* 左侧目录：首页默认展开，可悬停/✕收起 */
-#kg-sidebar{position:fixed;left:0;top:0;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:34px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
+#kg-sidebar{position:fixed;left:0;top:0;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:34px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;transform:translateX(-100%);transition:transform .26s cubic-bezier(.25,.7,.3,1);}
+body.kg-sb-open #kg-sidebar{transform:translateX(0);}
 #kg-sidebar .kg-sb-home{display:block;font-weight:800;font-size:14px;color:#0369a1;text-decoration:none;padding:8px 10px;border-radius:10px;background:#e0f2fe;margin-bottom:12px;transition:background .15s;}
 #kg-sidebar .kg-sb-home:hover{background:#bae6fd;}
 #kg-sidebar .kg-sb-topic{font-weight:700;font-size:12px;color:#0f766e;padding:10px 10px 4px;letter-spacing:.5px;}
