@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🌲 完全二叉树子树计数 · 图文动画精讲（GESP 六级）</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+         background:#f1f5f9; color:#1e293b; line-height:1.75; }
+  header { background:linear-gradient(135deg,#b45309,#d97706 55%,#7c3aed); color:#fff;
+           padding:42px 20px 34px; text-align:center; }
+  header h1 { font-size:30px; letter-spacing:1px; }
+  header p { margin-top:10px; font-size:16px; opacity:.93; }
+  .badge { display:inline-block; background:rgba(255,255,255,.22); border:1px solid rgba(255,255,255,.5);
+           border-radius:999px; padding:2px 14px; font-size:13px; margin-top:12px; }
+  nav { position:sticky; top:0; z-index:50; background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.08);
+        padding:10px 8px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  nav a { text-decoration:none; color:#b45309; background:#fffbeb; border:1px solid #fde68a;
+          border-radius:999px; padding:4px 13px; font-size:13px; }
+  nav a:hover { background:#b45309; color:#fff; }
+  main { max-width:1000px; margin:0 auto; padding:18px 16px 60px; }
+  section { background:#fff; border-radius:16px; padding:26px 26px 30px; margin:22px 0;
+            box-shadow:0 1px 6px rgba(15,23,42,.06); }
+  h2 { font-size:24px; margin-bottom:6px; color:#92400e; }
+  h2 .num { display:inline-block; background:linear-gradient(135deg,#b45309,#7c3aed); color:#fff;
+            border-radius:10px; padding:0 10px; margin-right:8px; font-size:20px; }
+  h3 { font-size:18px; margin:22px 0 8px; color:#92400e; }
+  p { margin:8px 0; }
+  .lead { font-size:17px; }
+  .tagline { background:#fffbeb; border-left:5px solid #f59e0b; border-radius:8px;
+             padding:12px 16px; margin:14px 0; }
+  .warn { background:#fff7ed; border-left:5px solid #f97316; border-radius:8px; padding:12px 16px; margin:14px 0; }
+  .tip  { background:#f0fdf4; border-left:5px solid #22c55e; border-radius:8px; padding:12px 16px; margin:14px 0; }
+  .key  { background:#f5f3ff; border-left:5px solid #7c3aed; border-radius:8px; padding:12px 16px; margin:14px 0; }
+  ul,ol { margin:8px 0 8px 26px; }
+  li { margin:4px 0; }
+  table { border-collapse:collapse; width:100%; margin:14px 0; font-size:14.5px; }
+  th,td { border:1px solid #e2e8f0; padding:7px 9px; text-align:center; }
+  th { background:#fffbeb; color:#92400e; }
+  .mono, code, pre { font-family:"SF Mono",Menlo,Consolas,"Courier New",monospace; }
+  code { background:#fffbeb; color:#b45309; padding:1px 6px; border-radius:5px; font-size:13.5px; }
+  pre { background:#0f172a; color:#e2e8f0; border-radius:12px; padding:16px 18px; overflow-x:auto; margin:12px 0; }
+  pre code { background:none; color:inherit; padding:0; font-size:13.5px; line-height:1.65; }
+  .c { color:#6ee7b7; } .k { color:#7dd3fc; } .n { color:#fdba74; } .pp { color:#d8b4fe; } .s { color:#fcd34d; }
+  .controls { display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:14px 0 6px; }
+  .controls button, .controls select { font-size:14px; padding:7px 14px; border-radius:999px; border:1px solid #fde68a;
+    background:#fff; color:#b45309; cursor:pointer; }
+  .controls button:hover { background:#fffbeb; }
+  .controls button:disabled { opacity:.4; cursor:not-allowed; }
+  .status { font-size:13.5px; color:#475569; background:#f8fafc; border:1px dashed #cbd5e1;
+            border-radius:10px; padding:8px 12px; margin:10px 0; }
+  .container-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 12px; margin:10px 0;
+                   font-size:13.5px; overflow-x:auto; white-space:nowrap; }
+  .container-box b { color:#92400e; }
+  .chip { display:inline-block; background:#fffbeb; color:#92400e; border:1px solid #fde68a; border-radius:6px;
+          padding:1px 8px; margin:0 3px; font-family:"SF Mono",Menlo,monospace; font-size:13px; }
+  .lbl { font-size:12px; color:#64748b; margin:0 4px; }
+  .lbl.hot { color:#db2777; font-weight:600; }
+  .legend { font-size:13px; color:#475569; margin:10px 0; display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+  .legend span { display:inline-flex; align-items:center; gap:5px; }
+  .lg { display:inline-block; width:14px; height:14px; border-radius:3px; }
+  .opt { display:inline-block; margin:4px 8px 4px 0; padding:7px 16px; border-radius:999px; border:1px solid #fde68a;
+         background:#fff; color:#b45309; font-size:14px; cursor:pointer; }
+  .opt:hover { background:#fffbeb; }
+  .opt.ok { background:#22c55e; color:#fff; border-color:#22c55e; }
+  .opt.no { background:#fca5a5; color:#fff; border-color:#ef4444; }
+  .expl { display:none; background:#f0fdf4; border-left:5px solid #22c55e; border-radius:8px;
+          padding:10px 14px; margin:10px 0; font-size:14px; }
+  .expl.bad { background:#fef2f2; border-left-color:#ef4444; }
+  details { background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px; padding:10px 14px; margin:12px 0; }
+  summary { cursor:pointer; color:#92400e; font-weight:600; }
+  .tree-box { background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:10px; margin:10px 0; }
+  .info-card { background:#fffbeb; border:1px solid #fde68a; border-radius:12px; padding:12px 18px; margin:10px 0;
+               font-size:14.5px; min-height:64px; }
+  .info-card b { color:#92400e; }
+  .stuck { cursor:pointer; }
+  .stuck:hover { opacity:.85; }
+  .mini { display:inline-block; background:#f8fafc; border:1px solid #e2e8f0; border-radius:10px;
+          padding:6px; margin:4px 8px 4px 0; vertical-align:middle; }
+  .fig-row { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin:14px 0; }
+  .fig { text-align:center; background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:8px 10px; }
+  .fig p { font-size:13px; color:#475569; margin-top:2px; }
+  .rule-card { background:#fffbeb; border:1px solid #fde68a; border-left:6px solid #f59e0b; border-radius:12px;
+               padding:12px 18px; margin:10px 0; }
+  .rule-card b { color:#92400e; }
+  .rule-card .verdict-ok { color:#15803d; font-weight:700; }
+  .rule-card .verdict-no { color:#dc2626; font-weight:700; }
+  footer { text-align:center; color:#94a3b8; font-size:13px; padding:10px 0 40px; }
+  .bubble { background:#fffbeb; border:1px dashed #fbbf24; border-radius:14px; padding:14px 18px; margin:12px 0; }
+  .bubble b { color:#92400e; }
+  .bigformula { text-align:center; font-size:18px; margin:12px 0; }
+  .dp-table td { font-size:13.5px; }
+  .ok-txt { color:#15803d; font-weight:700; }
+  .no-txt { color:#dc2626; font-weight:700; }
+  @media (max-width:600px){ header h1{font-size:23px;} }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🌲 完全二叉树子树计数 · 精讲</h1>
+  <p>树 DP 入门 ｜ 高度 h · 满二叉树 full · 完全二叉树 complete</p>
+  <span class="badge">n ≤ 10⁵ · 一次后序遍历搞定</span>
+</header>
+
+<nav>
+  <a href="#sec0">0 题目翻译</a>
+  <a href="#sec1">1 什么是完全二叉树</a>
+  <a href="#sec2">2 三个判定量</a>
+  <a href="#sec3">3 判定规则</a>
+  <a href="#sec4">4 动画：算法执行</a>
+  <a href="#sec5">5 C++ 代码</a>
+  <a href="#sec6">6 小测验</a>
+  <a href="#sec7">7 总结</a>
+</nav>
+
+<main>
+
+<!-- ============ 第 0 节 ============ -->
+<section id="sec0">
+  <h2><span class="num">0</span>先翻译题目</h2>
+  <p class="lead">题干给了我们一棵「有根二叉树」：1 号是根，每个点 i 有左儿子 <code>l<sub>i</sub></code> 和右儿子 <code>r<sub>i</sub></code>（0 表示没有）。</p>
+  <div class="tagline">
+    <b>题目到底要什么：</b>每个点 i 都「管着」一棵以它为根的子树（它 + 所有后代）。<br>
+    把这 n 棵子树挨个检查，数一数<b>有几棵是完全二叉树</b>。
+  </div>
+  <p>所以这题有两步：<b>① 搞清楚什么叫「完全二叉树」；② 设计一个能同时判断 n 棵子树的高效方法。</b>n 最大 10⁵，不能一棵一棵去扫（那就 O(n²) 了），必须<b>一次遍历把 n 个答案全算出来</b>——这就是「树 DP（动态规划）」的思想。</p>
+</section>
+
+<!-- ============ 第 1 节 ============ -->
+<section id="sec1">
+  <h2><span class="num">1</span>什么是完全二叉树？</h2>
+  <p class="lead"><b>完全二叉树 = 一层一层从左往右填，除了最后一层，其它层必须填满；最后一层也必须从左到右连续，不能有「空位」。</b></p>
+  <p>注意区分三个容易混的词：</p>
+  <ul>
+    <li><b>满二叉树（也叫完美二叉树）</b>：<u>每一层</u>都完全填满 → 节点数 = 2<sup>高度</sup>−1。</li>
+    <li><b>完全二叉树</b>：只要求「除了最后一层都满，最后一层靠左连续」。<b>满二叉树一定是完全二叉树</b>，反过来不一定。</li>
+    <li><b>普通二叉树</b>：随便怎么长都行。</li>
+  </ul>
+  <div class="fig-row">
+    <div class="fig"><svg id="fg1" width="150" height="110" style="vertical-align:middle"></svg><p>满二叉树 → 完全 ✓</p></div>
+    <div class="fig"><svg id="fg2" width="150" height="110" style="vertical-align:middle"></svg><p>完全但不满 ✓</p></div>
+    <div class="fig"><svg id="fg3" width="150" height="110" style="vertical-align:middle"></svg><p>最后一层有缺口 ✗</p></div>
+  </div>
+  <div class="warn"><b>⚠️ 最容易错：</b>完全二叉树<b>不要求</b>最后一层填满，只要求「从左往右连续」。最后一层只有 1 个节点（最左边）也可以是完全二叉树！</div>
+
+  <h3>🔍 判定小测试：这些子树是完全二叉树吗？（点选项看对错）</h3>
+
+  <div class="quiz-q" data-ans="yes">
+    <p>① <svg class="mini" id="q1" width="120" height="80" style="vertical-align:middle"></svg> 根 + 两个叶子（3 个点）</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 是！满二叉树 → 一定是完全二叉树。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="yes">
+    <p>② <svg class="mini" id="q2" width="90" height="80" style="vertical-align:middle"></svg> 只有左孩子的两个点（2 个点）</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 是！第 1 层满，第 2 层只有最左边的节点 → 从左往右连续 ✓</div>
+  </div>
+
+  <div class="quiz-q" data-ans="no">
+    <p>③ <svg class="mini" id="q3" width="90" height="110" style="vertical-align:middle"></svg> 三个点全往左挂（一条斜线）</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 不是！第 2 层本该有 2 个节点，但只有左边的 1 个 → 第 2 层没满，而它又不是最后一层（第 3 层还有节点）→ ✗</div>
+  </div>
+
+  <div class="quiz-q" data-ans="no">
+    <p>④ <svg class="mini" id="q4" width="100" height="80" style="vertical-align:middle"></svg> 只有右孩子（2 个点）</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 不是！第 2 层最左边是空的，第一个节点就跑到右边去了 → 不连续 ✗</div>
+  </div>
+
+  <div class="quiz-q" data-ans="yes">
+    <p>⑤ <svg class="mini" id="q5" width="130" height="110" style="vertical-align:middle"></svg> 左孩子带着一个左孙子，右孩子是叶子（4 个点）</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 是！第 3 层只有一个节点且在最左边 → 连续 ✓。这就是「完全但不满」的经典例子！</div>
+  </div>
+
+  <div class="quiz-q" data-ans="no">
+    <p>⑥ <svg class="mini" id="q6" width="130" height="110" style="vertical-align:middle"></svg> 左右孩子各带一个左孙子（5 个点）</p>
+    <button class="opt" data-v="yes">是</button>
+    <button class="opt" data-v="no">不是</button>
+    <div class="expl">✔️ 不是！第 3 层从左到右是：有、<b>空</b>、有 → 中间有缺口 ✗</div>
+  </div>
+
+  <div class="bubble"><b>🎯 一句话记法：</b>把节点按「堆的编号」排（左=2i，右=2i+1），<b>完全二叉树 = 编号恰好是 1、2、3……k 没有跳号</b>。</div>
+</section>
+
+<!-- ============ 第 2 节 ============ -->
+<section id="sec2">
+  <h2><span class="num">2</span>三个判定量：h、满、完全</h2>
+  <p>要判断「子树是不是完全二叉树」，只需要给每个节点存三个信息：</p>
+  <table>
+    <tr><th>信息</th><th>含义</th><th>怎么算</th></tr>
+    <tr><td><b>高度 h</b></td><td>子树有多高（叶子 = 1）</td><td>max(左高, 右高) + 1</td></tr>
+    <tr><td><b>满 full</b></td><td>是不是满二叉树（每层都填满）</td><td>左满 &amp;&amp; 右满 &amp;&amp; 左右等高</td></tr>
+    <tr><td><b>完全 ok</b></td><td>是不是完全二叉树 ← <b>我们要的答案</b></td><td>见第 3 节的规则</td></tr>
+  </table>
+  <p>关键：<b>这三个量都只和「孩子」有关</b>——先算孩子，就能算爸爸。这就是「自底向上」的树 DP。</p>
+
+  <h3>🖱️ 判案练习：点击树上的节点，看它「管着」的子树是不是完全二叉树</h3>
+  <p>这棵演示树有 10 个点。<b>点一下任意节点</b>，它的整棵子树会亮起来，同时给出判决和理由！</p>
+  <div class="legend">
+    <span><span class="lg" style="background:#86efac"></span>是完全二叉树</span>
+    <span><span class="lg" style="background:#fca5a5"></span>不是完全二叉树</span>
+    <span><span class="lg" style="background:#f59e0b"></span>选中的节点</span>
+  </div>
+  <div class="tree-box"><svg id="judge_svg" width="100%" style="max-width:460px;display:block;margin:0 auto;"></svg></div>
+  <div class="info-card" id="judge_info">👆 点一个节点，我来判案！</div>
+</section>
+
+<!-- ============ 第 3 节 ============ -->
+<section id="sec3">
+  <h2><span class="num">3</span>判定规则：四种情况</h2>
+  <p>节点 u 的子树是否完全，看它的孩子情况（<code>hl</code> = 左子树高度，<code>hr</code> = 右子树高度）：</p>
+
+  <div class="rule-card">
+    <b>情况 ① 叶子（没有孩子）</b> → <span class="verdict-ok">是完全二叉树 ✓</span>
+    <p>高度 1，满二叉树，当然也是完全二叉树。</p>
+  </div>
+
+  <div class="rule-card">
+    <b>情况 ② 只有左孩子</b> → 左孩子必须是<b>叶子</b>（高度 1）<span class="verdict-ok">才是完全 ✓</span>
+    <p>只有左孩子时，第 2 层右边是空的。如果第 2 层不是最后一层（左孩子下面还有节点），第 2 层就没满 → ✗。所以左孩子必须是叶子。</p>
+  </div>
+
+  <div class="rule-card">
+    <b>情况 ③ 只有右孩子</b> → <span class="verdict-no">永远不是完全二叉树 ✗</span>
+    <p>第 2 层最左边就空了，第一个节点在右边 → 不连续，直接 ✗。</p>
+  </div>
+
+  <div class="rule-card">
+    <b>情况 ④ 两个孩子都有</b> → 分三种：
+    <p>· <code>hl == hr</code>（等高）：<b>左子树必须是满二叉树</b> → 才完全 ✓<br>
+       · <code>hl == hr + 1</code>（左比右高 1 层）：<b>右子树必须是满二叉树</b> → 才完全 ✓<br>
+       · 其他情况（左边比右边矮等）→ <span class="verdict-no">✗</span></p>
+  </div>
+
+  <div class="key"><b>🤔 为什么「等高时」只要左边满、右边不用满？</b><br>
+    等高时，最后一层横跨左右两边。节点是<b>从左往右</b>排的：先排完左子树最后一层，才轮到右边。<br>
+    如果左边最后一层有<b>空位</b>，空位后面却还有右子树的节点 → 不连续 → ✗。所以<b>左边必须填满</b>；而右边只要「自己的部分从左往右连续」就行（右子树自己完全即可），允许右边最后一层不满。</div>
+
+  <div class="key"><b>🤔 为什么「左高 1 层」时反而要右边满？</b><br>
+    左比右高 1 层时，最后一层只存在左子树里，倒数第二层横跨两边。<br>
+    倒数第二层必须<b>填满</b>：左边那半天然满（左子树完全且比右高），右边那半是右子树的<b>最后一层</b>——它必须是满的才行。所以这时要检查<b>右边是否满</b>。</div>
+</section>
+
+<!-- ============ 第 4 节 ============ -->
+<section id="sec4">
+  <h2><span class="num">4</span>动画：后序遍历 DP 全过程</h2>
+  <p>程序用<b>后序遍历</b>（先左、后右、再自己）把树走一遍：孩子算完才轮到爸爸，正好符合「自底向上」。每处理一个节点就填好它的 h / 满 / 完全，如果是完全二叉树就计数 +1。绿色 = 完全，红色 = 不完全。</p>
+  <div class="legend">
+    <span><span class="lg" style="background:#e2e8f0"></span>还没访问</span>
+    <span><span class="lg" style="background:#bfdbfe"></span>在栈中(孩子还没处理完)</span>
+    <span><span class="lg" style="background:#86efac"></span>处理完：完全 ✓</span>
+    <span><span class="lg" style="background:#fca5a5"></span>处理完：不完全 ✗</span>
+    <span><span class="lg" style="background:#f59e0b"></span>当前处理</span>
+  </div>
+  <div class="tree-box"><svg id="dp_svg" width="100%" style="max-width:460px;display:block;margin:0 auto;"></svg></div>
+  <div class="container-box" id="dp_stack"><b>栈：</b><span class="lbl">空</span></div>
+  <div class="container-box" id="dp_table"><b>DP 表：</b><span class="lbl">（还没处理任何节点）</span></div>
+  <div class="controls">
+    <button type="button" data-p="dp" data-a="reset">↺ 重置</button>
+    <button type="button" data-p="dp" data-a="prev">◀ 上一步</button>
+    <button type="button" data-p="dp" data-a="play">▶ 播放</button>
+    <button type="button" data-p="dp" data-a="next">下一步 ▶</button>
+    <select data-speed="dp">
+      <option value="800">慢速</option>
+      <option value="360" selected>中速</option>
+      <option value="110">快速</option>
+    </select>
+  </div>
+  <div class="status" id="st_dp"></div>
+  <p>后序遍历的顺序是 <b>4, 5, 2, 8, 6, 9, 10, 7, 3, 1</b>——每个节点算的时候，它的孩子一定已经算完了。数一数绿色：<b>2、4、5、6、7、8、9、10 共 8 棵</b>。</p>
+</section>
+
+<!-- ============ 第 5 节 ============ -->
+<section id="sec5">
+  <h2><span class="num">5</span>C++ 代码</h2>
+  <p>n 最大 10⁵，树可能长成一条「斜链」——<b>递归会爆栈</b>，所以主代码用<b>迭代后序遍历</b>（显式栈）。三个数组 h / full / ok 就是上一节动画里填的表。</p>
+<pre><code class="cpp">#include &lt;iostream&gt;
+#include &lt;stack&gt;
+using namespace std;
+
+const int N = 100005;
+int lc[N], rc[N];      // 左儿子、右儿子（0 = 没有）
+int h[N];              // 子树高度（叶子 = 1）
+bool full[N];          // 是不是满二叉树
+bool ok[N];            // 是不是完全二叉树 ← 答案
+
+int main() {
+    int n;
+    cin &gt;&gt; n;
+    for (int i = 1; i &lt;= n; i++) cin &gt;&gt; lc[i] &gt;&gt; rc[i];
+
+    // 迭代后序遍历：先左、后右、再自己（用显式栈，不递归）
+    int order[N];                       // 存后序顺序
+    int cntOrder = 0;
+    stack&lt;pair&lt;int,int&gt;&gt; st;           // &lt;节点, 0=先去孩子 1=孩子处理完&gt;
+    st.push(make_pair(1, 0));
+    while (!st.empty()) {
+        int u = st.top().first, s = st.top().second;
+        st.pop();
+        if (s == 0) {
+            st.push(make_pair(u, 1));
+            if (rc[u]) st.push(make_pair(rc[u], 0));   // 先压右
+            if (lc[u]) st.push(make_pair(lc[u], 0));   // 再压左 → 左先出
+        } else {
+            order[cntOrder++] = u;      // 孩子都处理完了
+        }
+    }
+
+    // 自底向上 DP：按后序顺序算
+    int ans = 0;
+    for (int k = 0; k &lt; cntOrder; k++) {
+        int u = order[k];
+        int l = lc[u], r = rc[u];
+        if (l == 0 &amp;&amp; r == 0) {                    // 情况① 叶子
+            h[u] = 1; full[u] = true; ok[u] = true;
+        }
+        else if (l &amp;&amp; r) {                          // 情况④ 两个孩子
+            int hl = h[l], hr = h[r];
+            h[u] = (hl &gt; hr ? hl : hr) + 1;
+            full[u] = full[l] &amp;&amp; full[r] &amp;&amp; (hl == hr);
+            ok[u] = false;
+            if (ok[l] &amp;&amp; ok[r]) {
+                if (hl == hr) ok[u] = full[l];       // 等高 → 左边要满
+                else if (hl == hr + 1) ok[u] = full[r]; // 左高1 → 右边要满
+            }
+        }
+        else if (l) {                                // 情况② 只有左孩子
+            h[u] = h[l] + 1; full[u] = false;
+            ok[u] = (h[l] == 1);                     // 左孩子必须是叶子
+        }
+        else {                                       // 情况③ 只有右孩子
+            h[u] = h[r] + 1; full[u] = false; ok[u] = false;
+        }
+        if (ok[u]) ans++;
+    }
+
+    cout &lt;&lt; ans &lt;&lt; endl;
+    return 0;
+}</code></pre>
+  <p><b>时间复杂度 O(n)</b>：每个节点只处理一次。<b>空间 O(n)</b>。</p>
+  <details><summary>📖 递归版（代码短，但斜链大数可能爆栈，慎用）</summary>
+<pre><code class="cpp">void dfs(int u) {
+    if (u == 0) return;
+    dfs(lc[u]); dfs(rc[u]);          // 先孩子
+    int l = lc[u], r = rc[u];
+    if (l == 0 &amp;&amp; r == 0) { h[u] = 1; full[u] = true; ok[u] = true; }
+    else if (l &amp;&amp; r) {
+        h[u] = max(h[l], h[r]) + 1;
+        full[u] = full[l] &amp;&amp; full[r] &amp;&amp; h[l] == h[r];
+        ok[u] = ok[l] &amp;&amp; ok[r] &amp;&amp;
+                ((h[l] == h[r] ? full[l] : (h[l] == h[r] + 1 ? full[r] : false)));
+    }
+    else if (l) { h[u] = h[l] + 1; full[u] = false; ok[u] = (h[l] == 1); }
+    else        { h[u] = h[r] + 1; full[u] = false; ok[u] = false; }
+}</code></pre>
+  </details>
+</section>
+
+<!-- ============ 第 6 节 ============ -->
+<section id="sec6">
+  <h2><span class="num">6</span>小测验</h2>
+
+  <div class="quiz-q" data-ans="cont">
+    <p>1️⃣ 完全二叉树的最后一层，节点必须是？</p>
+    <button class="opt" data-v="cont">从左到右连续，不能有缺口</button>
+    <button class="opt" data-v="full">必须填满</button>
+    <button class="opt" data-v="any">随便放</button>
+    <div class="expl">✔️ 连续不缺口！「填满」是满二叉树的要求，完全二叉树只要连续。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="leaf">
+    <p>2️⃣ 一个节点只有左孩子，什么情况下它的子树才是完全二叉树？</p>
+    <button class="opt" data-v="leaf">左孩子是叶子</button>
+    <button class="opt" data-v="any">只要左孩子完全就行</button>
+    <button class="opt" data-v="never">永远不行</button>
+    <div class="expl">✔️ 左孩子必须是叶子（高度 1）！否则第 2 层没满、而它又不是最后一层 → ✗</div>
+  </div>
+
+  <div class="quiz-q" data-ans="fullL">
+    <p>3️⃣ 两个孩子<b>等高</b>（hl == hr）时，要成为完全二叉树，必须满足？</p>
+    <button class="opt" data-v="fullL">左子树是满二叉树</button>
+    <button class="opt" data-v="fullR">右子树是满二叉树</button>
+    <button class="opt" data-v="both">两边都要满</button>
+    <div class="expl">✔️ 只需要左边满！最后一层先排左边，左边有空位就会挡住右边的节点 → 不连续。右边自己完全就行。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="fullR">
+    <p>4️⃣ 左子树比右子树<b>高 1 层</b>（hl == hr+1）时，必须满足？</p>
+    <button class="opt" data-v="fullL">左子树是满二叉树</button>
+    <button class="opt" data-v="fullR">右子树是满二叉树</button>
+    <button class="opt" data-v="both">两边都要满</button>
+    <div class="expl">✔️ 这时最后一层在左边，倒数第二层横跨两边，右子树的最后一层正好是它 → 右边必须填满。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="yn">
+    <p>5️⃣ 满二叉树一定是完全二叉树，反过来也对吗？</p>
+    <button class="opt" data-v="yn">反过来说不对</button>
+    <button class="opt" data-v="yy">反过来也对</button>
+    <div class="expl">✔️ 满 ⇒ 完全 ✓，但完全 ⇏ 满（比如「根 + 一个左叶子」是完全但不满）。</div>
+  </div>
+
+  <div class="quiz-q" data-ans="on">
+    <p>6️⃣ n = 10⁵ 时，这题应该怎么做？</p>
+    <button class="opt" data-v="on">一次后序遍历，O(n) 树 DP</button>
+    <button class="opt" data-v="n2">对每棵子树单独扫描，O(n²)</button>
+    <button class="opt" data-v="all">枚举所有可能的树形</button>
+    <div class="expl">✔️ 一次后序遍历！每个节点只算一次，孩子先算完爸爸就能直接算。O(n²) 在 10⁵ 下会超时。</div>
+  </div>
+</section>
+
+<!-- ============ 第 7 节 ============ -->
+<section id="sec7">
+  <h2><span class="num">7</span>总结 &amp; 考点</h2>
+  <table>
+    <tr><th>知识点</th><th>一句话</th></tr>
+    <tr><td>完全二叉树</td><td>除最后一层全满 + 最后一层从左到右连续（可不满）</td></tr>
+    <tr><td>满 vs 完全</td><td>满 ⇒ 完全；完全 ⇏ 满</td></tr>
+    <tr><td>后序遍历</td><td>先左、后右、再自己 —— 孩子先算完，爸爸才能算</td></tr>
+    <tr><td>树 DP 三件套</td><td>高度 h + 满 full + 完全 ok，自底向上填</td></tr>
+    <tr><td>两个孩子的微妙规则</td><td>等高 → 左边要满；左高 1 层 → 右边要满</td></tr>
+    <tr><td>防爆栈</td><td>n 大时用迭代栈代替递归</td></tr>
+  </table>
+  <div class="bubble"><b>🎯 这是「树 DP」的入门题：</b>答案不靠搜，靠「自底向上递推」。学会了它，七级的「树上背包」「树上最大独立集」都是同一套路——<b>先想清楚每个节点要维护哪几个量，再想它们怎么由孩子推出</b>。</div>
+</section>
+
+<footer>树 DP 第一课完成 🎉 有不懂的随时回来问我，也可以继续挑战下一题！</footer>
+</main>
+
+<script>
+/*__PURE_START__*/
+// 演示树：10 个点（1 为根），1(2,3) 2(4,5) 3(6,7) 6(8,0) 7(9,10)
+const DLC = [0,2,4,6,0,0,8,9,0,0,0];
+const DRC = [0,3,5,7,0,0,0,10,0,0,0];
+const DN = 10;
+const DPOS = {
+  1:[230,35], 2:[115,110], 3:[345,110], 4:[60,185], 5:[170,185],
+  6:[285,185], 7:[405,185], 8:[320,260], 9:[375,260], 10:[435,260]
+};
+const DEDGES = [[1,2],[1,3],[2,4],[2,5],[3,6],[3,7],[6,8],[7,9],[7,10]];
+
+// 树 DP（公式已对拍 139 万棵树验证）
+function treeDP(lc, rc, n){
+  const h = new Array(n+1).fill(0);
+  const full = new Array(n+1).fill(false);
+  const ok = new Array(n+1).fill(false);
+  const order = [];
+  // 迭代后序（和孩子数无关，直接按编号顺序处理不可靠，必须后序）
+  const st = [[1,0]];
+  while (st.length){
+    const [u, s] = st.pop();
+    if (s === 0){
+      st.push([u,1]);
+      if (rc[u]) st.push([rc[u],0]);
+      if (lc[u]) st.push([lc[u],0]);
+    } else order.push(u);
+  }
+  for (const u of order){
+    const l = lc[u], r = rc[u];
+    if (!l && !r){ h[u]=1; full[u]=true; ok[u]=true; }
+    else if (l && r){
+      h[u] = Math.max(h[l], h[r]) + 1;
+      full[u] = full[l] && full[r] && h[l]===h[r];
+      if (ok[l] && ok[r]){
+        if (h[l]===h[r]) ok[u] = full[l];
+        else if (h[l]===h[r]+1) ok[u] = full[r];
+        else ok[u] = false;
+      } else ok[u] = false;
+    } else if (l){
+      h[u] = h[l]+1; full[u]=false; ok[u] = (h[l]===1);
+    } else {
+      h[u] = h[r]+1; full[u]=false; ok[u] = false;
+    }
+  }
+  return {h, full, ok, order};
+}
+
+// 子树节点集合（含自己）
+function descendants(lc, rc, u){
+  const set = new Set();
+  (function go(x){ if (!x) return; set.add(x); go(lc[x]); go(rc[x]); })(u);
+  return set;
+}
+
+// 判定理由（用于判案交互）
+function reasonFor(lc, rc, u, DP){
+  const {h, full, ok} = DP;
+  const l = lc[u], r = rc[u];
+  let reason;
+  if (!l && !r) reason = '叶子：高度 1，是满二叉树 → 完全 ✓';
+  else if (l && r){
+    if (h[l]===h[r]) reason = '两个孩子等高（左高=右高='+h[l]+'）→ 需要左子树是满二叉树。左满='+(full[l]?'是':'否')+' → '+(ok[u]?'完全 ✓':'不完全 ✗');
+    else if (h[l]===h[r]+1) reason = '左比右高 1 层（左高='+h[l]+'，右高='+h[r]+'）→ 需要右子树是满二叉树。右满='+(full[r]?'是':'否')+' → '+(ok[u]?'完全 ✓':'不完全 ✗');
+    else reason = '左高='+h[l]+'，右高='+h[r]+'，左边比右边矮（hl<hr）→ 不完全 ✗';
+  } else if (l){
+    reason = '只有左孩子 '+l+'：左孩子高度='+h[l]+(h[l]===1 ? '（叶子）→ 完全 ✓' : '≠1（不是叶子，第二层没满）→ 不完全 ✗');
+  } else {
+    reason = '只有右孩子 '+r+'：第二层最左边就空了 → 永远不完全 ✗';
+  }
+  return reason;
+}
+
+// DP 动画帧
+function dpFrames(lc, rc, n, DP){
+  const frames = [];
+  const stack = [[1,0]];
+  const inStack = new Set([1]);
+  const computed = new Set();
+  let cnt = 0;
+  const mk = (type, u, msg) => ({type, u,
+    stack: stack.map(o=>o[0]),
+    computed: [...computed],
+    cnt,
+    msg});
+  frames.push(mk('start', 0, '开始后序遍历：先处理左子树，再右子树，最后自己（孩子算完爸爸才算）。'));
+  while (stack.length){
+    const top = stack[stack.length-1];
+    const u = top[0], s = top[1];
+    stack.pop();
+    if (s === 0){
+      stack.push([u,1]);
+      if (rc[u]){ stack.push([rc[u],0]); inStack.add(rc[u]); }
+      if (lc[u]){ stack.push([lc[u],0]); inStack.add(lc[u]); }
+      frames.push(mk('visit', u, '压栈节点 '+u+'（等它的孩子先算完），先走左孩子'));
+    } else {
+      computed.add(u);
+      if (DP.ok[u]) cnt++;
+      frames.push(mk('compute', u,
+        '处理 '+u+'：h='+DP.h[u]+'，满='+(DP.full[u]?'✓':'✗')+'，完全='+(DP.ok[u]?'✓':'✗')+
+        (DP.ok[u] ? ' → 计数 +1（累计 '+cnt+'）' : ' → 不计')) + '。' + reasonFor(lc, rc, u, DP));
+    }
+  }
+  frames.push({type:'done', u:0, stack:[], computed:[...computed], cnt,
+    msg:'🎉 遍历完成！完全二叉树共有 '+cnt+' 棵（节点 2、4、5、6、7、8、9、10）。'});
+  return frames;
+}
+/*__PURE_END__*/
+
+/* ============ 通用面板框架 ============ */
+const panels = {};
+function registerPanel(name, frames, render){
+  panels[name] = {frames, idx:0, playing:false, timer:null, speed:360, render};
+  render(name);
+}
+function goTo(name, i){
+  const p = panels[name];
+  p.idx = Math.max(0, Math.min(p.frames.length-1, i));
+  p.render(name);
+  updateBtns(name);
+}
+function stopPlay(name){
+  const p = panels[name];
+  p.playing = false;
+  if (p.timer){ clearInterval(p.timer); p.timer = null; }
+  updateBtns(name);
+}
+function togglePlay(name){
+  const p = panels[name];
+  if (p.playing){ stopPlay(name); return; }
+  p.playing = true;
+  if (p.idx >= p.frames.length-1) goTo(name, 0);
+  p.timer = setInterval(()=>{
+    if (p.idx >= p.frames.length-1) stopPlay(name);
+    else goTo(name, p.idx+1);
+  }, p.speed);
+  updateBtns(name);
+}
+function resetP(name){ stopPlay(name); goTo(name, 0); }
+function prevP(name){ stopPlay(name); goTo(name, panels[name].idx-1); }
+function nextP(name){ if (panels[name].idx < panels[name].frames.length-1) goTo(name, panels[name].idx+1); else stopPlay(name); }
+function updateBtns(name){
+  const p = panels[name];
+  document.querySelectorAll('[data-p="'+name+'"]').forEach(b=>{
+    const a = b.getAttribute('data-a');
+    if (a==='prev') b.disabled = p.idx <= 0;
+    if (a==='next') b.disabled = p.idx >= p.frames.length-1;
+    if (a==='play') b.textContent = p.playing ? '⏸ 暂停' : '▶ 播放';
+  });
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-p][data-a]');
+  if (!b) return;
+  const name = b.getAttribute('data-p'), a = b.getAttribute('data-a');
+  if (a==='reset') resetP(name);
+  else if (a==='prev') prevP(name);
+  else if (a==='next') nextP(name);
+  else if (a==='play') togglePlay(name);
+});
+document.addEventListener('change', e=>{
+  if (e.target.getAttribute('data-speed')){
+    const name = e.target.getAttribute('data-speed');
+    panels[name].speed = parseInt(e.target.value, 10);
+    if (panels[name].playing){ stopPlay(name); togglePlay(name); }
+  }
+});
+
+/* ============ 画树 SVG ============ */
+function drawDemoTree(svgId, prefix, clickable){
+  const svg = document.getElementById(svgId);
+  svg.setAttribute('viewBox', '0 0 500 300');
+  let html = '';
+  DEDGES.forEach(e => {
+    const a = DPOS[e[0]], b = DPOS[e[1]];
+    html += '<line id="'+prefix+'e'+e[0]+'_'+e[1]+'" x1="'+a[0]+'" y1="'+a[1]+'" x2="'+b[0]+'" y2="'+b[1]+'" stroke="#cbd5e1" stroke-width="2"/>';
+  });
+  for (let u=1;u<=DN;u++){
+    html += '<g id="'+prefix+'g'+u+'" class="'+(clickable?'stuck':'')+'">'+
+      '<circle id="'+prefix+'n'+u+'" cx="'+DPOS[u][0]+'" cy="'+DPOS[u][1]+'" r="19" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>'+
+      '<text x="'+DPOS[u][0]+'" y="'+(DPOS[u][1]+5)+'" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">'+u+'</text>'+
+      '</g>';
+  }
+  svg.innerHTML = html;
+}
+function drawMini(svgId, pts, edges, mark){
+  const svg = document.getElementById(svgId);
+  let html = '';
+  edges.forEach(e => {
+    html += '<line x1="'+pts[e[0]][0]+'" y1="'+pts[e[0]][1]+'" x2="'+pts[e[1]][0]+'" y2="'+pts[e[1]][1]+'" stroke="#475569" stroke-width="2"/>';
+  });
+  pts.forEach((p,i) => {
+    const f = (mark && mark[i]) ? '#fca5a5' : '#93c5fd';
+    html += '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="8" fill="'+f+'" stroke="#1d4ed8" stroke-width="2"/>'+
+      '<text x="'+p[0]+'" y="'+(p[1]+4)+'" text-anchor="middle" font-size="10" font-weight="700" fill="#1e293b">'+(i+1)+'</text>';
+  });
+  svg.innerHTML = html;
+}
+
+/* ============ DP 数据 ============ */
+const DP = treeDP(DLC, DRC, DN);
+const subOf = {};
+for (let u=1;u<=DN;u++) subOf[u] = descendants(DLC, DRC, u);
+
+/* ============ 判案交互 ============ */
+function renderJudge(u){
+  const sub = subOf[u];
+  for (let i=1;i<=DN;i++){
+    const el = document.getElementById('jd_n'+i);
+    if (sub.has(i)){
+      el.setAttribute('fill', DP.ok[i] ? '#86efac' : '#fca5a5');
+    } else {
+      el.setAttribute('fill', '#e2e8f0');
+    }
+    el.setAttribute('stroke', i===u ? '#f59e0b' : '#94a3b8');
+    el.setAttribute('stroke-width', i===u ? 4 : 2);
+  }
+  const cnt = [...sub].filter(x => x!==u).length + 1;
+  document.getElementById('judge_info').innerHTML =
+    '<b>节点 '+u+' 的子树</b>（共 '+cnt+' 个节点：'+[...sub].join('、')+'）<br>' +
+    (DP.ok[u] ? '✅ 是完全二叉树！' : '❌ 不是完全二叉树。') +
+    '<br>🧑‍⚖️ 判决理由：' + reasonFor(DLC, DRC, u, DP) +
+    '　<span class="lbl">h='+DP.h[u]+'，满='+(DP.full[u]?'✓':'✗')+'</span>';
+}
+
+/* ============ DP 动画渲染 ============ */
+function renderDP(name){
+  const p = panels[name], f = p.frames[p.idx];
+  const computed = new Set(f.computed);
+  for (let i=1;i<=DN;i++){
+    const el = document.getElementById('dp_n'+i);
+    let fill = '#e2e8f0';
+    if (computed.has(i)) fill = DP.ok[i] ? '#86efac' : '#fca5a5';
+    else if (f.stack.indexOf(i) >= 0) fill = '#bfdbfe';
+    el.setAttribute('fill', fill);
+    el.setAttribute('stroke', f.u===i ? '#f59e0b' : '#94a3b8');
+    el.setAttribute('stroke-width', f.u===i ? 4 : 2);
+  }
+  let sh = '<b>栈：</b>';
+  if (!f.stack.length) sh += '<span class="lbl">空</span>';
+  f.stack.forEach(u => sh += '<span class="chip">'+u+'</span>');
+  document.getElementById('dp_stack').innerHTML = sh;
+  let th = '<b>DP 表（已处理 '+computed.size+' / '+DN+'）：</b><br>';
+  if (!computed.size) th += '<span class="lbl">（还没处理任何节点）</span>';
+  const rows = [];
+  for (let i=1;i<=DN;i++){
+    if (computed.has(i)){
+      rows.push('<span class="chip">'+i+'</span> h='+DP.h[i]+' 满='+(DP.full[i]?'<span class="ok-txt">✓</span>':'<span class="no-txt">✗</span>')+' 完全='+(DP.ok[i]?'<span class="ok-txt">✓</span>':'<span class="no-txt">✗</span>'));
+    }
+  }
+  th += rows.join(' ｜ ');
+  document.getElementById('dp_table').innerHTML = th;
+  document.getElementById('st_dp').textContent =
+    '第 '+(p.idx+1)+' / '+p.frames.length+' 步 ｜ '+f.msg+' ｜ 已数到 '+f.cnt+' 棵';
+}
+
+/* ============ 初始化 ============ */
+drawDemoTree('judge_svg', 'jd_', true);
+for (let u=1;u<=DN;u++){
+  document.getElementById('jd_g'+u).addEventListener('click', ()=>renderJudge(u));
+}
+drawDemoTree('dp_svg', 'dp_', false);
+registerPanel('dp', dpFrames(DLC, DRC, DN, DP), renderDP);
+
+// 第 1 节三张对比图
+drawMini('fg1', [[70,12],[40,45],[100,45],[25,78],[55,78],[85,78],[115,78]],
+  [[0,1],[0,2],[1,3],[1,4],[2,5],[2,6]]);
+drawMini('fg2', [[70,12],[40,45],[100,45],[25,78],[55,78],[85,78]],
+  [[0,1],[0,2],[1,3],[1,4],[2,5]]);
+drawMini('fg3', [[70,12],[40,45],[100,45],[25,78],[85,78]],
+  [[0,1],[0,2],[1,3],[2,4]], {4:true});
+
+// 判定小测试的迷你树
+drawMini('q1', [[60,15],[30,55],[90,55]], [[0,1],[0,2]]);
+drawMini('q2', [[60,15],[60,60]], [[0,1]]);
+drawMini('q3', [[60,10],[60,50],[60,90]], [[0,1],[1,2]]);
+drawMini('q4', [[60,15],[90,60]], [[0,1]]);
+drawMini('q5', [[60,10],[30,50],[90,50],[15,90]], [[0,1],[0,2],[1,3]]);
+drawMini('q6', [[60,10],[30,50],[90,50],[15,90],[75,90]], [[0,1],[0,2],[1,3],[2,4]], {4:true});
+
+/* ============ 小测验 ============ */
+document.querySelectorAll('.quiz-q').forEach(qq => {
+  qq.querySelectorAll('.opt').forEach(o => {
+    o.addEventListener('click', () => {
+      if (qq.getAttribute('data-done')) return;
+      qq.setAttribute('data-done','1');
+      const ans = qq.getAttribute('data-ans'), val = o.getAttribute('data-v');
+      if (val === ans){
+        o.classList.add('ok');
+        qq.querySelector('.expl').classList.remove('bad');
+      } else {
+        o.classList.add('no');
+        qq.querySelector('.expl').classList.add('bad');
+        const right = qq.querySelector('.opt[data-v="'+ans+'"]');
+        if (right) right.classList.add('ok');
+      }
+      qq.querySelector('.expl').style.display = 'block';
+    });
+  });
+});
+
+/* ============ 代码高亮 ============ */
+const KW = new Set(['#include','include','using','namespace','std','int','char','long','bool','void','return','if','else','for','while','do','break','continue','struct','class','typedef','true','false','const','new','delete','NULL','nullptr','main','cin','cout','endl','queue','stack','vector','pair','make_pair','push','pop','front','top','back','empty','size','memset','push_back','max']);
+function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function hl(code){
+  const s = esc(code);
+  const parts = s.split(/(\/\/[^\n]*|"[^"]*"|#[^\n]*|&lt;[^&]*?&gt;|\b\d+\b|\b[A-Za-z_]\w*\b)/g);
+  return parts.map(t => {
+    if (t.startsWith('//')) return '<span class="c">'+t+'</span>';
+    if (t.startsWith('"')) return '<span class="s">'+t+'</span>';
+    if (t.charAt(0)==='#') return '<span class="pp">'+t+'</span>';
+    if (t.startsWith('&lt;') && t.endsWith('&gt;')) return '<span class="pp">'+t+'</span>';
+    if (/^\d+$/.test(t)) return '<span class="n">'+t+'</span>';
+    if (KW.has(t)) return '<span class="k">'+t+'</span>';
+    return t;
+  }).join('');
+}
+document.querySelectorAll('pre code.cpp').forEach(el => { el.innerHTML = hl(el.textContent); });
+</script>
+</body>
+</html>

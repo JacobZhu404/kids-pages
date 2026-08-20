@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>完全二叉子树计数 | GESP 六级备考</title>
+<style>
+/* ===== 字体 ===== */
+@font-face { font-family: 'Outfit'; src: url('./_shared/fonts/Outfit-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Outfit'; src: url('./_shared/fonts/Outfit-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Bricolage'; src: url('./_shared/fonts/BricolageGrotesque-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Bricolage'; src: url('./_shared/fonts/BricolageGrotesque-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'JetBrains'; src: url('./_shared/fonts/JetBrainsMono-Regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'JetBrains'; src: url('./_shared/fonts/JetBrainsMono-Bold.ttf') format('truetype'); font-weight: 700; font-display: swap; }
+
+/* ===== 颜色变量 ===== */
+:root {
+  --bg: #f0f4ff;
+  --bg2: #ffffff;
+  --ink: #1a1a2e;
+  --muted: #6b7280;
+  --rule: #e2e8f0;
+  --accent: #6366f1;
+  --accent2: #f59e0b;
+  --accent3: #10b981;
+  --accent4: #ec4899;
+  --accent-light: #e0e7ff;
+  --accent2-light: #fef3c7;
+  --accent3-light: #d1fae5;
+  --accent4-light: #fce7f3;
+  --success: #10b981;
+  --success-light: #d1fae5;
+  --danger: #ef4444;
+  --danger-light: #fee2e2;
+}
+
+/* ===== 全局 ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.7;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+body::before {
+  content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+  background:
+    radial-gradient(ellipse at 15% 10%, rgba(99,102,241,0.08), transparent 50%),
+    radial-gradient(ellipse at 85% 30%, rgba(16,185,129,0.06), transparent 50%),
+    radial-gradient(ellipse at 50% 90%, rgba(245,158,11,0.05), transparent 50%);
+  pointer-events: none; z-index: 0;
+}
+.container { max-width: 960px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+/* ===== 排版 ===== */
+h1, h2, h3, h4 { font-family: 'Bricolage', sans-serif; line-height: 1.3; }
+h1 { font-size: 2.6rem; font-weight: 700; }
+h2 { font-size: 2rem; font-weight: 700; margin-bottom: 1rem; }
+h3 { font-size: 1.35rem; font-weight: 700; margin-bottom: 0.6rem; }
+h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+p { margin-bottom: 1rem; }
+strong { font-weight: 700; }
+mark.key { background: none; color: var(--accent); font-weight: 600; }
+mark.green { background: none; color: var(--accent3); font-weight: 600; }
+mark.amber { background: none; color: var(--accent2); font-weight: 600; }
+mark.pink { background: none; color: var(--accent4); font-weight: 600; }
+mark.red { background: none; color: var(--danger); font-weight: 600; }
+a { color: var(--accent); text-decoration: none; }
+code { font-family: 'JetBrains', monospace; background: var(--accent-light); padding: 0.1rem 0.3rem; border-radius: 4px; font-size: 0.9em; }
+
+/* ===== Hero ===== */
+.hero { text-align: center; padding: 4rem 24px 3rem; position: relative; z-index: 1; }
+.hero h1 {
+  background: linear-gradient(135deg, var(--accent), var(--accent3));
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; margin-bottom: 0.5rem;
+}
+.hero .subtitle { font-size: 1.2rem; color: var(--muted); margin-bottom: 1.5rem; }
+.hero .badges { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+.badge {
+  padding: 0.4rem 1rem; border-radius: 999px; font-size: 0.85rem; font-weight: 600;
+  background: var(--bg2); border: 1px solid var(--rule); box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+/* ===== 导航 ===== */
+.nav-bar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(240,244,255,0.85); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--rule); padding: 0.5rem 0;
+}
+.nav-bar .container { display: flex; gap: 0.4rem; overflow-x: auto; padding: 0.5rem 24px; }
+.nav-bar a {
+  white-space: nowrap; padding: 0.4rem 0.9rem; border-radius: 999px;
+  font-size: 0.85rem; font-weight: 600; color: var(--muted); transition: all 0.2s;
+}
+.nav-bar a:hover { background: var(--bg2); color: var(--ink); }
+.nav-bar a.active { background: var(--accent); color: #fff; }
+
+/* ===== Section ===== */
+section { padding: 3rem 0; position: relative; z-index: 1; }
+.section-tag {
+  display: inline-block; font-size: 0.8rem; font-weight: 700; letter-spacing: 0.05em;
+  text-transform: uppercase; padding: 0.25rem 0.75rem; border-radius: 999px;
+  margin-bottom: 0.8rem;
+}
+.section-tag.t0 { background: var(--accent-light); color: var(--accent); }
+.section-tag.t1 { background: var(--accent3-light); color: var(--accent3); }
+.section-tag.t2 { background: var(--accent2-light); color: var(--accent2); }
+.section-tag.t3 { background: var(--accent4-light); color: var(--accent4); }
+.section-tag.t4 { background: var(--danger-light); color: var(--danger); }
+.section-tag.t5 { background: var(--accent-light); color: var(--accent); }
+.section-tag.t6 { background: var(--accent4-light); color: var(--accent4); }
+
+/* ===== 卡片 ===== */
+.card {
+  background: rgba(255,255,255,0.75); backdrop-filter: blur(10px);
+  border: 1px solid rgba(99,102,241,0.1); border-radius: 16px;
+  padding: 1.5rem; margin: 1.5rem 0;
+  box-shadow: 0 4px 24px rgba(99,102,241,0.06);
+}
+.card.tip { border-left: 4px solid var(--success); }
+.card.warn { border-left: 4px solid var(--accent2); }
+.card.info { border-left: 4px solid var(--accent); }
+.card.danger { border-left: 4px solid var(--danger); }
+.card-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.5rem; }
+
+/* ===== 代码块 ===== */
+.code-block {
+  background: #1e1e2e; border-radius: 12px; margin: 1.5rem 0; overflow: hidden;
+}
+.code-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.6rem 1rem; background: rgba(0,0,0,0.2);
+}
+.code-header .lang { color: #94a3b8; font-size: 0.8rem; font-family: 'JetBrains', monospace; }
+.code-header .dots { display: flex; gap: 6px; }
+.code-header .dot { width: 12px; height: 12px; border-radius: 50%; }
+.code-header .dot:nth-child(1) { background: #ff5f56; }
+.code-header .dot:nth-child(2) { background: #ffbd2e; }
+.code-header .dot:nth-child(3) { background: #27c93f; }
+.code-block pre {
+  padding: 1.2rem; overflow-x: auto; font-family: 'JetBrains', monospace;
+  font-size: 0.85rem; line-height: 1.6; color: #e2e8f0;
+}
+.code-block .kw { color: #c792ea; }
+.code-block .type { color: #82aaff; }
+.code-block .str { color: #c3e88d; }
+.code-block .num { color: #f78c6c; }
+.code-block .cmt { color: #546e7a; font-style: italic; }
+.code-block .fn { color: #82aaff; }
+
+/* ===== 动画区域 ===== */
+.anim-wrapper {
+  background: rgba(255,255,255,0.8); backdrop-filter: blur(10px);
+  border: 1px solid var(--rule); border-radius: 16px;
+  padding: 1.5rem; margin: 1.5rem 0;
+}
+.anim-canvas-wrap { position: relative; }
+.anim-canvas-wrap svg { width: 100%; height: auto; display: block; }
+.anim-controls {
+  display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center;
+  margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--rule);
+}
+.btn {
+  padding: 0.5rem 1.2rem; border-radius: 10px; border: none; cursor: pointer;
+  font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 0.9rem;
+  transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.3rem;
+}
+.btn-primary { background: var(--accent); color: #fff; }
+.btn-primary:hover:not(:disabled) { background: #4f46e5; transform: translateY(-1px); }
+.btn-green { background: var(--accent3); color: #fff; }
+.btn-green:hover:not(:disabled) { background: #059669; transform: translateY(-1px); }
+.btn-warn { background: var(--accent2); color: #fff; }
+.btn-warn:hover:not(:disabled) { background: #d97706; transform: translateY(-1px); }
+.btn-pink { background: var(--accent4); color: #fff; }
+.btn-pink:hover:not(:disabled) { background: #db2777; transform: translateY(-1px); }
+.btn-ghost { background: var(--bg2); color: var(--ink); border: 1px solid var(--rule); }
+.btn-ghost:hover:not(:disabled) { background: var(--accent-light); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn.active { box-shadow: 0 0 0 3px rgba(99,102,241,0.3); }
+.speed-control { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+.speed-control label { font-size: 0.85rem; color: var(--muted); }
+.speed-control input[type="range"] { width: 120px; }
+
+.step-info {
+  padding: 0.8rem 1rem; border-radius: 10px; background: var(--accent-light);
+  font-size: 0.9rem; min-height: 50px; display: flex; align-items: center;
+  margin-top: 0.8rem;
+}
+
+/* SVG 节点样式 */
+.node-circle {
+  fill: #cbd5e1; stroke: #94a3b8; stroke-width: 1.5px;
+  transition: all 0.4s ease; cursor: pointer;
+}
+.node-circle.complete { fill: var(--accent3) !important; stroke: none; }
+.node-circle.incomplete { fill: var(--danger) !important; stroke: none; }
+.node-circle.perfect { fill: var(--accent) !important; stroke: none; }
+.node-circle.current { fill: #ef4444 !important; stroke: #fff; stroke-width: 3px; }
+.node-circle.current { animation: node-pulse 1s ease-in-out infinite; }
+@keyframes node-pulse {
+  0%, 100% { r: 24; }
+  50% { r: 27; }
+}
+.node-circle.highlight { stroke: var(--accent4); stroke-width: 4px; stroke-dasharray: 5,3; }
+.node-circle.selected { stroke: var(--accent4); stroke-width: 4px; }
+.node-label { font-family: 'JetBrains', monospace; font-weight: 700; font-size: 15px; pointer-events: none; user-select: none; }
+.edge-line { stroke: #cbd5e1; stroke-width: 2; transition: all 0.3s; }
+.edge-line.active { stroke: var(--accent); stroke-width: 3; }
+
+/* ===== 图例 ===== */
+.legend { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: 0.8rem; font-size: 0.85rem; }
+.legend-item { display: flex; align-items: center; gap: 0.4rem; }
+.legend-dot { width: 16px; height: 16px; border-radius: 50%; }
+
+/* ===== 属性面板 ===== */
+.prop-panel {
+  border: 1px solid var(--rule); border-radius: 12px; padding: 1rem;
+  background: var(--bg2); margin-top: 1rem;
+}
+.prop-row { display: flex; justify-content: space-between; padding: 0.3rem 0; border-bottom: 1px solid var(--rule); font-size: 0.9rem; }
+.prop-row:last-child { border-bottom: none; }
+.prop-row .prop-name { color: var(--muted); }
+.prop-row .prop-val { font-weight: 700; }
+.prop-val.true { color: var(--success); }
+.prop-val.false { color: var(--danger); }
+
+/* ===== 概念树网格 ===== */
+.concept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+.concept-card {
+  background: rgba(255,255,255,0.75); backdrop-filter: blur(10px);
+  border: 2px solid var(--rule); border-radius: 14px; padding: 1rem;
+  text-align: center; cursor: pointer; transition: all 0.3s;
+}
+.concept-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px rgba(0,0,0,0.08); }
+.concept-card.correct { border-color: var(--success); background: rgba(209,250,229,0.3); }
+.concept-card.wrong { border-color: var(--danger); background: rgba(254,226,226,0.3); }
+.concept-card .verdict { font-weight: 700; font-size: 0.9rem; margin-top: 0.5rem; }
+.concept-card.correct .verdict { color: var(--success); }
+.concept-card.wrong .verdict { color: var(--danger); }
+.concept-card .explain { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; display: none; }
+.concept-card.revealed .explain { display: block; }
+.concept-card svg { width: 100%; height: auto; max-height: 160px; }
+
+/* ===== 规则表 ===== */
+.rules-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0; font-size: 0.9rem; }
+.rules-table th, .rules-table td { padding: 0.8rem 1rem; text-align: left; border-bottom: 1px solid var(--rule); }
+.rules-table th { font-family: 'Bricolage', sans-serif; font-weight: 700; background: var(--accent-light); }
+.rules-table .case-label { font-weight: 700; color: var(--accent); }
+
+/* ===== 算法布局 ===== */
+.algo-layout { display: grid; grid-template-columns: 1fr 280px; gap: 1.5rem; }
+.algo-side { display: flex; flex-direction: column; gap: 1rem; }
+
+/* ===== 选项按钮 ===== */
+.example-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+.example-tab {
+  padding: 0.5rem 1rem; border-radius: 10px; border: 2px solid var(--rule);
+  background: var(--bg2); cursor: pointer; font-weight: 600; font-size: 0.9rem;
+  font-family: 'Outfit', sans-serif; transition: all 0.2s;
+}
+.example-tab:hover { border-color: var(--accent); }
+.example-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+/* ===== 测验 ===== */
+.quiz-item {
+  background: rgba(255,255,255,0.75); backdrop-filter: blur(10px);
+  border: 1px solid var(--rule); border-radius: 14px; padding: 1.5rem;
+  margin: 1rem 0;
+}
+.quiz-question { font-weight: 700; font-size: 1rem; margin-bottom: 0.8rem; }
+.quiz-options { display: flex; flex-direction: column; gap: 0.5rem; }
+.quiz-option {
+  padding: 0.7rem 1rem; border-radius: 10px; border: 2px solid var(--rule);
+  background: var(--bg2); cursor: pointer; font-family: 'Outfit', sans-serif;
+  font-size: 0.9rem; transition: all 0.2s; text-align: left;
+}
+.quiz-option:hover { border-color: var(--accent); }
+.quiz-option.correct { background: var(--success-light); border-color: var(--success); color: var(--success); font-weight: 700; }
+.quiz-option.wrong { background: var(--danger-light); border-color: var(--danger); color: var(--danger); }
+.quiz-option.disabled { pointer-events: none; }
+.quiz-feedback { margin-top: 0.8rem; padding: 0.6rem 0.8rem; border-radius: 8px; font-size: 0.85rem; display: none; }
+.quiz-feedback.show { display: block; }
+.quiz-feedback.correct { background: var(--success-light); color: var(--success); }
+.quiz-feedback.wrong { background: var(--danger-light); color: var(--danger); }
+
+/* ===== 递归栈 ===== */
+.call-stack {
+  border: 1px solid var(--rule); border-radius: 12px; padding: 0.8rem;
+  background: var(--bg2); min-height: 80px;
+}
+.call-stack .cs-title {
+  font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  color: var(--muted); margin-bottom: 0.6rem;
+}
+.stack-frames { display: flex; flex-direction: column-reverse; gap: 4px; align-items: center; }
+.stack-frame {
+  padding: 0.4rem 1rem; border-radius: 8px; font-weight: 700; font-size: 0.85rem;
+  color: #fff; min-width: 100px; text-align: center;
+  animation: pop 0.3s ease;
+}
+@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+
+/* ===== 结果统计 ===== */
+.result-summary {
+  background: var(--accent3-light); border: 1px solid var(--accent3);
+  border-radius: 12px; padding: 1rem; text-align: center; margin-top: 1rem;
+}
+.result-summary .count { font-size: 2rem; font-weight: 700; color: var(--accent3); }
+.result-summary .label { font-size: 0.85rem; color: var(--muted); }
+
+/* ===== Footer ===== */
+footer { text-align: center; padding: 3rem 24px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--rule); margin-top: 2rem; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.6rem; }
+  .algo-layout { grid-template-columns: 1fr; }
+  .container { padding: 0 16px; }
+  .hero { padding: 2rem 16px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== 导航栏 ===== -->
+<nav class="nav-bar">
+  <div class="container">
+    <a href="#problem">题目解读</a>
+    <a href="#concept">完全二叉树</a>
+    <a href="#approach">递归判定</a>
+    <a href="#animation">算法动画</a>
+    <a href="#code">C++代码</a>
+    <a href="#practice">互动练习</a>
+    <a href="#quiz">知识测验</a>
+  </div>
+</nav>
+
+<!-- ===== Hero ===== -->
+<header class="hero">
+  <h1>完全二叉子树计数</h1>
+  <p class="subtitle">GESP 六级备考 · 洛谷 P1210</p>
+  <div class="badges">
+    <span class="badge">完全二叉树</span>
+    <span class="badge">后序 DFS</span>
+    <span class="badge">递归判定</span>
+    <span class="badge">O(n) 做法</span>
+  </div>
+</header>
+
+<!-- ===== 0. 题目解读 ===== -->
+<section id="problem">
+  <div class="container">
+    <span class="section-tag t0">第零课</span>
+    <h2>题目解读</h2>
+    <p>给定一棵有根二叉树（根为 1），每个节点有左右儿子。问：所有 n 棵子树中，有多少棵是<mark class="green">完全二叉树</mark>？</p>
+
+    <div class="card info">
+      <div class="card-title">输入输出格式</div>
+      <p><strong>输入：</strong>第一行 n，接下来 n 行每行两个整数 l<sub>i</sub>, r<sub>i</sub>（0 表示无此儿子）。</p>
+      <p><strong>输出：</strong>一个整数——完全二叉子树的数量。</p>
+    </div>
+
+    <h3>样例 1</h3>
+    <div class="anim-wrapper">
+      <div class="anim-canvas-wrap">
+        <svg id="ex1Tree" viewBox="0 0 600 300"></svg>
+      </div>
+      <div class="step-info" id="ex1Info">n=4。节点 1→(2,3)，2→(4,0)，3→(0,0)，4→(0,0)。所有 4 棵子树都是完全二叉树，答案 = 4。</div>
+    </div>
+
+    <h3>样例 2</h3>
+    <div class="anim-wrapper">
+      <div class="anim-canvas-wrap">
+        <svg id="ex2Tree" viewBox="0 0 600 300"></svg>
+      </div>
+      <div class="step-info" id="ex2Info">n=4。节点 1→(2,3)，2→(0,0)，3→(4,0)，4→(0,0)。只有节点 1 的子树不是完全二叉树，答案 = 3。</div>
+    </div>
+
+    <div class="card tip">
+      <div class="card-title">核心问题</div>
+      <p>对每个节点 u，判断以 u 为根的子树是否是完全二叉树。<strong>朴素做法</strong>是对每棵子树单独检查，但那样是 O(n²)。我们要找一种 <mark class="green">O(n)</mark> 的方法——一次 DFS 搞定所有节点。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 1. 什么是完全二叉树 ===== -->
+<section id="concept">
+  <div class="container">
+    <span class="section-tag t1">第一课</span>
+    <h2>什么是完全二叉树？</h2>
+    <p>完全二叉树是二叉树中一种"排得整整齐齐"的结构，它的定义是：</p>
+
+    <div class="card info">
+      <div class="card-title">完全二叉树的定义</div>
+      <p>1. <strong>除最后一层外，每一层都被完全填满</strong>（节点数达到最大值）。</p>
+      <p>2. <strong>最后一层的节点从左到右排列</strong>，中间不能有空位。</p>
+      <p>简单说：就像一个队列，从上到下、从左到右依次填满，最后一层可以没填完，但不能"跳着"填。</p>
+    </div>
+
+    <h3>动手判断：下面哪些是完全二叉树？</h3>
+    <p>点击每张卡片，看看对不对。注意最后一层节点的排列方式。</p>
+    <div class="concept-grid" id="conceptGrid"></div>
+
+    <div class="card tip">
+      <div class="card-title">记忆口诀</div>
+      <p><strong>"层满左对齐"</strong> —— 除最后一层全满，最后一层从左到右不留空。这就是完全二叉树。</p>
+    </div>
+
+    <h3>完全二叉树 vs 满二叉树</h3>
+    <div class="card warn">
+      <div class="card-title">别搞混！</div>
+      <p><mark class="amber">满二叉树</mark>（Perfect Binary Tree）：每个非叶子节点都有两个子节点，所有叶子在同一层。它是完全二叉树的<strong>特例</strong>。</p>
+      <p><mark class="green">完全二叉树</mark>（Complete Binary Tree）：允许最后一层不满，但必须从左到右排满。范围更宽。</p>
+      <p>所以：满二叉树一定是完全二叉树，但完全二叉树不一定是满二叉树。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. 递归判定思路 ===== -->
+<section id="approach">
+  <div class="container">
+    <span class="section-tag t2">第二课</span>
+    <h2>递归判定思路</h2>
+    <p>怎么用一次 DFS 判断所有子树？秘诀是：对每个节点维护<strong>三个属性</strong>，后序遍历时自底向上算出来。</p>
+
+    <h3>每个节点要算什么？</h3>
+    <div class="term-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem;margin:1.5rem 0;">
+      <div class="card" style="margin:0;">
+        <div class="card-title"><mark class="key">height[u]</mark></div>
+        <p style="font-size:0.9rem;color:var(--muted);">子树的高度（最深叶子到 u 的距离）。叶子高度 = 0。</p>
+      </div>
+      <div class="card" style="margin:0;">
+        <div class="card-title"><mark class="amber">isPerfect[u]</mark></div>
+        <p style="font-size:0.9rem;color:var(--muted);">子树是否是满二叉树（所有层都填满）。</p>
+      </div>
+      <div class="card" style="margin:0;">
+        <div class="card-title"><mark class="green">isComplete[u]</mark></div>
+        <p style="font-size:0.9rem;color:var(--muted);">子树是否是完全二叉树。这是我们最终要的答案。</p>
+      </div>
+    </div>
+
+    <h3>递归规则表</h3>
+    <p>根据节点 u 的子节点情况，分四种情形：</p>
+    <table class="rules-table">
+      <thead>
+        <tr>
+          <th>情形</th>
+          <th>height</th>
+          <th>isPerfect</th>
+          <th>isComplete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="case-label">叶子（无子）</td>
+          <td>0</td>
+          <td>true</td>
+          <td>true</td>
+        </tr>
+        <tr>
+          <td class="case-label">只有左子 l</td>
+          <td>h[l]+1</td>
+          <td>false</td>
+          <td>h[l]==0（左子是叶子）</td>
+        </tr>
+        <tr>
+          <td class="case-label">只有右子 r</td>
+          <td>h[r]+1</td>
+          <td>false</td>
+          <td>false</td>
+        </tr>
+        <tr>
+          <td class="case-label">有左右子 l, r</td>
+          <td>max(h[l],h[r])+1</td>
+          <td>perf[l] && perf[r] && h[l]==h[r]</td>
+          <td>见下方</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="card info">
+      <div class="card-title">有左右子时，isComplete 的判定</div>
+      <p>设 hL = h[l]，hR = h[r]：</p>
+      <p>1. <strong>hL == hR</strong>（左右等高）：左可以"缺"最后一层，右必须满。<br>
+         isComplete = isComplete[l] && isPerfect[r]</p>
+      <p>2. <strong>hL == hR + 1</strong>（左比右高一层）：左可以"缺"最后一层，右必须满。<br>
+         isComplete = isComplete[l] && isPerfect[r]</p>
+      <p>3. <strong>其他</strong>（高度差过大）：isComplete = false</p>
+    </div>
+
+    <div class="card tip">
+      <div class="card-title">为什么右子树必须是"满"的？</div>
+      <p>想象从上到下、从左到右给节点编号。最后一层的"缺口"只能在最右边的位置。如果右子树不满，说明缺口在中间偏右——中间有空位，不符合"从左到右排满"。所以右子树必须满（isPerfect），左子树可以缺（isComplete）。</p>
+    </div>
+
+    <h3>互动：点击节点查看属性</h3>
+    <p>用样例 2 的树（有一棵子树不是完全二叉树）。点击任意节点，右侧面板会显示它的高度、isPerfect、isComplete。</p>
+    <div class="anim-wrapper">
+      <div class="algo-layout">
+        <div class="anim-canvas-wrap">
+          <svg id="approachTree" viewBox="0 0 600 300"></svg>
+        </div>
+        <div class="algo-side">
+          <div class="prop-panel" id="approachPanel">
+            <div class="card-title">节点属性</div>
+            <p style="color: var(--muted); font-size: 0.85rem;">点击树上的节点</p>
+          </div>
+          <div class="call-stack">
+            <div class="cs-title">图例</div>
+            <div class="legend" style="flex-direction:column;gap:0.4rem;">
+              <div class="legend-item"><span class="legend-dot" style="background:var(--accent3)"></span>完全二叉树</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--danger)"></span>非完全二叉树</div>
+              <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>满二叉树</div>
+              <div class="legend-item"><span class="legend-dot" style="background:#cbd5e1;border:1.5px solid #94a3b8"></span>未判定</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. 算法执行动画 ===== -->
+<section id="animation">
+  <div class="container">
+    <span class="section-tag t3">第三课</span>
+    <h2>算法执行动画</h2>
+    <p>选择一个样例，看后序 DFS 如何一步步算出每个节点的三个属性。</p>
+
+    <div class="example-tabs">
+      <button class="example-tab active" id="tabEx1">样例 1（答案=4）</button>
+      <button class="example-tab" id="tabEx2">样例 2（答案=3）</button>
+    </div>
+
+    <div class="anim-wrapper">
+      <div class="algo-layout">
+        <div>
+          <div class="anim-canvas-wrap">
+            <svg id="animTree" viewBox="0 0 600 320"></svg>
+          </div>
+          <div class="anim-controls">
+            <button class="btn btn-primary" id="animPlay">▶ 播放</button>
+            <button class="btn btn-ghost" id="animPause">⏸ 暂停</button>
+            <button class="btn btn-ghost" id="animStep">⏭ 单步</button>
+            <button class="btn btn-ghost" id="animReset">↺ 重置</button>
+            <div class="speed-control">
+              <label>速度</label>
+              <input type="range" id="animSpeed" min="400" max="2500" value="1000" step="100">
+            </div>
+          </div>
+          <div class="step-info" id="animStepInfo">点击"播放"开始动画。</div>
+        </div>
+        <div class="algo-side">
+          <div class="call-stack">
+            <div class="cs-title">调用栈</div>
+            <div class="stack-frames" id="animStack"></div>
+          </div>
+          <div class="prop-panel" id="animProps">
+            <div class="card-title">已计算节点</div>
+            <p style="color: var(--muted); font-size: 0.85rem;">等待动画开始...</p>
+          </div>
+          <div class="result-summary" id="animResult" style="display:none;">
+            <div class="count" id="animCount">0</div>
+            <div class="label">棵完全二叉子树</div>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:#ef4444"></span>当前处理</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent3)"></span>完全二叉树</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--danger)"></span>非完全二叉树</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>满二叉树（也是完全）</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#cbd5e1;border:1.5px solid #94a3b8"></span>未处理</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. C++ 代码 ===== -->
+<section id="code">
+  <div class="container">
+    <span class="section-tag t4">第四课</span>
+    <h2>C++ 代码</h2>
+    <p>核心就是一个后序 DFS，对每个节点算三个属性，最后数 isComplete 为 true 的节点。</p>
+
+    <div class="code-block">
+      <div class="code-header">
+        <span class="lang">C++ · GESP 六级</span>
+        <div class="dots"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+      </div>
+      <pre><span class="cmt">// 完全二叉子树计数 - O(n) 后序 DFS</span>
+<span class="kw">#include</span> <span class="str">&lt;iostream&gt;</span>
+<span class="kw">using namespace</span> <span class="type">std</span>;
+
+<span class="kw">const int</span> N = <span class="num">100005</span>;
+<span class="kw">int</span> n, lc[N], rc[N];
+<span class="kw">int</span> h[N];           <span class="cmt">// 子树高度</span>
+<span class="kw">bool</span> perf[N], comp[N];  <span class="cmt">// isPerfect, isComplete</span>
+
+<span class="type">void</span> <span class="fn">dfs</span>(<span class="kw">int</span> u) {
+    <span class="kw">int</span> l = lc[u], r = rc[u];
+    <span class="kw">if</span> (l == <span class="num">0</span> && r == <span class="num">0</span>) {
+        <span class="cmt">// 叶子节点</span>
+        h[u] = <span class="num">0</span>;
+        perf[u] = <span class="kw">true</span>;
+        comp[u] = <span class="kw">true</span>;
+    } <span class="kw">else if</span> (l != <span class="num">0</span> && r == <span class="num">0</span>) {
+        <span class="cmt">// 只有左子</span>
+        dfs(l);
+        h[u] = h[l] + <span class="num">1</span>;
+        perf[u] = <span class="kw">false</span>;
+        comp[u] = (h[l] == <span class="num">0</span>);  <span class="cmt">// 左子必须是叶子</span>
+    } <span class="kw">else if</span> (l == <span class="num">0</span> && r != <span class="num">0</span>) {
+        <span class="cmt">// 只有右子 → 不可能完全</span>
+        dfs(r);
+        h[u] = h[r] + <span class="num">1</span>;
+        perf[u] = <span class="kw">false</span>;
+        comp[u] = <span class="kw">false</span>;
+    } <span class="kw">else</span> {
+        <span class="cmt">// 有左右子</span>
+        dfs(l);
+        dfs(r);
+        h[u] = max(h[l], h[r]) + <span class="num">1</span>;
+        perf[u] = perf[l] && perf[r] && (h[l] == h[r]);
+        <span class="kw">if</span> (h[l] == h[r]) {
+            comp[u] = comp[l] && perf[r];
+        } <span class="kw">else if</span> (h[l] == h[r] + <span class="num">1</span>) {
+            comp[u] = comp[l] && perf[r];
+        } <span class="kw">else</span> {
+            comp[u] = <span class="kw">false</span>;
+        }
+    }
+}
+
+<span class="type">int</span> <span class="fn">main</span>() {
+    cin >> n;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i <= n; i++)
+        cin >> lc[i] >> rc[i];
+    dfs(<span class="num">1</span>);
+    <span class="kw">int</span> cnt = <span class="num">0</span>;
+    <span class="kw">for</span> (<span class="kw">int</span> i = <span class="num">1</span>; i <= n; i++)
+        <span class="kw">if</span> (comp[i]) cnt++;
+    cout << cnt << endl;
+    <span class="kw">return</span> <span class="num">0</span>;
+}</pre>
+    </div>
+
+    <div class="card tip">
+      <div class="card-title">复杂度分析</div>
+      <p><strong>时间复杂度：O(n)</strong> —— 每个节点只访问一次。</p>
+      <p><strong>空间复杂度：O(n)</strong> —— 数组 + 递归栈。对于 n = 10⁵，最坏情况（退化为链）递归深度可达 10⁵，可能在某些评测机上爆栈。如果遇到这个问题，可以改成迭代式后序遍历。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. 互动练习 ===== -->
+<section id="practice">
+  <div class="container">
+    <span class="section-tag t5">第五课</span>
+    <h2>互动练习</h2>
+    <p>这是一棵更大的树（9 个节点）。点击任意节点，查看它的子树属性。点击"显示所有结果"可以一键看到哪些子树是完全二叉树。</p>
+
+    <div class="anim-wrapper">
+      <div class="algo-layout">
+        <div>
+          <div class="anim-canvas-wrap">
+            <svg id="practiceTree" viewBox="0 0 600 350"></svg>
+          </div>
+          <div class="anim-controls">
+            <button class="btn btn-green" id="practiceShowAll">显示所有结果</button>
+            <button class="btn btn-ghost" id="practiceReset">↺ 重置</button>
+          </div>
+        </div>
+        <div class="algo-side">
+          <div class="prop-panel" id="practicePanel">
+            <div class="card-title">节点属性</div>
+            <p style="color: var(--muted); font-size: 0.85rem;">点击树上的节点</p>
+          </div>
+          <div class="result-summary" id="practiceResult" style="display:none;">
+            <div class="count" id="practiceCount">0</div>
+            <div class="label">棵完全二叉子树</div>
+          </div>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent3)"></span>完全二叉树</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--danger)"></span>非完全二叉树</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--accent)"></span>满二叉树</div>
+        <div class="legend-item"><span class="legend-dot" style="background:#cbd5e1;border:1.5px solid #94a3b8"></span>未判定</div>
+      </div>
+    </div>
+
+    <div class="card info">
+      <div class="card-title">练习树的输入</div>
+      <p style="font-family: 'JetBrains', monospace; font-size: 0.85rem;">
+        9<br>
+        2 3<br>
+        4 5<br>
+        0 6<br>
+        7 8<br>
+        0 0<br>
+        9 0<br>
+        0 0<br>
+        0 0<br>
+        0 0
+      </p>
+      <p>你可以把这段输入复制到上面的代码里跑一跑，验证你的判断。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. 知识测验 ===== -->
+<section id="quiz">
+  <div class="container">
+    <span class="section-tag t6">第六课</span>
+    <h2>知识测验</h2>
+    <p>做做下面的题，检验你对完全二叉树和递归判定的理解。</p>
+    <div id="quizContainer"></div>
+  </div>
+</section>
+
+<!-- ===== Footer ===== -->
+<footer>
+  <p>完全二叉子树计数 · GESP 六级备考教程</p>
+</footer>
+
+<script src="./assets/tutorial.js"></script>
+</body>
+</html>
