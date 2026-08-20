@@ -12,7 +12,7 @@ from pathlib import Path
 
 PUBLIC_DIR = Path(__file__).parent.parent / "public"
 
-# 页面 → 所属主题（dfs / tree / p11962）
+# 页面 → 所属主题（dfs / tree / p11962 / cbt）
 PAGES = {
     "gesp6-dfs-bfs.html": "dfs",
     "dsfs-bfs-walkthrough.html": "dfs",
@@ -23,12 +23,16 @@ PAGES = {
     "gesp6-p11962-tutorial.html": "p11962",
     "p11962-tree-walk.html": "p11962",
     "tree-stroll/index.html": "p11962",
+    "gesp6-cbt-counter.html": "cbt",
+    "cbt-counter-tutorial.html": "cbt",
+    "cbt-counter/index.html": "cbt",
 }
 
 TOPIC_LABELS = {
     "dfs": ("① DFS/BFS", "topic-dfs"),
     "tree": ("② 树基础", "topic-tree"),
     "p11962": ("③ 树上漫步", "topic-p11962"),
+    "cbt": ("④ 完全二叉树", "topic-cbt"),
 }
 
 NAV_CSS = """<style id="kg-nav-style">
@@ -52,11 +56,7 @@ body{padding-top:46px;}
 
 def build_nav_html(current_topic: str, home_path: str) -> str:
     topics_html = ""
-    for key, (label, anchor) in [
-        ("dfs", TOPIC_LABELS["dfs"]),
-        ("tree", TOPIC_LABELS["tree"]),
-        ("p11962", TOPIC_LABELS["p11962"]),
-    ]:
+    for key, (label, anchor) in TOPIC_LABELS.items():
         active = ' class="kg-active"' if key == current_topic else ""
         topics_html += f'<a href="{home_path}#{anchor}"{active}>{label}</a>'
     return (
