@@ -105,9 +105,12 @@ body.kg-sb-open #kg-sidebar{transform:translateX(0);}
 #kg-sb-toggle{position:fixed;left:0;top:46px;bottom:0;width:20px;z-index:99989;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:transparent;}
 #kg-sb-toggle .kg-sb-tg-ic{display:block;writing-mode:vertical-rl;font-size:14px;color:#0ea5e9;background:rgba(224,242,254,.85);padding:8px 3px;border-radius:0 8px 8px 0;box-shadow:0 1px 5px rgba(2,132,199,.18);transition:background .15s,color .15s;}
 #kg-sb-toggle:hover .kg-sb-tg-ic{background:#0ea5e9;color:#fff;}
-body{padding-left:206px;}
-body:not(.kg-sb-open){padding-left:24px;}
-@media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}body{padding-left:0!important;}}
+/* 半透明遮罩：展开时盖在内容上，点击可收起 */
+.kg-sb-mask{position:fixed;left:0;top:46px;right:0;bottom:0;background:rgba(15,23,42,.25);z-index:99988;opacity:0;pointer-events:none;transition:opacity .26s;}
+body.kg-sb-open .kg-sb-mask{opacity:1;pointer-events:auto;}
+/* 内容永远不左右移动：padding 固定，sidebar 覆盖在内容上方 */
+body{padding-left:24px;}
+@media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}.kg-sb-mask{display:none;}body{padding-left:0!important;}}
 </style>"""
 
 
@@ -127,10 +130,12 @@ def build_nav_html(current_topic: str, home_path: str) -> str:
 
 
 def build_sidebar_html(current_topic: str, prefix: str) -> str:
-    """左侧目录（自动隐藏版）。prefix: 相对当前页回到 public 根的路径（如 "" 或 "../"）。"""
+    """左侧目录（覆盖式自动隐藏）。prefix: 相对当前页回到 public 根的路径（如 "" 或 "../"）。"""
     parts = ["<!-- kg-sb-start -->"]
     # ☰ 展开把手：始终留在左侧边缘
     parts.append('<button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>')
+    # 半透明遮罩：点击收起（覆盖内容但不挡住 sidebar）
+    parts.append('<div class="kg-sb-mask" id="kg-sb-mask"></div>')
     parts.append('<aside id="kg-sidebar">')
     # ✕ 收起按钮
     parts.append('<button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>')
@@ -157,6 +162,7 @@ TOC_JS = """<!-- kg-toc-js-start -->
   var sb=document.getElementById('kg-sidebar');
   var tg=document.getElementById('kg-sb-toggle');
   var x=document.getElementById('kg-sb-x');
+  var mask=document.getElementById('kg-sb-mask');
   if(!sb||!tg) return;
   var open = document.body.classList.contains('kg-sb-open');
   function setOpen(v){
@@ -167,6 +173,7 @@ TOC_JS = """<!-- kg-toc-js-start -->
   tg.addEventListener('mouseenter',function(){setOpen(true);});
   tg.addEventListener('click',function(e){e.stopPropagation();setOpen(!open);});
   if(x){x.addEventListener('click',function(e){e.stopPropagation();setOpen(false);});}
+  if(mask){mask.addEventListener('click',function(){setOpen(false);});}
   sb.addEventListener('mouseenter',function(){setOpen(true);});
   sb.addEventListener('mouseleave',function(){setOpen(false);});
 })();
@@ -352,10 +359,12 @@ def inject_home():
 #kg-sb-toggle{position:fixed;left:0;top:0;bottom:0;width:20px;z-index:99989;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:transparent;}
 #kg-sb-toggle .kg-sb-tg-ic{display:block;writing-mode:vertical-rl;font-size:14px;color:#0ea5e9;background:rgba(224,242,254,.85);padding:8px 3px;border-radius:0 8px 8px 0;box-shadow:0 1px 5px rgba(2,132,199,.18);transition:background .15s,color .15s;}
 #kg-sb-toggle:hover .kg-sb-tg-ic{background:#0ea5e9;color:#fff;}
-/* 首页有 header/主题网格，展开时内容右移避让 sidebar */
-body.kg-sb-open{padding-left:206px;}
-body:not(.kg-sb-open){padding-left:24px;}
-@media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}body{padding-left:0!important;}}
+/* 半透明遮罩 */
+.kg-sb-mask{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(15,23,42,.25);z-index:99988;opacity:0;pointer-events:none;transition:opacity .26s;}
+body.kg-sb-open .kg-sb-mask{opacity:1;pointer-events:auto;}
+/* 内容不左右移动 */
+body{padding-left:24px;}
+@media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}.kg-sb-mask{display:none;}body{padding-left:0!important;}}
 </style>"""
     if "</head>" in html:
         html = html.replace("</head>", sb_css + "\n</head>", 1)
@@ -365,6 +374,7 @@ body:not(.kg-sb-open){padding-left:24px;}
     # 首页 sidebar：所有主题锚点
     parts = ["<!-- kg-sb-start -->"]
     parts.append('<button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>')
+    parts.append('<div class="kg-sb-mask" id="kg-sb-mask"></div>')
     parts.append('<aside id="kg-sidebar">')
     parts.append('<button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>')
     parts.append('<a class="kg-sb-home" href="#top">🏠 秘密基地</a>')

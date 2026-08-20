@@ -99,6 +99,7 @@
 
 
 
+
 <style id="kg-nav-style">
 #kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
 #kg-nav .kg-home{color:#0284c7;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
@@ -147,9 +148,12 @@ body.kg-sb-open #kg-sidebar{transform:translateX(0);}
 #kg-sb-toggle{position:fixed;left:0;top:46px;bottom:0;width:20px;z-index:99989;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:transparent;}
 #kg-sb-toggle .kg-sb-tg-ic{display:block;writing-mode:vertical-rl;font-size:14px;color:#0ea5e9;background:rgba(224,242,254,.85);padding:8px 3px;border-radius:0 8px 8px 0;box-shadow:0 1px 5px rgba(2,132,199,.18);transition:background .15s,color .15s;}
 #kg-sb-toggle:hover .kg-sb-tg-ic{background:#0ea5e9;color:#fff;}
-body{padding-left:206px;}
-body:not(.kg-sb-open){padding-left:24px;}
-@media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}body{padding-left:0!important;}}
+/* 半透明遮罩：展开时盖在内容上，点击可收起 */
+.kg-sb-mask{position:fixed;left:0;top:46px;right:0;bottom:0;background:rgba(15,23,42,.25);z-index:99988;opacity:0;pointer-events:none;transition:opacity .26s;}
+body.kg-sb-open .kg-sb-mask{opacity:1;pointer-events:auto;}
+/* 内容永远不左右移动：padding 固定，sidebar 覆盖在内容上方 */
+body{padding-left:24px;}
+@media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}.kg-sb-mask{display:none;}body{padding-left:0!important;}}
 </style>
 </head>
 <body>
@@ -161,6 +165,7 @@ body:not(.kg-sb-open){padding-left:24px;}
 <!-- kg-nav-end -->
 <!-- kg-sb-start -->
 <button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>
+<div class="kg-sb-mask" id="kg-sb-mask"></div>
 <aside id="kg-sidebar">
 <button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>
 <a class="kg-sb-home" href="index.html">🏠 秘密基地</a>
@@ -184,6 +189,9 @@ body:not(.kg-sb-open){padding-left:24px;}
 <a class="kg-sb-page kg-sb-active" href="gesp6-full-tree-counter.html">· 千问 · 满二叉子树计数</a>
 </aside>
 <!-- kg-sb-end -->
+
+
+
 
 
 
@@ -823,6 +831,9 @@ document.querySelectorAll('pre code.cpp').forEach(el => { el.innerHTML = hl(el.t
 
 
 
+
+
+
 <!-- kg-toc-js-start -->
 <script>
 /* 左侧目录：自动收起 / 悬停展开 */
@@ -830,6 +841,7 @@ document.querySelectorAll('pre code.cpp').forEach(el => { el.innerHTML = hl(el.t
   var sb=document.getElementById('kg-sidebar');
   var tg=document.getElementById('kg-sb-toggle');
   var x=document.getElementById('kg-sb-x');
+  var mask=document.getElementById('kg-sb-mask');
   if(!sb||!tg) return;
   var open = document.body.classList.contains('kg-sb-open');
   function setOpen(v){
@@ -840,6 +852,7 @@ document.querySelectorAll('pre code.cpp').forEach(el => { el.innerHTML = hl(el.t
   tg.addEventListener('mouseenter',function(){setOpen(true);});
   tg.addEventListener('click',function(e){e.stopPropagation();setOpen(!open);});
   if(x){x.addEventListener('click',function(e){e.stopPropagation();setOpen(false);});}
+  if(mask){mask.addEventListener('click',function(){setOpen(false);});}
   sb.addEventListener('mouseenter',function(){setOpen(true);});
   sb.addEventListener('mouseleave',function(){setOpen(false);});
 })();
