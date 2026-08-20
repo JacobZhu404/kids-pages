@@ -87,8 +87,9 @@ body{padding-top:46px;}
 #kg-eggy.kg-blasted .kg-leg{fill:#27272a !important;}
 @keyframes kg-fly{0%{transform:translateY(0);}45%{transform:translateY(-26px);}100%{transform:translateY(12px);opacity:0;}}
 #kg-eggy.kg-blasted{animation:kg-fly .5s ease-in;}
-/* 左侧目录 */
-#kg-sidebar{position:fixed;left:0;top:46px;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:14px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
+/* 左侧目录：默认收起，悬停把手/移入滑出 */
+#kg-sidebar{position:fixed;left:0;top:46px;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:34px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;transform:translateX(-100%);transition:transform .26s cubic-bezier(.25,.7,.3,1);}
+body.kg-sb-open #kg-sidebar{transform:translateX(0);}
 #kg-sidebar::-webkit-scrollbar{width:6px;}
 #kg-sidebar::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:3px;}
 #kg-sidebar .kg-sb-home{display:block;font-weight:800;font-size:14px;color:#0369a1;text-decoration:none;padding:8px 10px;border-radius:10px;background:#e0f2fe;margin-bottom:12px;transition:background .15s;}
@@ -97,8 +98,16 @@ body{padding-top:46px;}
 #kg-sidebar a.kg-sb-page{display:block;font-size:12.5px;color:#334155;text-decoration:none;padding:5px 10px;border-radius:6px;margin:1px 0;line-height:1.45;}
 #kg-sidebar a.kg-sb-page:hover{background:#e0f2fe;color:#0369a1;}
 #kg-sidebar a.kg-sb-page.kg-sb-active{background:#0ea5e9;color:#fff;font-weight:600;}
+/* ✕ 收起按钮 */
+#kg-sidebar #kg-sb-x{position:sticky;top:0;float:right;margin:-24px 0 0;width:22px;height:22px;border:none;border-radius:6px;background:#e0f2fe;color:#0369a1;font-size:12px;line-height:1;cursor:pointer;z-index:2;}
+#kg-sidebar #kg-sb-x:hover{background:#fecaca;color:#b91c1c;}
+/* ☰ 展开把手：收起时留在左缘 */
+#kg-sb-toggle{position:fixed;left:0;top:46px;bottom:0;width:20px;z-index:99989;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:transparent;}
+#kg-sb-toggle .kg-sb-tg-ic{display:block;writing-mode:vertical-rl;font-size:14px;color:#0ea5e9;background:rgba(224,242,254,.85);padding:8px 3px;border-radius:0 8px 8px 0;box-shadow:0 1px 5px rgba(2,132,199,.18);transition:background .15s,color .15s;}
+#kg-sb-toggle:hover .kg-sb-tg-ic{background:#0ea5e9;color:#fff;}
 body{padding-left:206px;}
-@media(max-width:860px){#kg-sidebar{display:none;}body{padding-left:0;}}
+body:not(.kg-sb-open){padding-left:24px;}
+@media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}body{padding-left:0!important;}}
 </style>"""
 
 
@@ -118,9 +127,13 @@ def build_nav_html(current_topic: str, home_path: str) -> str:
 
 
 def build_sidebar_html(current_topic: str, prefix: str) -> str:
-    """左侧目录。prefix: 相对当前页回到 public 根的路径（如 "" 或 "../"）。"""
+    """左侧目录（自动隐藏版）。prefix: 相对当前页回到 public 根的路径（如 "" 或 "../"）。"""
     parts = ["<!-- kg-sb-start -->"]
+    # ☰ 展开把手：始终留在左侧边缘
+    parts.append('<button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>')
     parts.append('<aside id="kg-sidebar">')
+    # ✕ 收起按钮
+    parts.append('<button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>')
     home = prefix + "index.html"
     parts.append(f'<a class="kg-sb-home" href="{home}">🏠 秘密基地</a>')
     for key, (label, anchor) in TOPIC_LABELS.items():
@@ -135,6 +148,30 @@ def build_sidebar_html(current_topic: str, prefix: str) -> str:
     parts.append("</aside>")
     parts.append("<!-- kg-sb-end -->")
     return "\n".join(parts)
+
+
+TOC_JS = """<!-- kg-toc-js-start -->
+<script>
+/* 左侧目录：自动收起 / 悬停展开 */
+(function(){
+  var sb=document.getElementById('kg-sidebar');
+  var tg=document.getElementById('kg-sb-toggle');
+  var x=document.getElementById('kg-sb-x');
+  if(!sb||!tg) return;
+  var open = document.body.classList.contains('kg-sb-open');
+  function setOpen(v){
+    open=v;
+    if(v){document.body.classList.add('kg-sb-open');}
+    else{document.body.classList.remove('kg-sb-open');}
+  }
+  tg.addEventListener('mouseenter',function(){setOpen(true);});
+  tg.addEventListener('click',function(e){e.stopPropagation();setOpen(!open);});
+  if(x){x.addEventListener('click',function(e){e.stopPropagation();setOpen(false);});}
+  sb.addEventListener('mouseenter',function(){setOpen(true);});
+  sb.addEventListener('mouseleave',function(){setOpen(false);});
+})();
+</script>
+<!-- kg-toc-js-end -->"""
 
 
 EGGY_JS = """<script>
@@ -257,6 +294,8 @@ def inject_page(rel_path: str, topic: str):
     html = re.sub(r"<!-- kg-eggy-start -->.*?<!-- kg-eggy-end -->", "", html, flags=re.S)
     # 清除旧注入的蛋仔 JS
     html = re.sub(r"<!-- kg-eggy-js-start -->.*?<!-- kg-eggy-js-end -->", "", html, flags=re.S)
+    # 清除旧注入的目录交互 JS
+    html = re.sub(r"<!-- kg-toc-js-start -->.*?<!-- kg-toc-js-end -->", "", html, flags=re.S)
     # 清除旧注入的侧边栏
     html = re.sub(r"<!-- kg-sb-start -->.*?<!-- kg-sb-end -->", "", html, flags=re.S)
 
@@ -276,10 +315,10 @@ def inject_page(rel_path: str, topic: str):
     else:
         print(f"  ⚠ 无 <body> 标签，跳过导航栏/侧边栏注入: {rel_path}")
 
-    # 注入互动蛋仔 HTML+JS 到 </body> 前
+    # 注入互动蛋仔 HTML+JS 到 </body> 前（先注入侧边栏交互脚本）
     eggy_block = EGGY_HTML + "\n" + "<!-- kg-eggy-js-start -->\n" + EGGY_JS + "\n<!-- kg-eggy-js-end -->"
     if "</body>" in html:
-        html = html.replace("</body>", eggy_block + "\n</body>", 1)
+        html = html.replace("</body>", TOC_JS + "\n" + eggy_block + "\n</body>", 1)
     else:
         print(f"  ⚠ 无 </body>，跳过蛋仔注入: {rel_path}")
 
@@ -288,7 +327,7 @@ def inject_page(rel_path: str, topic: str):
 
 
 def inject_home():
-    """首页 index.html：注入左侧目录（首页无顶部 nav，sidebar top:0）。"""
+    """首页 index.html：注入左侧目录（默认展开，可收起；首页无顶部 nav，sidebar top:0）。"""
     global CURRENT_PAGE
     fpath = PUBLIC_DIR / "index.html"
     if not fpath.exists():
@@ -298,26 +337,36 @@ def inject_home():
     # 清除旧注入
     html = re.sub(r'<style id="kg-sb-style">.*?</style>', "", html, flags=re.S)
     html = re.sub(r"<!-- kg-sb-start -->.*?<!-- kg-sb-end -->", "", html, flags=re.S)
+    html = re.sub(r"<!-- kg-toc-js-start -->.*?<!-- kg-toc-js-end -->", "", html, flags=re.S)
 
     sb_css = """<style id="kg-sb-style">
-#kg-sidebar{position:fixed;left:0;top:0;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:16px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
-#kg-sidebar::-webkit-scrollbar{width:6px;}
-#kg-sidebar::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:3px;}
+/* 左侧目录：首页默认展开，可悬停/✕收起 */
+#kg-sidebar{position:fixed;left:0;top:0;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:34px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
 #kg-sidebar .kg-sb-home{display:block;font-weight:800;font-size:14px;color:#0369a1;text-decoration:none;padding:8px 10px;border-radius:10px;background:#e0f2fe;margin-bottom:12px;transition:background .15s;}
 #kg-sidebar .kg-sb-home:hover{background:#bae6fd;}
 #kg-sidebar .kg-sb-topic{font-weight:700;font-size:12px;color:#0f766e;padding:10px 10px 4px;letter-spacing:.5px;}
 #kg-sidebar a.kg-sb-page{display:block;font-size:12.5px;color:#334155;text-decoration:none;padding:5px 10px;border-radius:6px;margin:1px 0;line-height:1.45;}
 #kg-sidebar a.kg-sb-page:hover{background:#e0f2fe;color:#0369a1;}
-body{padding-left:206px;}
-@media(max-width:860px){#kg-sidebar{display:none;}body{padding-left:0;}}
+#kg-sidebar #kg-sb-x{position:sticky;top:0;float:right;margin:-24px 0 0;width:22px;height:22px;border:none;border-radius:6px;background:#e0f2fe;color:#0369a1;font-size:12px;line-height:1;cursor:pointer;z-index:2;}
+#kg-sidebar #kg-sb-x:hover{background:#fecaca;color:#b91c1c;}
+#kg-sb-toggle{position:fixed;left:0;top:0;bottom:0;width:20px;z-index:99989;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:transparent;}
+#kg-sb-toggle .kg-sb-tg-ic{display:block;writing-mode:vertical-rl;font-size:14px;color:#0ea5e9;background:rgba(224,242,254,.85);padding:8px 3px;border-radius:0 8px 8px 0;box-shadow:0 1px 5px rgba(2,132,199,.18);transition:background .15s,color .15s;}
+#kg-sb-toggle:hover .kg-sb-tg-ic{background:#0ea5e9;color:#fff;}
+/* 首页有 header/主题网格，展开时内容右移避让 sidebar */
+body.kg-sb-open{padding-left:206px;}
+body:not(.kg-sb-open){padding-left:24px;}
+@media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}body{padding-left:0!important;}}
 </style>"""
     if "</head>" in html:
         html = html.replace("</head>", sb_css + "\n</head>", 1)
     else:
         print("  ⚠ 首页无 </head>，跳过 CSS")
 
-    # 首页 sidebar：所有主题锚点 + 全部分页（返回自身路径无意义，直接列主题锚点）
-    parts = ["<!-- kg-sb-start -->", '<aside id="kg-sidebar">']
+    # 首页 sidebar：所有主题锚点
+    parts = ["<!-- kg-sb-start -->"]
+    parts.append('<button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>')
+    parts.append('<aside id="kg-sidebar">')
+    parts.append('<button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>')
     parts.append('<a class="kg-sb-home" href="#top">🏠 秘密基地</a>')
     for key, (label, anchor) in TOPIC_LABELS.items():
         parts.append(f'<div class="kg-sb-topic">📍 {label}</div>')
@@ -326,12 +375,19 @@ body{padding-left:206px;}
     parts.append("<!-- kg-sb-end -->")
     sb_html = "\n".join(parts)
 
-    m = re.search(r"<body[^>]*>", html)
+    # 首页默认展开：把 body 开始标签统一替换为带 class 的完整形式
+    m = re.search(r"<body(?:\s[^>]*)?>", html)
     if m:
-        pos = m.end()
+        html = re.sub(r"<body(?:\s[^>]*)?>", '<body class="kg-sb-open">', html, count=1)
+        pos = html.index('class="kg-sb-open">') + len('class="kg-sb-open">')
         html = html[:pos] + "\n" + sb_html + "\n" + html[pos:]
     else:
         print("  ⚠ 首页无 <body>，跳过侧边栏注入")
+
+    if "</body>" in html:
+        html = html.replace("</body>", TOC_JS + "\n</body>", 1)
+    else:
+        print("  ⚠ 首页无 </body>，跳过 TOC JS")
 
     fpath.write_text(html, encoding="utf-8")
     print("  ✔ 注入完成: index.html (首页左侧目录)")
