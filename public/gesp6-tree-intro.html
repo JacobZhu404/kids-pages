@@ -85,24 +85,6 @@
   .bigformula { text-align:center; font-size:18px; margin:12px 0; }
   @media (max-width:600px){ header h1{font-size:24px;} }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style id="kg-nav-style">
 #kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
 #kg-nav .kg-home{color:#0284c7;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
@@ -192,49 +174,6 @@ body{padding-left:24px;}
 <a class="kg-sb-page" href="gesp6-full-tree-counter.html">· 千问 · 满二叉子树计数</a>
 </aside>
 <!-- kg-sb-end -->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <header>
@@ -359,15 +298,24 @@ int main() {
     for (int i = 0; i &lt; (int)g[2].size(); i++) cout &lt;&lt; g[2][i] &lt;&lt; " ";
     return 0;
 }</code></pre>
-  <div class="tip"><b>💡 二叉树特例：</b>如果题目保证每个点最多两个孩子，也可以直接用 <code>lc[i]</code>、<code>rc[i]</code> 两个数组存左右孩子，更省空间。</div>
+  <h3>邻接表 vs lc/rc 数组：什么时候用哪个？</h3>
+  <table>
+    <tr><th></th><th>邻接表</th><th>lc/rc 数组</th></tr>
+    <tr><td>适合的树</td><td>一般树（孩子数量不固定）</td><td>二叉树（最多两个孩子）</td></tr>
+    <tr><td>存法</td><td><code>vector&lt;int&gt; g[N]</code></td><td><code>int lc[N], rc[N]</code></td></tr>
+    <tr><td>输入长相</td><td>n−1 条边（不知道谁是爸爸）</td><td>每行给左儿子、右儿子（直接知道）</td></tr>
+    <tr><td>优点</td><td>通用，什么树都能存</td><td>省空间、访问孩子更快、左右分明</td></tr>
+  </table>
+  <div class="tip"><b>💡 怎么选：</b>题目按「边」给 → 邻接表；题目直接给「左儿子、右儿子」（比如后面完全二叉树、满二叉树那两题）→ 用 <code>lc/rc</code> 数组，孩子是谁一目了然。</div>
 </section>
 
 <!-- ============ 第 3 节 ============ -->
 <section id="sec3">
-  <h2><span class="num">3</span>树的遍历：DFS 前序 &amp; BFS 层序</h2>
-  <p>遍历 = 把每个点都走一遍。两种走法都要会（GESP 六级直接考）：</p>
+  <h2><span class="num">3</span>树的遍历：前序 · 后序 · 层序</h2>
+  <p>遍历 = 把每个点都走一遍。三种走法都要会（GESP 六级直接考）：</p>
   <ul>
     <li><b>前序遍历（DFS 递归）</b>：先访问自己，再访问孩子，一个孩子的整棵子树走完才轮到下一个。</li>
+    <li><b>后序遍历（DFS 递归）</b>：先把孩子全部走完，最后才访问自己——后面「完全二叉树 / 满二叉树」那两题全靠它。</li>
     <li><b>层序遍历（BFS 队列）</b>：先访问第 0 层，再第 1 层……一层一层从左到右。</li>
   </ul>
 
@@ -418,6 +366,29 @@ int main() {
   </div>
   <div class="status" id="st_lay"></div>
 
+  <h3>动画③：后序遍历（DFS）</h3>
+  <p>后序 = <b>先左、后右、再自己</b>：孩子的整棵子树全部走完，自己才「下班」。算子树信息（大小、高度、满不满）时，后序最顺手！</p>
+  <div class="legend">
+    <span><span class="lg" style="background:#93c5fd"></span>已访问(子树走完)</span>
+    <span><span class="lg" style="background:#bfdbfe"></span>在栈中(孩子还没走完)</span>
+    <span><span class="lg" style="background:#f59e0b"></span>当前节点</span>
+  </div>
+  <div class="tree-box"><svg id="po_svg" width="100%" style="max-width:460px;display:block;margin:0 auto;"></svg></div>
+  <div class="container-box" id="stk_po"><b>调用栈：</b><span class="lbl">空</span></div>
+  <div class="container-box" id="seq_po"><b>后序序列：</b><span class="lbl">（还没开始）</span></div>
+  <div class="controls">
+    <button type="button" data-p="po" data-a="reset">↺ 重置</button>
+    <button type="button" data-p="po" data-a="prev">◀ 上一步</button>
+    <button type="button" data-p="po" data-a="play">▶ 播放</button>
+    <button type="button" data-p="po" data-a="next">下一步 ▶</button>
+    <select data-speed="po">
+      <option value="750">慢速</option>
+      <option value="330" selected>中速</option>
+      <option value="100">快速</option>
+    </select>
+  </div>
+  <div class="status" id="st_po"></div>
+
   <h3>代码对照</h3>
 <pre><code class="cpp">// 前序遍历（DFS 递归）：先自己，再孩子
 void preorder(int u, int fa) {
@@ -441,6 +412,31 @@ void levelorder() {
             vis[v] = true;
             q.push(v);                  // 孩子入队
         }
+    }
+}</code></pre>
+  <h4>后序遍历 + 迭代栈（递归的「显式」版）</h4>
+<pre><code class="cpp">// 后序遍历（DFS 递归）：先孩子，再自己
+void postorder(int u, int fa) {
+    for (int v : g[u]) {
+        if (v == fa) continue;          // 别走回爸爸
+        postorder(v, u);                // 先递归孩子
+    }
+    cout &lt;&lt; u &lt;&lt; " ";                    // 最后才访问自己
+}
+
+// 递归的本质 = 系统帮你用栈（每层压一个栈帧，返回时弹出）。
+// 但 n 很大（10⁵）、树长成一条斜链时，递归可能压爆栈 → 用手写显式栈：
+stack&lt;pair&lt;int,int&gt;&gt; st;            // &lt;节点, 0=先走孩子 1=孩子走完&gt;
+st.push(make_pair(1, 0));
+while (!st.empty()) {
+    int u = st.top().first, s = st.top().second;
+    st.pop();
+    if (s == 0) {
+        st.push(make_pair(u, 1));     // 孩子走完后再回来处理自己
+        for (int v : g[u])
+            if (v != fa[u]) st.push(make_pair(v, 0));
+    } else {
+        cout &lt;&lt; u &lt;&lt; " ";             // 后序：现在才访问自己
     }
 }</code></pre>
   <div class="tip"><b>💡 遍历能顺手算出深度：</b>把 <code>depth[v] = depth[u] + 1</code> 加进上面的代码，一次遍历就得到所有点的深度——非常常用，一定要记住！</div>
@@ -651,8 +647,8 @@ function preorderFrames(adj, n){
     }
     if (!moved){
       const popped = stack.pop();
-      closed.add(popped);
-      frames.push(mk('leave', popped, popped + ' 的孩子全走完了 → 出栈回溯（前序里已经记过 ' + popped + ' 啦）'));
+      closed.add(popped.u);
+      frames.push(mk('leave', popped.u, popped.u + ' 的孩子全走完了 → 出栈回溯（前序里已经记过 ' + popped.u + ' 啦）'));
     }
   }
   frames.push({type:'done', u:0, pre:pre.slice(), stack:[], closed:[...closed],
@@ -719,6 +715,39 @@ function colorFrames(adj, n){
   }
   frames.push({type:'done', u:0, depth:depth.slice(), cnt:cnt.slice(), queue:[],
     msg:'🎉 染色完成！蓝(偶数深度)=' + cnt[0] + ' 个，橙(奇数深度)=' + cnt[1] + ' 个。相邻节点全部异色 → 树是二部图！'});
+  return frames;
+}
+
+// 后序遍历帧（DFS：先左、后右、再自己）
+function postorderFrames(adj, n){
+  const frames = [];
+  const visited = new Set([1]);
+  const stack = [{u:1, dir:0}];
+  const post = [];
+  const closed = new Set();
+  const mk = (type, u, msg) => ({type, u, stack:stack.map(o=>o.u), closed:[...closed], post:post.slice(), msg});
+  frames.push(mk('start', 1, '从根 1 开始后序遍历：先左子树、再右子树、最后才访问自己（孩子全部走完，自己才能「下班」）'));
+  while (stack.length){
+    const top = stack[stack.length-1];
+    let moved = false;
+    while (top.dir < adj[top.u].length){
+      const v = adj[top.u][top.dir++];
+      if (visited.has(v)) continue;
+      visited.add(v);
+      stack.push({u:v, dir:0});
+      frames.push(mk('visit', v, '走进节点 ' + v + ' 的子树（先不访问它自己，先去孩子）'));
+      moved = true;
+      break;
+    }
+    if (!moved){
+      const popped = stack.pop();
+      closed.add(popped.u);
+      post.push(popped.u);
+      frames.push(mk('leave', popped.u, popped.u + ' 的子树全走完了 → 现在才访问 ' + popped.u + '，后序序列加上 ' + popped.u));
+    }
+  }
+  frames.push({type:'done', u:0, stack:[], closed:[...closed], post:post.slice(),
+    msg:'🎉 后序遍历完成！结果：' + post.join(' ')});
   return frames;
 }
 /*__PURE_END__*/
@@ -938,6 +967,28 @@ function renderCol(name){
   }
   document.getElementById('st_col').textContent = '第 '+(p.idx+1)+' / '+p.frames.length+' 步 ｜ '+f.msg;
 }
+function renderPost(name){
+  const p = panels[name], f = p.frames[p.idx];
+  const closed = new Set(f.closed);
+  for (let i=1;i<=T9N;i++){
+    const el = document.getElementById('po_n'+i);
+    let fill = '#e2e8f0';
+    if (closed.has(i)) fill = '#93c5fd';
+    else if (f.stack.indexOf(i) >= 0) fill = '#bfdbfe';
+    el.setAttribute('fill', fill);
+    el.setAttribute('stroke', f.u===i ? '#f59e0b' : '#94a3b8');
+    el.setAttribute('stroke-width', f.u===i ? 4 : 2);
+  }
+  let sh = '<b>递归调用栈：</b>';
+  if (!f.stack.length) sh += '<span class="lbl">空</span>';
+  f.stack.forEach(u => sh += '<span class="chip">'+u+'</span>');
+  document.getElementById('stk_po').innerHTML = sh;
+  let qh = '<b>后序序列：</b>';
+  if (!f.post.length) qh += '<span class="lbl">（还没访问任何节点）</span>';
+  f.post.forEach(u => qh += '<span class="chip">'+u+'</span>');
+  document.getElementById('seq_po').innerHTML = qh;
+  document.getElementById('st_po').textContent = '第 '+(p.idx+1)+' / '+p.frames.length+' 步 ｜ '+f.msg;
+}
 
 /* ============ 判定小测试图 ============ */
 function drawMini(svgId, pts, edges){
@@ -966,6 +1017,7 @@ for (let u=1;u<=T9N;u++){
 drawTree('pre_svg', 'pr_', false);
 drawTree('lay_svg', 'ly_', false);
 drawTree('col_svg', 'co_', false);
+drawTree('po_svg', 'po_', false);
 
 drawMini('dg1', [[60,18],[18,68],[102,68]], [[0,1],[1,2],[2,0]]);
 drawMini('dg2', [[20,45],[55,45],[90,45],[125,45]], [[0,1],[1,2],[2,3]]);
@@ -976,6 +1028,7 @@ drawMini('dg5', [[25,15],[105,15],[105,95],[25,95]], [[0,1],[1,2],[2,3],[3,0]]);
 registerPanel('pre', preorderFrames(T9, T9N), renderPre);
 registerPanel('lay', layerFrames(T9, T9N), renderLay);
 registerPanel('col', colorFrames(T9, T9N), renderCol);
+registerPanel('po', postorderFrames(T9, T9N), renderPost);
 
 /* ============ 小测验 ============ */
 document.querySelectorAll('.quiz-q').forEach(qq => {
@@ -1016,44 +1069,6 @@ function hl(code){
 }
 document.querySelectorAll('pre code.cpp').forEach(el => { el.innerHTML = hl(el.textContent); });
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- kg-toc-js-start -->
 <script>
 /* 左侧目录：自动收起 / 悬停展开 */

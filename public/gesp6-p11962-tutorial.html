@@ -85,24 +85,6 @@
   .stuck:hover { opacity:.85; }
   @media (max-width:600px){ header h1{font-size:24px;} }
 </style>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style id="kg-nav-style">
 #kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
 #kg-nav .kg-home{color:#0284c7;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
@@ -194,49 +176,6 @@ body{padding-left:24px;}
 <!-- kg-sb-end -->
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <header>
   <h1>🌳 P11962 树上漫步 · 精讲</h1>
   <p>GESP 2025 三级认证 · 六级真题（普及−）｜ 原理 + 动画 + 代码 + 测验</p>
@@ -293,6 +232,7 @@ body{padding-left:24px;}
     节点 i 的答案 = <b>cntE</b>（如果 depth[i] 是偶数）或 <b>cntO</b>（如果 depth[i] 是奇数）。
   </div>
   <p>也就是说：<b>整棵树只有两种答案</b>！一次 BFS/DFS 算出深度、数出 cntE/cntO，每个点直接对号入座，复杂度 O(n)。</p>
+  <div class="tip"><b>🔗 树 DP 第一课（预告）：</b>「数出 cntE / cntO，再给每个点对号入座」——别小看这一步，它就是你正式学<b>树 DP（自底向上统计）</b>的起点。后面做完全二叉树、满二叉树时，我们会把「先算孩子、再汇总给爸爸」玩得更彻底，你现在已经打好了第一层地基。</div>
 </section>
 
 <!-- ============ 第 2 节 ============ -->
@@ -803,44 +743,6 @@ function hl(code){
 }
 document.querySelectorAll('pre code.cpp').forEach(el => { el.innerHTML = hl(el.textContent); });
 </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- kg-toc-js-start -->
 <script>
 /* 左侧目录：自动收起 / 悬停展开 */
