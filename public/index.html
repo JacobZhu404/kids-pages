@@ -35,30 +35,11 @@
   .kg-flash { animation: kg-flash 1.8s ease-out; border-radius:10px; }
   /* 标题旁静态小蛋仔 */
   header h1 { display:inline-flex; align-items:center; gap:10px; }
-  /* 右下角互动蛋仔 */
-  #kg-eggy{position:fixed;right:20px;bottom:20px;width:70px;height:84px;z-index:99998;cursor:pointer;
-            transition:transform .3s cubic-bezier(.34,1.56,.64,1);user-select:none;}
-  #kg-eggy.kg-bounce{animation:kg-eggy-bounce .5s ease;}
-  @keyframes kg-eggy-bounce{0%{transform:translateY(0) scale(1);}40%{transform:translateY(-18px) scale(1.08,.92);}70%{transform:translateY(0) scale(.95,1.05);}100%{transform:translateY(0) scale(1);}}
-  #kg-eggy:hover{transform:scale(1.06);}
-  #kg-eggy .kg-egg-body{transition:fill .3s;}
-  /* 彩蛋爆炸 */
-  #kg-confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99997;overflow:hidden;}
-  .kg-cf{position:absolute;width:8px;height:8px;border-radius:50%;opacity:0;}
-  #kg-flash{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:99996;opacity:0;background:radial-gradient(circle at 88% 90%, #fff8e1 0%, #ffd54f 18%, #ff7043 40%, transparent 65%);}
-  #kg-flash.kg-on{animation:kg-flash-in .7s ease-out forwards;}
-  @keyframes kg-flash-in{0%{opacity:0;}12%{opacity:1;}100%{opacity:0;}}
-  #kg-eggy .kg-smoke{opacity:0;transition:opacity .4s;}
-  #kg-eggy.kg-blasted .kg-smoke{opacity:1;}
-  #kg-eggy.kg-blasted .kg-egg-body{fill:#3f3f3f !important;stroke:#27272a !important;}
-  #kg-eggy .kg-dirt{opacity:0;transition:opacity .3s;}
-  #kg-eggy.kg-blasted .kg-dirt{opacity:.85;}
-  #kg-eggy .kg-hat{transition:opacity .3s, transform .3s;}
-  #kg-eggy.kg-blasted .kg-hat{opacity:.35;transform:translateY(-6px) rotate(-8deg);}
-  #kg-eggy.kg-blasted .kg-leg{fill:#27272a !important;}
-  @keyframes kg-fly{0%{transform:translateY(0);}45%{transform:translateY(-26px);}100%{transform:translateY(12px);opacity:0;}}
-  #kg-eggy.kg-blasted{animation:kg-fly .5s ease-in;}
 </style>
+
+
+
+
 
 
 
@@ -87,6 +68,36 @@ body.kg-sb-open .kg-sb-mask{opacity:1;pointer-events:auto;}
 body{padding-left:24px;}
 @media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}.kg-sb-mask{display:none;}body{padding-left:0!important;}}
 </style>
+<style id="kg-eggy-style">
+#kg-eggy{position:fixed;right:20px;bottom:20px;width:70px;height:84px;z-index:99998;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1);user-select:none;}
+#kg-eggy.kg-bounce{animation:kg-eggy-bounce .5s ease;}
+@keyframes kg-eggy-bounce{0%{transform:translateY(0) scale(1);}40%{transform:translateY(-18px) scale(1.08,.92);}70%{transform:translateY(0) scale(.95,1.05);}100%{transform:translateY(0) scale(1);}}
+#kg-eggy:hover{transform:scale(1.06);}
+#kg-eggy .kg-egg-body{transition:fill .3s;}
+#kg-confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99997;overflow:hidden;}
+.kg-cf{position:absolute;width:8px;height:8px;border-radius:50%;opacity:0;}
+#kg-flash{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:99996;opacity:0;background:radial-gradient(circle at 88% 90%, #fff8e1 0%, #ffd54f 18%, #ff7043 40%, transparent 65%);}
+#kg-flash.kg-on{animation:kg-flash-in .7s ease-out forwards;}
+@keyframes kg-flash-in{0%{opacity:0;}12%{opacity:1;}100%{opacity:0;}}
+#kg-eggy .kg-smoke{opacity:0;transition:opacity .4s;}
+#kg-eggy .kg-dirt{opacity:0;transition:opacity .3s;}
+#kg-eggy .kg-hat{transition:opacity .3s, transform .3s;}
+#kg-eggy .kg-leg{transition:fill .3s;}
+#kg-eggy.kg-blasted .kg-smoke{opacity:1;}
+#kg-eggy.kg-blasted .kg-egg-body{fill:#3f3f3f !important;stroke:#27272a !important;}
+#kg-eggy.kg-blasted .kg-dirt{opacity:.85;}
+#kg-eggy.kg-blasted .kg-hat{opacity:.35;transform:translateY(-6px) rotate(-8deg);}
+#kg-eggy.kg-blasted .kg-leg{fill:#27272a !important;}
+@keyframes kg-fly{0%{transform:translateY(0);}45%{transform:translateY(-26px);}100%{transform:translateY(12px);opacity:0;}}
+#kg-eggy.kg-blasted{animation:kg-fly .5s ease-in;}
+/* 蛋仔拖动 + 右下角隐形栅栏 */
+#kg-eggy{cursor:grab;touch-action:none;}
+#kg-eggy.kg-dragging{cursor:grabbing;transition:none!important;}
+@keyframes kg-wall-shake{0%{transform:translateX(0);}30%{transform:translateX(-3px);}60%{transform:translateX(2.5px);}100%{transform:translateX(0);}}
+#kg-eggy svg.kg-wall-shake{animation:kg-wall-shake .22s ease;}
+#kg-dustbox{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:99996;overflow:hidden;}
+.kg-dust{position:absolute;width:6px;height:6px;border-radius:50%;background:#cbd5e1;box-shadow:0 0 5px rgba(148,163,184,.9);opacity:0;transition:transform .55s ease-out,opacity .55s ease-out;}
+</style>
 </head>
 <body class="kg-sb-open">
 <!-- kg-sb-start -->
@@ -107,6 +118,14 @@ body{padding-left:24px;}
 <a class="kg-sb-page" href="#topic-full">· 查看主题</a>
 </aside>
 <!-- kg-sb-end -->
+
+
+
+
+
+
+
+
 
 
 
@@ -256,7 +275,41 @@ body{padding-left:24px;}
 })();
 </script>
 
-<!-- 互动蛋仔：眼睛追鼠标，点击弹跳换表情，30次点击爆炸彩蛋 -->
+
+
+
+
+
+
+
+
+
+
+<!-- kg-toc-js-start -->
+<script>
+/* 左侧目录：自动收起 / 悬停展开 */
+(function(){
+  var sb=document.getElementById('kg-sidebar');
+  var tg=document.getElementById('kg-sb-toggle');
+  var x=document.getElementById('kg-sb-x');
+  var mask=document.getElementById('kg-sb-mask');
+  if(!sb||!tg) return;
+  var open = document.body.classList.contains('kg-sb-open');
+  function setOpen(v){
+    open=v;
+    if(v){document.body.classList.add('kg-sb-open');}
+    else{document.body.classList.remove('kg-sb-open');}
+  }
+  tg.addEventListener('mouseenter',function(){setOpen(true);});
+  tg.addEventListener('click',function(e){e.stopPropagation();setOpen(!open);});
+  if(x){x.addEventListener('click',function(e){e.stopPropagation();setOpen(false);});}
+  if(mask){mask.addEventListener('click',function(){setOpen(false);});}
+  sb.addEventListener('mouseenter',function(){setOpen(true);});
+  sb.addEventListener('mouseleave',function(){setOpen(false);});
+})();
+</script>
+<!-- kg-toc-js-end -->
+<!-- kg-eggy-start -->
 <div id="kg-eggy" title="点我玩！连点10次放烟花，30次有大惊喜……">
   <svg width="70" height="84" viewBox="0 0 100 120">
     <ellipse class="kg-hat" cx="50" cy="30" rx="26" ry="18" fill="#0ea5e9" stroke="#0284c7" stroke-width="2"/>
@@ -289,91 +342,52 @@ body{padding-left:24px;}
     <g class="kg-smoke"><circle cx="50" cy="12" r="7" fill="#9ca3af" opacity=".5"/><circle cx="62" cy="6" r="5" fill="#9ca3af" opacity=".35"/><circle cx="40" cy="4" r="4" fill="#9ca3af" opacity=".3"/></g>
   </svg>
 </div>
+<!-- kg-eggy-end -->
+<!-- kg-eggy-js-start -->
 <script>
 (function(){
   var eggy=document.getElementById('kg-eggy');
+  if(!eggy) return;
+  var svg=eggy.querySelector('svg');
   var pl=document.getElementById('kg-pupil-l');
   var pr=document.getElementById('kg-pupil-r');
   var mouth=document.getElementById('kg-eggy-mouth');
   var body=eggy.querySelector('.kg-egg-body');
+  var eyeL=document.getElementById('kg-eye-l'), eyeR=document.getElementById('kg-eye-r');
   var faces=[["#fde047","M42 84 Q50 90 58 84"],["#fca5a5","M42 86 Q50 80 58 86"],["#86efac","M42 82 Q50 92 58 82"],["#93c5fd","M42 88 Q50 84 58 88"]];
   var fi=0;
-  function movePupil(p,cx,cy,mx,my){
-    var r=eggy.getBoundingClientRect();
-    var dx=mx-(r.left+cx*0.7+35), dy=my-(r.top+cy*0.7+42);
-    var d=Math.sqrt(dx*dx+dy*dy)||1, max=4;
-    p.setAttribute('cx',cx+Math.min(max,dx/d*max));
-    p.setAttribute('cy',cy+Math.min(max,dy/d*max));
-  }
-  document.addEventListener('mousemove',function(e){
-    movePupil(pl,36,68,e.clientX,e.clientY);
-    movePupil(pr,64,68,e.clientX,e.clientY);
-  });
-  // 触屏也跟随
-  document.addEventListener('touchmove',function(e){
-    if(e.touches[0]){movePupil(pl,36,68,e.touches[0].clientX,e.touches[0].clientY);movePupil(pr,64,68,e.touches[0].clientX,e.touches[0].clientY);}
-  },{passive:true});
+  var W=70,H=84;
+  function mp(p,cx,cy,mx,my){var r=eggy.getBoundingClientRect();var dx=mx-(r.left+cx*0.7+35),dy=my-(r.top+cy*0.7+42);var d=Math.sqrt(dx*dx+dy*dy)||1,max=4;p.setAttribute('cx',cx+Math.min(max,dx/d*max));p.setAttribute('cy',cy+Math.min(max,dy/d*max));}
+  document.addEventListener('mousemove',function(e){mp(pl,36,68,e.clientX,e.clientY);mp(pr,64,68,e.clientX,e.clientY);});
+  document.addEventListener('touchmove',function(e){if(e.touches[0]){mp(pl,36,68,e.touches[0].clientX,e.touches[0].clientY);mp(pr,64,68,e.touches[0].clientX,e.touches[0].clientY);}},{passive:true});
   var clickCount=0;
-  var eyeL=document.getElementById('kg-eye-l'), eyeR=document.getElementById('kg-eye-r');
-  var faceDirty=null;
-  // 每10次：小彩蛋烟花（不清零，继续累计）
-  function fireConfetti(){
-    var box=document.getElementById('kg-confetti');
-    if(!box){box=document.createElement('div');box.id='kg-confetti';document.body.appendChild(box);}
-    var colors=['#0ea5e9','#fde047','#fb7185','#86efac','#fbbf24','#a78bfa','#f97316','#38bdf8'];
-    var cx=window.innerWidth-55, cy=window.innerHeight-50;
-    for(var i=0;i<60;i++){
-      var p=document.createElement('div');p.className='kg-cf';
-      p.style.background=colors[i%colors.length];
-      p.style.left=cx+'px';p.style.top=cy+'px';
-      var ang=Math.random()*Math.PI*2, sp=60+Math.random()*120;
-      var dx=Math.cos(ang)*sp, dy=Math.sin(ang)*sp-80;
-      p.style.transition='transform 1.2s cubic-bezier(.2,.6,.4,1),opacity 1.2s ease';
-      box.appendChild(p);
-      requestAnimationFrame(function(el,xx,yy){return function(){
-        el.style.opacity='1';el.style.transform='translate('+xx+'px,'+yy+'px) scale('+ (0.5+Math.random()) +') rotate('+ (Math.random()*720) +'deg)';
-      };}(p,dx,dy));
-      setTimeout(function(el){return function(){el.style.opacity='0';};}(p),900);
-    }
-    setTimeout(function(){if(box.parentNode)box.parentNode.removeChild(box);},1500);
-  }
+  function fireConfetti(){var box=document.getElementById('kg-confetti');if(!box){box=document.createElement('div');box.id='kg-confetti';document.body.appendChild(box);}var colors=['#0ea5e9','#fde047','#fb7185','#86efac','#fbbf24','#a78bfa','#f97316','#38bdf8'];var cx=window.innerWidth-55,cy=window.innerHeight-50;for(var i=0;i<60;i++){var p=document.createElement('div');p.className='kg-cf';p.style.background=colors[i%colors.length];p.style.left=cx+'px';p.style.top=cy+'px';var ang=Math.random()*Math.PI*2,sp=60+Math.random()*120;var dx=Math.cos(ang)*sp,dy=Math.sin(ang)*sp-80;p.style.transition='transform 1.2s cubic-bezier(.2,.6,.4,1),opacity 1.2s ease';box.appendChild(p);requestAnimationFrame(function(el,xx,yy){return function(){el.style.opacity='1';el.style.transform='translate('+xx+'px,'+yy+'px) scale('+(0.5+Math.random())+') rotate('+(Math.random()*720)+'deg)';};}(p,dx,dy));setTimeout(function(el){return function(){el.style.opacity='0';};}(p),900);}setTimeout(function(){if(box.parentNode)box.parentNode.removeChild(box);},1500);}
   function fireExplosion(){
-    // 全屏闪光
     var flash=document.getElementById('kg-flash');
     if(!flash){flash=document.createElement('div');flash.id='kg-flash';document.body.appendChild(flash);}
     flash.classList.remove('kg-on');void flash.offsetWidth;flash.classList.add('kg-on');
     setTimeout(function(){flash.classList.remove('kg-on');},750);
-    // 爆炸粒子：火力全开，范围大、火光+火星+烟
     var box=document.getElementById('kg-confetti');
     if(!box){box=document.createElement('div');box.id='kg-confetti';document.body.appendChild(box);}
     var cx=window.innerWidth-55, cy=window.innerHeight-50;
     function blob(){
       var p=document.createElement('div');p.className='kg-cf';
       var roll=Math.random();
-      if(roll<0.62){ // 火光橙色系
-        p.style.background=['#fb923c','#f97316','#ef4444','#fde047','#ffedd5','#fbbf24'][Math.floor(Math.random()*6)];
-        p.style.width='10px';p.style.height='10px';p.style.boxShadow='0 0 12px rgba(249,115,22,.9),0 0 24px rgba(255,176,0,.6)';
-      } else if(roll<0.85){ // 火星小碎片
-        p.style.background=['#fca5a5','#fed7aa','#fde68a'][Math.floor(Math.random()*3)];
-        p.style.width=Math.random()<0.5?'6px':'9px';p.style.height='3px';p.style.borderRadius='2px';
-      } else { // 浓烟
-        p.style.background='#57534e';p.style.width='16px';p.style.height='16px';
-        p.style.boxShadow='0 0 10px rgba(87,83,78,.5)';
-      }
+      if(roll<0.62){p.style.background=['#fb923c','#f97316','#ef4444','#fde047','#ffedd5','#fbbf24'][Math.floor(Math.random()*6)];p.style.width='10px';p.style.height='10px';p.style.boxShadow='0 0 12px rgba(249,115,22,.9),0 0 24px rgba(255,176,0,.6)';}
+      else if(roll<0.85){p.style.background=['#fca5a5','#fed7aa','#fde68a'][Math.floor(Math.random()*3)];p.style.width=Math.random()<0.5?'6px':'9px';p.style.height='3px';p.style.borderRadius='2px';}
+      else {p.style.background='#57534e';p.style.width='16px';p.style.height='16px';p.style.boxShadow='0 0 10px rgba(87,83,78,.5)';}
       p.style.left=cx+'px';p.style.top=cy+'px';
       var ang=Math.random()*Math.PI*2, sp=90+Math.random()*240;
       var dx=Math.cos(ang)*sp, dy=Math.sin(ang)*sp-70;
       p.style.transition='transform 1.4s cubic-bezier(.15,.55,.3,1),opacity 1.4s ease';
       box.appendChild(p);
       requestAnimationFrame(function(el,xx,yy){return function(){
-        el.style.opacity='1';el.style.transform='translate('+xx+'px,'+yy+'px) scale('+ (0.6+Math.random()*1.1) +') rotate('+ (Math.random()*540) +'deg)';
+        el.style.opacity='1';el.style.transform='translate('+xx+'px,'+yy+'px) scale('+(0.6+Math.random()*1.1)+') rotate('+(Math.random()*540)+'deg)';
       };}(p,dx,dy));
-      var fade=500+Math.random()*700;
-      setTimeout(function(el){return function(){el.style.opacity='0';};}(p),fade);
+      setTimeout(function(el){return function(){el.style.opacity='0';};}(p),500+Math.random()*700);
     }
     for(var i=0;i<110;i++) blob();
     setTimeout(function(){if(box.parentNode)box.parentNode.removeChild(box);},1700);
-    // 蛋仔变黑、惊吓、冒烟
     eggy.classList.add('kg-blasted');
     pl.setAttribute('r','2.8');pr.setAttribute('r','2.8');
     pl.setAttribute('cy','67');pr.setAttribute('cy','67');
@@ -381,7 +395,6 @@ body{padding-left:24px;}
     eyeL.setAttribute('cx','35');eyeR.setAttribute('cx','65');
     mouth.setAttribute('d','M44 84 Q50 91 56 84');
     eggy.style.filter='brightness(.85) saturate(.6)';
-    // 复活
     setTimeout(function(){
       eggy.classList.remove('kg-blasted');
       pl.setAttribute('r','5.5');pr.setAttribute('r','5.5');
@@ -389,50 +402,91 @@ body{padding-left:24px;}
       eyeL.setAttribute('r','11');eyeR.setAttribute('r','11');
       eyeL.setAttribute('cx','36');eyeR.setAttribute('cx','64');
       mouth.setAttribute('d',faces[fi][1]);
-      eggy.style.animation='';
       eggy.style.filter='';
     },3500);
   }
-  eggy.addEventListener('click',function(){
-    fi=(fi+1)%faces.length;
-    body.setAttribute('fill',faces[fi][0]);
-    mouth.setAttribute('d',faces[fi][1]);
-    eggy.classList.remove('kg-bounce');void eggy.offsetWidth;eggy.classList.add('kg-bounce');
-    clickCount++;
-    if(clickCount>=30){clickCount=0;fireExplosion();}
-    else if(clickCount%10===0){fireConfetti();}
+  /* ==== 拖动 + 右下角隐形栅栏（墙在网页右下角 1/5 处）==== */
+  var homeL=0, homeT=0;
+  function bounds(){var vw=window.innerWidth, vh=window.innerHeight;var rw=Math.max(vw/5,150), rh=Math.max(vh/5,120);return {L:vw-rw, T:vh-rh, R:vw, B:vh};}
+  function setHome(){homeL=window.innerWidth-W-20;homeT=window.innerHeight-H-20;eggy.style.left=homeL+'px';eggy.style.top=homeT+'px';}
+  setHome();
+  window.addEventListener('resize',setHome);
+  var down=null, dragging=false, wallOn=false, lastDust=0, suppress=0, retTimer=null;
+  function squashFace(on){
+    if(on){mouth.setAttribute('d','M42 87 Q50 81 58 87');pl.setAttribute('r','6.8');pr.setAttribute('r','6.8');}
+    else{mouth.setAttribute('d',faces[fi][1]);pl.setAttribute('r','5.5');pr.setAttribute('r','5.5');}
+  }
+  function dust(ox,oy){
+    var box=document.getElementById('kg-dustbox');
+    if(!box){box=document.createElement('div');box.id='kg-dustbox';document.body.appendChild(box);}
+    var r=eggy.getBoundingClientRect();
+    var px=Math.abs(ox)>Math.abs(oy)?(ox>0?r.right-3:r.left+3):r.left+W/2+(Math.random()*12-6);
+    var py=Math.abs(oy)>=Math.abs(ox)?(oy>0?r.bottom-3:r.top+3):r.top+H/2+(Math.random()*12-6);
+    var dxdir=ox>0?1:-1, dydir=oy>0?1:-1;
+    for(var i=0;i<7;i++){
+      var d=document.createElement('span'); d.className='kg-dust';
+      d.style.left=px+'px'; d.style.top=py+'px';
+      var tx=(ox?dxdir*(12+Math.random()*28):(Math.random()*34-17));
+      var ty=(oy?dydir*(10+Math.random()*22):(Math.random()*34-17))+16;
+      var s=4+Math.random()*4;
+      d.style.width=s+'px'; d.style.height=s+'px';
+      box.appendChild(d);
+      requestAnimationFrame(function(el,xx,dy){return function(){el.style.opacity='.85';el.style.transform='translate('+xx+'px,'+dy+'px) scale(.25)';};}(d,tx,ty));
+      setTimeout(function(el){return function(){el.style.opacity='0';};}(d),300);
+      setTimeout(function(el){return function(){if(el.parentNode)el.parentNode.removeChild(el);};}(d),620);
+    }
+  }
+  eggy.addEventListener('pointerdown',function(e){
+    if(eggy.classList.contains('kg-blasted')) return;
+    if(e.pointerType==='mouse'&&e.button!==0) return;
+    if(retTimer){clearTimeout(retTimer);retTimer=null;}
+    var r=eggy.getBoundingClientRect();
+    down={x:e.clientX,y:e.clientY,ox:r.left-e.clientX,oy:r.top-e.clientY};
+    dragging=false;
+    try{eggy.setPointerCapture(e.pointerId);}catch(err){}
+  });
+  window.addEventListener('pointermove',function(e){
+    if(!down) return;
+    var dx=e.clientX-down.x, dy=e.clientY-down.y;
+    if(!dragging && dx*dx+dy*dy<36) return;
+    if(!dragging){dragging=true;eggy.classList.add('kg-dragging');}
+    var b=bounds();
+    var lx=down.ox+e.clientX, ly=down.oy+e.clientY;
+    var cl=Math.max(b.L,Math.min(lx,b.R-W)), ct=Math.max(b.T,Math.min(ly,b.B-H));
+    var ox=lx-cl, oy=ly-ct;
+    eggy.style.left=cl+'px'; eggy.style.top=ct+'px';
+    var hit=(ox!==0||oy!==0), now=Date.now();
+    if(hit){
+      var ax=Math.min(24,Math.abs(ox)), ay=Math.min(24,Math.abs(oy));
+      var scx=Math.max(0.62,Math.min(1.35,1-ax*0.014+ay*0.011));
+      var scy=Math.max(0.62,Math.min(1.35,1-ay*0.014+ax*0.011));
+      eggy.style.transform='scale('+scx.toFixed(3)+','+scy.toFixed(3)+')';
+      if(!wallOn){wallOn=true;squashFace(true);svg.classList.remove('kg-wall-shake');void svg.offsetWidth;svg.classList.add('kg-wall-shake');dust(ox,oy);lastDust=now;}
+      else if(now-lastDust>320){dust(ox,oy);lastDust=now;}
+    }else if(wallOn){
+      wallOn=false;squashFace(false);eggy.style.transform='';
+    }
+  },{passive:true});
+  function release(){
+    if(!down) return;
+    var wasDrag=dragging;
+    down=null;
+    if(wasDrag){
+      dragging=false;eggy.classList.remove('kg-dragging');
+      suppress=Date.now()+400;
+      eggy.style.transition='left .4s cubic-bezier(.34,1.56,.64,1), top .4s cubic-bezier(.34,1.56,.64,1), transform .32s ease';
+      eggy.style.left=homeL+'px'; eggy.style.top=homeT+'px'; eggy.style.transform='';
+      retTimer=setTimeout(function(){eggy.style.transition='';retTimer=null;if(wallOn){wallOn=false;squashFace(false);}},460);
+    }
+  }
+  window.addEventListener('pointerup',release);
+  window.addEventListener('pointercancel',release);
+  eggy.addEventListener('click',function(e){
+    if(Date.now()<suppress) return;
+    fi=(fi+1)%faces.length;body.setAttribute('fill',faces[fi][0]);mouth.setAttribute('d',faces[fi][1]);eggy.classList.remove('kg-bounce');void eggy.offsetWidth;eggy.classList.add('kg-bounce');clickCount++;if(clickCount>=30){clickCount=0;fireExplosion();}else if(clickCount%10===0){fireConfetti();}
   });
 })();
 </script>
-
-
-
-
-
-
-<!-- kg-toc-js-start -->
-<script>
-/* 左侧目录：自动收起 / 悬停展开 */
-(function(){
-  var sb=document.getElementById('kg-sidebar');
-  var tg=document.getElementById('kg-sb-toggle');
-  var x=document.getElementById('kg-sb-x');
-  var mask=document.getElementById('kg-sb-mask');
-  if(!sb||!tg) return;
-  var open = document.body.classList.contains('kg-sb-open');
-  function setOpen(v){
-    open=v;
-    if(v){document.body.classList.add('kg-sb-open');}
-    else{document.body.classList.remove('kg-sb-open');}
-  }
-  tg.addEventListener('mouseenter',function(){setOpen(true);});
-  tg.addEventListener('click',function(e){e.stopPropagation();setOpen(!open);});
-  if(x){x.addEventListener('click',function(e){e.stopPropagation();setOpen(false);});}
-  if(mask){mask.addEventListener('click',function(){setOpen(false);});}
-  sb.addEventListener('mouseenter',function(){setOpen(true);});
-  sb.addEventListener('mouseleave',function(){setOpen(false);});
-})();
-</script>
-<!-- kg-toc-js-end -->
+<!-- kg-eggy-js-end -->
 </body>
 </html>

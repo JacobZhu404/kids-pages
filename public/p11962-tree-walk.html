@@ -443,6 +443,10 @@ tr:nth-child(even) td { background: #f8fafc; }
 
 
 
+
+
+
+
 <style id="kg-nav-style">
 #kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
 #kg-nav .kg-home{color:#0284c7;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
@@ -452,27 +456,7 @@ tr:nth-child(even) td { background: #f8fafc; }
 #kg-nav .kg-topics a.kg-active{background:#0ea5e9;color:#fff;}
 body{padding-top:46px;}
 @media(max-width:520px){#kg-nav .kg-home{font-size:13px;}#kg-nav .kg-topics a{padding:3px 7px;font-size:11px;}}
-#kg-eggy{position:fixed;right:20px;bottom:20px;width:70px;height:84px;z-index:99998;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1);user-select:none;}
-#kg-eggy.kg-bounce{animation:kg-eggy-bounce .5s ease;}
-@keyframes kg-eggy-bounce{0%{transform:translateY(0) scale(1);}40%{transform:translateY(-18px) scale(1.08,.92);}70%{transform:translateY(0) scale(.95,1.05);}100%{transform:translateY(0) scale(1);}}
-#kg-eggy:hover{transform:scale(1.06);}
-#kg-eggy .kg-egg-body{transition:fill .3s;}
-#kg-confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99997;overflow:hidden;}
-.kg-cf{position:absolute;width:8px;height:8px;border-radius:50%;opacity:0;}
-#kg-flash{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:99996;opacity:0;background:radial-gradient(circle at 88% 90%, #fff8e1 0%, #ffd54f 18%, #ff7043 40%, transparent 65%);}
-#kg-flash.kg-on{animation:kg-flash-in .7s ease-out forwards;}
-@keyframes kg-flash-in{0%{opacity:0;}12%{opacity:1;}100%{opacity:0;}}
-#kg-eggy .kg-smoke{opacity:0;transition:opacity .4s;}
-#kg-eggy .kg-dirt{opacity:0;transition:opacity .3s;}
-#kg-eggy .kg-hat{transition:opacity .3s, transform .3s;}
-#kg-eggy .kg-leg{transition:fill .3s;}
-#kg-eggy.kg-blasted .kg-smoke{opacity:1;}
-#kg-eggy.kg-blasted .kg-egg-body{fill:#3f3f3f !important;stroke:#27272a !important;}
-#kg-eggy.kg-blasted .kg-dirt{opacity:.85;}
-#kg-eggy.kg-blasted .kg-hat{opacity:.35;transform:translateY(-6px) rotate(-8deg);}
-#kg-eggy.kg-blasted .kg-leg{fill:#27272a !important;}
-@keyframes kg-fly{0%{transform:translateY(0);}45%{transform:translateY(-26px);}100%{transform:translateY(12px);opacity:0;}}
-#kg-eggy.kg-blasted{animation:kg-fly .5s ease-in;}
+
 /* 左侧目录：默认收起，悬停把手/移入滑出 */
 #kg-sidebar{position:fixed;left:0;top:46px;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:34px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;transform:translateX(-100%);transition:transform .26s cubic-bezier(.25,.7,.3,1);}
 body.kg-sb-open #kg-sidebar{transform:translateX(0);}
@@ -497,6 +481,36 @@ body.kg-sb-open .kg-sb-mask{opacity:1;pointer-events:auto;}
 /* 内容永远不左右移动：padding 固定，sidebar 覆盖在内容上方 */
 body{padding-left:24px;}
 @media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}.kg-sb-mask{display:none;}body{padding-left:0!important;}}
+</style>
+<style id="kg-eggy-style">
+#kg-eggy{position:fixed;right:20px;bottom:20px;width:70px;height:84px;z-index:99998;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1);user-select:none;}
+#kg-eggy.kg-bounce{animation:kg-eggy-bounce .5s ease;}
+@keyframes kg-eggy-bounce{0%{transform:translateY(0) scale(1);}40%{transform:translateY(-18px) scale(1.08,.92);}70%{transform:translateY(0) scale(.95,1.05);}100%{transform:translateY(0) scale(1);}}
+#kg-eggy:hover{transform:scale(1.06);}
+#kg-eggy .kg-egg-body{transition:fill .3s;}
+#kg-confetti{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99997;overflow:hidden;}
+.kg-cf{position:absolute;width:8px;height:8px;border-radius:50%;opacity:0;}
+#kg-flash{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:99996;opacity:0;background:radial-gradient(circle at 88% 90%, #fff8e1 0%, #ffd54f 18%, #ff7043 40%, transparent 65%);}
+#kg-flash.kg-on{animation:kg-flash-in .7s ease-out forwards;}
+@keyframes kg-flash-in{0%{opacity:0;}12%{opacity:1;}100%{opacity:0;}}
+#kg-eggy .kg-smoke{opacity:0;transition:opacity .4s;}
+#kg-eggy .kg-dirt{opacity:0;transition:opacity .3s;}
+#kg-eggy .kg-hat{transition:opacity .3s, transform .3s;}
+#kg-eggy .kg-leg{transition:fill .3s;}
+#kg-eggy.kg-blasted .kg-smoke{opacity:1;}
+#kg-eggy.kg-blasted .kg-egg-body{fill:#3f3f3f !important;stroke:#27272a !important;}
+#kg-eggy.kg-blasted .kg-dirt{opacity:.85;}
+#kg-eggy.kg-blasted .kg-hat{opacity:.35;transform:translateY(-6px) rotate(-8deg);}
+#kg-eggy.kg-blasted .kg-leg{fill:#27272a !important;}
+@keyframes kg-fly{0%{transform:translateY(0);}45%{transform:translateY(-26px);}100%{transform:translateY(12px);opacity:0;}}
+#kg-eggy.kg-blasted{animation:kg-fly .5s ease-in;}
+/* 蛋仔拖动 + 右下角隐形栅栏 */
+#kg-eggy{cursor:grab;touch-action:none;}
+#kg-eggy.kg-dragging{cursor:grabbing;transition:none!important;}
+@keyframes kg-wall-shake{0%{transform:translateX(0);}30%{transform:translateX(-3px);}60%{transform:translateX(2.5px);}100%{transform:translateX(0);}}
+#kg-eggy svg.kg-wall-shake{animation:kg-wall-shake .22s ease;}
+#kg-dustbox{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:99996;overflow:hidden;}
+.kg-dust{position:absolute;width:6px;height:6px;border-radius:50%;background:#cbd5e1;box-shadow:0 0 5px rgba(148,163,184,.9);opacity:0;transition:transform .55s ease-out,opacity .55s ease-out;}
 </style>
 </head>
 <body>
@@ -532,6 +546,18 @@ body{padding-left:24px;}
 <a class="kg-sb-page" href="gesp6-full-tree-counter.html">· 千问 · 满二叉子树计数</a>
 </aside>
 <!-- kg-sb-end -->
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1469,6 +1495,18 @@ renderQuiz();
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- kg-toc-js-start -->
 <script>
 /* 左侧目录：自动收起 / 悬停展开 */
@@ -1532,12 +1570,15 @@ renderQuiz();
 (function(){
   var eggy=document.getElementById('kg-eggy');
   if(!eggy) return;
+  var svg=eggy.querySelector('svg');
   var pl=document.getElementById('kg-pupil-l');
   var pr=document.getElementById('kg-pupil-r');
   var mouth=document.getElementById('kg-eggy-mouth');
   var body=eggy.querySelector('.kg-egg-body');
+  var eyeL=document.getElementById('kg-eye-l'), eyeR=document.getElementById('kg-eye-r');
   var faces=[["#fde047","M42 84 Q50 90 58 84"],["#fca5a5","M42 86 Q50 80 58 86"],["#86efac","M42 82 Q50 92 58 82"],["#93c5fd","M42 88 Q50 84 58 88"]];
   var fi=0;
+  var W=70,H=84;
   function mp(p,cx,cy,mx,my){var r=eggy.getBoundingClientRect();var dx=mx-(r.left+cx*0.7+35),dy=my-(r.top+cy*0.7+42);var d=Math.sqrt(dx*dx+dy*dy)||1,max=4;p.setAttribute('cx',cx+Math.min(max,dx/d*max));p.setAttribute('cy',cy+Math.min(max,dy/d*max));}
   document.addEventListener('mousemove',function(e){mp(pl,36,68,e.clientX,e.clientY);mp(pr,64,68,e.clientX,e.clientY);});
   document.addEventListener('touchmove',function(e){if(e.touches[0]){mp(pl,36,68,e.touches[0].clientX,e.touches[0].clientY);mp(pr,64,68,e.touches[0].clientX,e.touches[0].clientY);}},{passive:true});
@@ -1586,8 +1627,86 @@ renderQuiz();
       eggy.style.filter='';
     },3500);
   }
-  var eyeL=document.getElementById('kg-eye-l'), eyeR=document.getElementById('kg-eye-r');
-  eggy.addEventListener('click',function(){fi=(fi+1)%faces.length;body.setAttribute('fill',faces[fi][0]);mouth.setAttribute('d',faces[fi][1]);eggy.classList.remove('kg-bounce');void eggy.offsetWidth;eggy.classList.add('kg-bounce');clickCount++;if(clickCount>=30){clickCount=0;fireExplosion();}else if(clickCount%10===0){fireConfetti();}});
+  /* ==== 拖动 + 右下角隐形栅栏（墙在网页右下角 1/5 处）==== */
+  var homeL=0, homeT=0;
+  function bounds(){var vw=window.innerWidth, vh=window.innerHeight;var rw=Math.max(vw/5,150), rh=Math.max(vh/5,120);return {L:vw-rw, T:vh-rh, R:vw, B:vh};}
+  function setHome(){homeL=window.innerWidth-W-20;homeT=window.innerHeight-H-20;eggy.style.left=homeL+'px';eggy.style.top=homeT+'px';}
+  setHome();
+  window.addEventListener('resize',setHome);
+  var down=null, dragging=false, wallOn=false, lastDust=0, suppress=0, retTimer=null;
+  function squashFace(on){
+    if(on){mouth.setAttribute('d','M42 87 Q50 81 58 87');pl.setAttribute('r','6.8');pr.setAttribute('r','6.8');}
+    else{mouth.setAttribute('d',faces[fi][1]);pl.setAttribute('r','5.5');pr.setAttribute('r','5.5');}
+  }
+  function dust(ox,oy){
+    var box=document.getElementById('kg-dustbox');
+    if(!box){box=document.createElement('div');box.id='kg-dustbox';document.body.appendChild(box);}
+    var r=eggy.getBoundingClientRect();
+    var px=Math.abs(ox)>Math.abs(oy)?(ox>0?r.right-3:r.left+3):r.left+W/2+(Math.random()*12-6);
+    var py=Math.abs(oy)>=Math.abs(ox)?(oy>0?r.bottom-3:r.top+3):r.top+H/2+(Math.random()*12-6);
+    var dxdir=ox>0?1:-1, dydir=oy>0?1:-1;
+    for(var i=0;i<7;i++){
+      var d=document.createElement('span'); d.className='kg-dust';
+      d.style.left=px+'px'; d.style.top=py+'px';
+      var tx=(ox?dxdir*(12+Math.random()*28):(Math.random()*34-17));
+      var ty=(oy?dydir*(10+Math.random()*22):(Math.random()*34-17))+16;
+      var s=4+Math.random()*4;
+      d.style.width=s+'px'; d.style.height=s+'px';
+      box.appendChild(d);
+      requestAnimationFrame(function(el,xx,dy){return function(){el.style.opacity='.85';el.style.transform='translate('+xx+'px,'+dy+'px) scale(.25)';};}(d,tx,ty));
+      setTimeout(function(el){return function(){el.style.opacity='0';};}(d),300);
+      setTimeout(function(el){return function(){if(el.parentNode)el.parentNode.removeChild(el);};}(d),620);
+    }
+  }
+  eggy.addEventListener('pointerdown',function(e){
+    if(eggy.classList.contains('kg-blasted')) return;
+    if(e.pointerType==='mouse'&&e.button!==0) return;
+    if(retTimer){clearTimeout(retTimer);retTimer=null;}
+    var r=eggy.getBoundingClientRect();
+    down={x:e.clientX,y:e.clientY,ox:r.left-e.clientX,oy:r.top-e.clientY};
+    dragging=false;
+    try{eggy.setPointerCapture(e.pointerId);}catch(err){}
+  });
+  window.addEventListener('pointermove',function(e){
+    if(!down) return;
+    var dx=e.clientX-down.x, dy=e.clientY-down.y;
+    if(!dragging && dx*dx+dy*dy<36) return;
+    if(!dragging){dragging=true;eggy.classList.add('kg-dragging');}
+    var b=bounds();
+    var lx=down.ox+e.clientX, ly=down.oy+e.clientY;
+    var cl=Math.max(b.L,Math.min(lx,b.R-W)), ct=Math.max(b.T,Math.min(ly,b.B-H));
+    var ox=lx-cl, oy=ly-ct;
+    eggy.style.left=cl+'px'; eggy.style.top=ct+'px';
+    var hit=(ox!==0||oy!==0), now=Date.now();
+    if(hit){
+      var ax=Math.min(24,Math.abs(ox)), ay=Math.min(24,Math.abs(oy));
+      var scx=Math.max(0.62,Math.min(1.35,1-ax*0.014+ay*0.011));
+      var scy=Math.max(0.62,Math.min(1.35,1-ay*0.014+ax*0.011));
+      eggy.style.transform='scale('+scx.toFixed(3)+','+scy.toFixed(3)+')';
+      if(!wallOn){wallOn=true;squashFace(true);svg.classList.remove('kg-wall-shake');void svg.offsetWidth;svg.classList.add('kg-wall-shake');dust(ox,oy);lastDust=now;}
+      else if(now-lastDust>320){dust(ox,oy);lastDust=now;}
+    }else if(wallOn){
+      wallOn=false;squashFace(false);eggy.style.transform='';
+    }
+  },{passive:true});
+  function release(){
+    if(!down) return;
+    var wasDrag=dragging;
+    down=null;
+    if(wasDrag){
+      dragging=false;eggy.classList.remove('kg-dragging');
+      suppress=Date.now()+400;
+      eggy.style.transition='left .4s cubic-bezier(.34,1.56,.64,1), top .4s cubic-bezier(.34,1.56,.64,1), transform .32s ease';
+      eggy.style.left=homeL+'px'; eggy.style.top=homeT+'px'; eggy.style.transform='';
+      retTimer=setTimeout(function(){eggy.style.transition='';retTimer=null;if(wallOn){wallOn=false;squashFace(false);}},460);
+    }
+  }
+  window.addEventListener('pointerup',release);
+  window.addEventListener('pointercancel',release);
+  eggy.addEventListener('click',function(e){
+    if(Date.now()<suppress) return;
+    fi=(fi+1)%faces.length;body.setAttribute('fill',faces[fi][0]);mouth.setAttribute('d',faces[fi][1]);eggy.classList.remove('kg-bounce');void eggy.offsetWidth;eggy.classList.add('kg-bounce');clickCount++;if(clickCount>=30){clickCount=0;fireExplosion();}else if(clickCount%10===0){fireConfetti();}
+  });
 })();
 </script>
 <!-- kg-eggy-js-end -->
