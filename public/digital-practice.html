@@ -1,0 +1,552 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>数智素养练习库｜小萝卜的秘密花园</title><style>
+:root{--ink:#203047;--muted:#65758b;--paper:#f4f7fb;--card:#fff;--blue:#4263eb;--teal:#0f9d87;--gold:#f0a323;--pink:#e65a8d;--line:#dfe7f0;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}.hero{background:linear-gradient(130deg,#293e80,#4263eb 58%,#14a58b);color:#fff;padding:44px 20px 36px}.wrap{max-width:1020px;margin:auto;padding:0 20px}.hero .wrap{padding:0 20px}.eyebrow{opacity:.82;font-size:.9rem;letter-spacing:.08em}.hero h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.2;margin:.35em 0}.hero p{max-width:720px;margin:.6em 0 1em;color:#eef3ff}.pill{display:inline-block;background:#ffffff24;border:1px solid #ffffff55;border-radius:99px;padding:5px 12px;margin:3px;font-size:.86rem}.nav{position:sticky;top:0;z-index:5;background:#fffffff0;border-bottom:1px solid var(--line);backdrop-filter:blur(10px);overflow:auto}.nav .wrap{display:flex;gap:8px;padding-top:9px;padding-bottom:9px}.nav a{white-space:nowrap;color:var(--muted);text-decoration:none;padding:7px 12px;border-radius:99px;font-weight:700;font-size:.9rem}.nav a:hover{background:#edf1ff;color:var(--blue)}main{padding:24px 0 60px}.section{scroll-margin-top:72px;margin:24px 0 42px}.section h2{font-size:1.8rem;margin:0 0 8px;line-height:1.25}.lead{color:var(--muted);margin:0 0 20px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 8px 28px #233b6510}.card h3{margin:0 0 8px;font-size:1.2rem}.callout{border-left:4px solid var(--gold);background:#fff8e9;border-radius:8px;padding:12px 15px;margin:14px 0}.good{border-color:var(--teal);background:#eaf9f5}.small{font-size:.92rem;color:var(--muted)}button{font:inherit;font-weight:700;color:white;background:var(--blue);border:0;border-radius:10px;padding:9px 14px;cursor:pointer}button.secondary{background:#eaf0ff;color:var(--blue)}button.green{background:var(--teal)}button.gold{background:var(--gold);color:#382607}button:hover{filter:brightness(.96);transform:translateY(-1px)}.controls{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}.code{background:#172033;color:#e8eefb;border-radius:12px;overflow:auto;padding:16px;font:14px/1.65 var(--mono);white-space:pre}.code .comment{color:#85b59f}.code .keyword{color:#c8a7ff}.code .string{color:#f7cf87}.code .function{color:#89c2ff}.code-title{font-weight:800;margin:12px 0 6px}.row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}.canvasbox{background:linear-gradient(#f7fbff,#eaf2fb);border:1px solid var(--line);border-radius:14px;padding:10px}.canvasbox canvas{width:100%;height:270px;display:block}.steptext{font-weight:700;min-height:2em;margin-top:8px}.checks label{display:block;margin:9px 0;cursor:pointer}.checks input{margin-right:8px;accent-color:var(--teal)}.answer{display:none;background:#edfaf6;padding:12px 14px;border-radius:10px;margin-top:10px}.answer.show{display:block}.table-wrap{overflow:auto}table{border-collapse:collapse;width:100%;font-size:.94rem;background:white}th,td{border:1px solid var(--line);padding:8px 10px;text-align:center}th{background:#edf2ff}.bar{height:14px;background:#d8e2fc;border-radius:99px;overflow:hidden}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--blue),#45b7a4);transition:width .7s;border-radius:99px}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}.flow div{padding:12px 8px;text-align:center;border-radius:12px;background:#eef2ff;font-weight:800;opacity:.45;transition:.3s}.flow div.on{opacity:1;background:#dff6f0;box-shadow:inset 0 0 0 2px #3db59a}.score{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.score div{background:#f0f5ff;border-radius:12px;padding:12px;text-align:center}.score b{display:block;color:var(--blue);font-size:1.3rem}.footer{text-align:center;color:var(--muted);font-size:.9rem;padding:18px}.hide{display:none}.badge{display:inline-block;border-radius:7px;padding:2px 8px;background:#edf1ff;color:var(--blue);font-size:.82rem;font-weight:800}.progress{height:8px;background:#e4eaf2;border-radius:99px;margin:8px 0 16px}.progress i{display:block;height:100%;background:var(--teal);border-radius:99px;width:0;transition:.4s}@media(max-width:700px){.grid{grid-template-columns:1fr}.flow{grid-template-columns:repeat(2,1fr)}.score{grid-template-columns:repeat(2,1fr)}.hero{padding:34px 0}.card{padding:16px}.canvasbox canvas{height:230px}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;transition:none!important}}
+img{width:100%;height:280px;object-fit:contain;background:#f7fbff;border-radius:12px}details{margin:12px 0}summary{cursor:pointer;font-weight:700}a{color:#3456c5}.card{margin:18px 0}pre{max-height:460px} .hero a{color:white}h4{font-size:1.05rem;color:#3456c5;margin:22px 0 8px}.explanation{border-left:3px solid #45b7a4;padding-left:16px}.explanation li{margin:8px 0}</style><header class="hero"><div class="wrap"><a href="/">← 小萝卜的秘密花园</a> · <a href="digital-literacy.html">考试准备教程</a><h1>数智素养练习库</h1><p>8道递归绘图 + 5道数据统计。每题按“题目 → 解析 → 参考答案”学习。根据公开教学材料改编，非赛事真题。</p><a href="practice/practice-pack.zip" download>下载全部练习代码与CSV →</a></div></header><nav class="nav"><div class="wrap"><a href="#turtle">递归绘图</a><a href="#data">数据处理</a><a href="#how">怎么运行</a></div></nav><main class="wrap"><section id="how" class="section"><h2>怎么练</h2><div class="card"><p>解压下载包，在IDLE中打开对应.py，按F5运行。数据程序与CSV放在同一文件夹；需要pandas和matplotlib，绘图题使用标准库turtle。网页下方是参考程序运行轨迹生成的静态预览，动画入门请看原教程。</p></div></section><section class="section" id="turtle"><h2>一、turtle 递归绘图</h2><article class="card"><span class="badge" aria-label="难度1星，共5星">★☆☆☆☆ · 基础</span><h3>1. 二叉分形树</h3><section class="problem"><h4>一、题目</h4><p>画出7层树：每次分两支，长度变为0.7倍，左右各偏转25°。</p><img src="practice/branch.svg" alt="二叉分形树目标图形"></section><section class="explanation"><h4>二、解析</h4><ol><li>停止条件是depth等于0，表示没有下一层。</li><li>当前调用先画一根枝，再左右各调用一次；长度乘0.7，层数减1。</li><li>每次返回前后退同样的长度，并恢复方向，这样另一支才能从分叉点开始。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对说明</summary><p><b>核对与变式：</b>把角度改成15°和35°，比较树冠宽度。</p><a href="practice/branch.py" download>下载Python代码</a><pre class="code"># 教学改编练习，非赛事真题
+# turtle是Python自带的绘图模块；起别名t后，后面可以用t调用它。
+import turtle as t
+# math提供sqrt等数学函数。
+import math
+# random提供随机数和随机选择功能。
+import random
+
+# 设置绘图窗口的宽度和高度。
+t.setup(900, 700)
+# 使用最快绘图速度。
+t.speed(0)
+# 暂停逐笔刷新，减少递归绘图等待。
+t.tracer(False)
+# 隐藏海龟图标，让图形更清楚。
+t.ht()
+
+# length表示当前枝长，depth表示还要画几层。
+def tree(length, depth):
+    # 递归出口：层数用完后停止。
+    if depth == 0:
+        # return结束本次函数，并回到上一层调用的位置。
+        return
+    # 海龟沿当前朝向画出这一段树枝。
+    t.forward(length)
+    t.left(25)
+    # 递归画更短的树枝，同时把层数减1。
+    tree(length * .7, depth - 1)
+    t.right(50)
+    # 递归画更短的树枝，同时把层数减1。
+    tree(length * .7, depth - 1)
+    t.left(25)
+    # 沿原路退回分叉点，接着绘制另一根树枝。
+    t.backward(length)  # 回到进入本次调用的位置
+
+t.penup()
+t.goto(0, -220)
+t.setheading(90)
+t.pendown()
+tree(110, 7)
+
+# 一次性显示已经完成的图形。
+t.update()
+# 保持绘图窗口打开，直到手动关闭。
+t.done()
+</pre></details></section><p class="small"><a href="https://www.cs.utexas.edu/~novak/cs307asg06.html">原始教学题目来源</a> · 本版已改写为Python标准库turtle。</p></article><article class="card"><span class="badge" aria-label="难度2星，共5星">★★☆☆☆ · 基础进阶</span><h3>2. 会变色的自然树</h3><section class="problem"><h4>一、题目</h4><p>把末端两层变成绿色，主干较粗，分叉角度在15°—40°之间随机变化。</p><img src="practice/natural.svg" alt="会变色的自然树目标图形"></section><section class="explanation"><h4>二、解析</h4><ol><li>递归结构与二叉树相同，先保证位置与方向能恢复。</li><li>用depth决定粗细和颜色，越接近末端越细，最后两层用绿色。</li><li>每次选一个随机角度，左右转动保持配对。子调用会改变画笔，所以回程前恢复父枝的样式。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对说明</summary><p><b>核对与变式：</b>换一个随机种子，保持停止条件不变。</p><a href="practice/natural.py" download>下载Python代码</a><pre class="code"># 教学改编练习，非赛事真题
+# turtle模块提供画笔、移动和转向命令。
+import turtle as t
+import math
+# random模块为每次分叉随机选择角度。
+import random
+
+t.setup(900, 700)
+t.speed(0)
+t.tracer(False)
+t.ht()
+
+# 固定随机种子，让每次生成的树都一样，方便比较。
+random.seed(7)  # 固定种子，方便重复观察
+
+# 每次调用先画当前树枝，再递归画左右两根小树枝。
+def tree(length, depth):
+    # 到达最后一层时停止，这是递归出口。
+    if depth == 0:
+        return
+    # 层数越高，树枝画得越粗；最细仍保留1像素。
+    width = max(1, depth)
+    # 最末两层用绿色，较粗的树枝用棕色。
+    color = &quot;forestgreen&quot; if depth &lt;= 2 else &quot;saddlebrown&quot;
+    t.pensize(width)
+    t.pencolor(color)
+    t.forward(length)
+    # randint会包含两个端点，所以角度可能是15度或40度。
+    angle = random.randint(15, 40)
+    t.left(angle)
+    # 子枝长度缩到原来的70%，递归层数减1。
+    tree(length * .7, depth - 1)
+    t.right(angle * 2)
+    # 子枝长度缩到原来的70%，递归层数减1。
+    tree(length * .7, depth - 1)
+    t.left(angle)
+    # 子树会修改颜色和粗细，返回后恢复再画回程
+    t.pensize(width)
+    t.pencolor(color)
+    # 画完子枝后回到分叉点，让上一层继续绘图。
+    t.backward(length)
+
+t.penup()
+t.goto(0, -220)
+t.setheading(90)
+t.pendown()
+tree(100, 7)
+
+t.update()
+t.done()
+</pre></details></section><p class="small"><a href="https://runestone.academy/ns/books/published/httlacs/intro-recursion_programming-exercises.html">原始教学题目来源</a> · 本版已改写为Python标准库turtle。</p></article><article class="card"><span class="badge" aria-label="难度2星，共5星">★★☆☆☆ · 中等</span><h3>3. 科赫曲线</h3><section class="problem"><h4>一、题目</h4><p>将每条线替换成四段等长小线，形成三角凸起；绘制0—4层。</p><img src="practice/koch.svg" alt="科赫曲线目标图形"></section><section class="explanation"><h4>二、解析</h4><ol><li>0层只画直线；更高层把长度分成三份。</li><li>一次调用依次画四段小科赫曲线，中间按左60°、右120°、左60°转向。</li><li>四次子调用长度均为原来的三分之一，depth都减1；结束后方向与进入时相同。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对说明</summary><p><b>核对与变式：</b>第4层应有256条最小线段。</p><a href="practice/koch.py" download>下载Python代码</a><pre class="code"># 教学改编练习，非赛事真题
+# turtle是Python自带的绘图模块。
+import turtle as t
+import math
+import random
+
+t.setup(900, 700)
+t.speed(0)
+t.tracer(False)
+t.ht()
+
+# 递归地替换一段线；length和depth分别表示长度和层数。
+def koch(length, depth):
+    # depth为0时画一条直线，然后停止。
+    if depth == 0:
+        # 画出最小的一段线。
+        t.forward(length)
+        # 当前线段画完，return回到调用它的位置。
+        return
+    # 子线段长度缩为三分之一，递归层数减1。
+    koch(length / 3, depth - 1)
+    # 转向，画出向外凸起的三角形部分。
+    t.left(60)
+    # 子线段长度缩为三分之一，递归层数减1。
+    koch(length / 3, depth - 1)
+    t.right(120)
+    # 子线段长度缩为三分之一，递归层数减1。
+    koch(length / 3, depth - 1)
+    # 转向，画出向外凸起的三角形部分。
+    t.left(60)
+    # 子线段长度缩为三分之一，递归层数减1。
+    koch(length / 3, depth - 1)
+
+t.penup()
+t.goto(-300, -90)
+t.pendown()
+koch(600, 4)
+
+t.update()
+t.done()
+</pre></details></section><p class="small"><a href="https://www.cs.utexas.edu/~novak/cs307asg06.html">原始教学题目来源</a> · 本版已改写为Python标准库turtle。</p></article><article class="card"><span class="badge" aria-label="难度3星，共5星">★★★☆☆ · 中等</span><h3>4. 科赫雪花</h3><section class="problem"><h4>一、题目</h4><p>将三条科赫曲线连接成一个闭合雪花，默认递归3层。</p><img src="practice/snowflake.svg" alt="科赫雪花目标图形"></section><section class="explanation"><h4>二、解析</h4><ol><li>先把一条科赫曲线封装成函数，与上一题共用递归规则。</li><li>外层循环重复三次，每次画一条大边后向右转120°。</li><li>先用0层检查等边三角形闭合，再增加层数；不闭合时优先检查大边转向。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对说明</summary><p><b>核对与变式：</b>检查起点与终点重合；三层共192条小线段。</p><a href="practice/snowflake.py" download>下载Python代码</a><pre class="code"># 教学改编练习，非赛事真题
+# turtle提供画笔和移动命令。
+import turtle as t
+import math
+import random
+
+t.setup(900, 700)
+t.speed(0)
+t.tracer(False)
+t.ht()
+
+# 递归绘制雪花的一条边。
+def koch(length, depth):
+    # 递归出口是一条直线段。
+    if depth == 0:
+        # 画出最短的边。
+        t.forward(length)
+        # 停止这一支递归，并返回调用位置。
+        return
+    # 四段较小曲线和对应转向组成一段科赫曲线。
+    for angle in [60, -120, 60, 0]:
+        # 边长缩为三分之一，层数减1后继续递归。
+        koch(length / 3, depth - 1)
+        t.left(angle)
+
+t.penup()
+t.goto(-200, 120)
+t.pendown()
+# 三条相同的科赫曲线组成封闭雪花。
+for i in range(3):
+    koch(400, 3)
+    # 每到一个外角，就按相同角度转向。
+    t.right(120)
+
+t.update()
+t.done()
+</pre></details></section><p class="small"><a href="https://www.cs.utexas.edu/~novak/cs307asg06.html">原始教学题目来源</a> · 本版已改写为Python标准库turtle。</p></article><article class="card"><span class="badge" aria-label="难度3星，共5星">★★★☆☆ · 中等</span><h3>5. 谢尔宾斯基三角形</h3><section class="problem"><h4>一、题目</h4><p>只画三个角上的半尺寸三角形，中心留空，递归4层。</p><img src="practice/sierpinski.svg" alt="谢尔宾斯基三角形目标图形"></section><section class="explanation"><h4>二、解析</h4><ol><li>0层画一个完整等边三角形。</li><li>其他层不画大三角形，只在左下、右下和上方放三个半尺寸子三角形。</li><li>上方起点比左下向右移动原边长的四分之一、向上移动原边长乘√3再除以4。每个子调用都减一层。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对说明</summary><p><b>核对与变式：</b>4层有81个最小三角形。</p><a href="practice/sierpinski.py" download>下载Python代码</a><pre class="code"># 教学改编练习，非赛事真题
+# turtle用来绘制三角形的边。
+import turtle as t
+# math.sqrt(3)用于计算等边三角形的高度比例。
+import math
+import random
+
+t.setup(900, 700)
+t.speed(0)
+t.tracer(False)
+t.ht()
+
+# x、y指定左下角位置，size和depth控制大小与层数。
+def triangle(x, y, size, depth):
+    # 到达递归出口时，画出一个完整的小三角形。
+    if depth == 0:
+        # 移动到起点时抬起画笔，避免留下多余连线。
+        t.penup()
+        t.goto(x, y)
+        t.setheading(0)
+        # 放下画笔，开始绘制三条边。
+        t.pendown()
+        for i in range(3):
+            t.forward(size)
+            t.left(120)
+        return
+    # 每个子三角形的边长是父三角形的一半。
+    half = size / 2
+    # 递归绘制左下方的子三角形。
+    triangle(x, y, half, depth - 1)
+    # 递归绘制右下方的子三角形。
+    triangle(x + half, y, half, depth - 1)
+    # 递归绘制上方的子三角形。
+    triangle(x + half / 2, y + half * math.sqrt(3) / 2,
+             # 递归绘制上方的子三角形。
+             half, depth - 1)
+
+triangle(-260, -220, 520, 4)
+
+t.update()
+t.done()
+</pre></details></section><p class="small"><a href="https://www.cs.cornell.edu/courses/cs1110/2009fa/assignments/a5/a5.html">原始教学题目来源</a> · 本版已改写为Python标准库turtle。</p></article><article class="card"><span class="badge" aria-label="难度3星，共5星">★★★☆☆ · 中等</span><h3>6. H 树</h3><section class="problem"><h4>一、题目</h4><p>先画一个H，在四个端点递归画半尺寸H，共4层。</p><img src="practice/htree.svg" alt="H 树目标图形"></section><section class="explanation"><h4>二、解析</h4><ol><li>用中心(x,y)、尺寸size和剩余层数定义一个H。0层返回。</li><li>一个H由一条横线和两条竖线组成，先确定四个端点。</li><li>在四个端点分别调用自己，尺寸减半、层数减1。坐标定位避免依赖上一次画线的方向。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对说明</summary><p><b>核对与变式：</b>4层有85个H，共255条线段。</p><a href="practice/htree.py" download>下载Python代码</a><pre class="code"># 教学改编练习，非赛事真题
+# turtle用来绘制H形线段。
+import turtle as t
+import math
+import random
+
+t.setup(900, 700)
+t.speed(0)
+t.tracer(False)
+t.ht()
+
+# 根据起点和终点坐标画一条线段。
+def line(x1, y1, x2, y2):
+    t.penup()
+    # 抬笔移动到线段起点，不画连接线。
+    t.goto(x1, y1)
+    t.pendown()
+    # 从起点落笔，画到终点。
+    t.goto(x2, y2)
+
+# x、y是H的中心，size和depth控制大小与递归层数。
+def htree(x, y, size, depth):
+    # 没有更小的H要画时，停止递归。
+    if depth == 0:
+        return
+    # H的每个端点距离中心都是边长的一半。
+    half = size / 2
+    line(x - half, y, x + half, y)
+    line(x - half, y - half, x - half, y + half)
+    line(x + half, y - half, x + half, y + half)
+    # 依次处理这个H的左端和右端。
+    for dx in [-half, half]:
+        # 在每一端的上方和下方继续递归画小H。
+        for dy in [-half, half]:
+            htree(x + dx, y + dy, size / 2, depth - 1)
+
+htree(0, 0, 270, 4)
+
+t.update()
+t.done()
+</pre></details></section><p class="small"><a href="https://www.cs.cornell.edu/courses/cs1110/2009fa/assignments/a5/a5.html">原始教学题目来源</a> · 本版已改写为Python标准库turtle。</p></article><article class="card"><span class="badge" aria-label="难度4星，共5星">★★★★☆ · 拓展</span><h3>7. 谢尔宾斯基地毯</h3><section class="problem"><h4>一、题目</h4><p>把正方形分成九宫格，跳过中心，在其他8格递归，共3层。</p><img src="practice/carpet.svg" alt="谢尔宾斯基地毯目标图形"></section><section class="explanation"><h4>二、解析</h4><ol><li>0层画保留小方块的轮廓。</li><li>把尺寸除以3，行列各枚举0、1、2，得到九宫格起点。</li><li>行列同时等于1时跳过，剩余八格递归。位置每次移动一格尺寸，depth减1；轮廓之间的空白形成地毯。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对说明</summary><p><b>核对与变式：</b>3层有512个最小正方形。</p><a href="practice/carpet.py" download>下载Python代码</a><pre class="code"># 教学改编练习，非赛事真题
+# turtle用来绘制地毯中保留的正方形轮廓。
+import turtle as t
+import math
+import random
+
+t.setup(900, 700)
+t.speed(0)
+t.tracer(False)
+t.ht()
+
+# x、y是正方形左下角坐标；size和depth控制大小与层数。
+def carpet(x, y, size, depth):
+    # 到达递归出口时，画出最小的保留正方形。
+    if depth == 0:
+        # 抬笔移动到正方形角点，不留下线。
+        t.penup()
+        t.goto(x, y)
+        t.setheading(0)
+        # 依次画出正方形的四条边。
+        t.pendown()
+        for i in range(4):
+            t.forward(size)
+            t.left(90)
+        return
+    # 把父正方形分成九个大小相同的小格。
+    third = size / 3
+    # row和col分别表示九宫格中的行号和列号。
+    for row in range(3):
+        for col in range(3):
+            # 跳过正中间的小格，留下地毯的空洞。
+            if row == 1 and col == 1:
+                continue  # 中间留空
+            # 对其余八个小格继续递归。
+            carpet(x + col * third, y + row * third,
+                   third, depth - 1)
+
+carpet(-240, -240, 480, 3)
+
+t.update()
+t.done()
+</pre></details></section><p class="small"><a href="https://www.cs.middlebury.edu/~cs101/homework/hw04.html">原始教学题目来源</a> · 本版已改写为Python标准库turtle。</p></article><article class="card"><span class="badge" aria-label="难度5星，共5星">★★★★★ · 挑战</span><h3>8. 希尔伯特曲线</h3><section class="problem"><h4>一、题目</h4><p>用递归画4层连续折线；不抬笔，所有转向都是90°。</p><img src="practice/hilbert.svg" alt="希尔伯特曲线目标图形"></section><section class="explanation"><h4>二、解析</h4><ol><li>先用1层观察一个U形，0层不画线直接返回。</li><li>每个更高层由四个低一层的子图和三条连接线组成；子图之间转90°。</li><li>角度的正负控制子图朝向。层数变化时，用480÷(2的depth次方−1)计算步长，保持图形总宽约480。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对说明</summary><p><b>核对与变式：</b>4层有255条线段。</p><a href="practice/hilbert.py" download>下载Python代码</a><pre class="code"># 教学改编练习，非赛事真题
+# turtle用来绘制连续的希尔伯特曲线。
+import turtle as t
+import math
+import random
+
+t.setup(900, 700)
+t.speed(0)
+t.tracer(False)
+t.ht()
+
+# depth是递归层数，angle是转向角度，step是每段长度。
+def hilbert(depth, angle, step):
+    # 递归出口：第0层不再绘制曲线。
+    if depth == 0:
+        # 结束这一支递归，回到上一层调用。
+        return
+    # 转向，确定第一段子曲线的朝向。
+    t.left(angle)
+    # 反转转向方向，递归绘制较小曲线。
+    hilbert(depth - 1, -angle, step)
+    # 画一条直线，把相邻的子曲线连接起来。
+    t.forward(step)
+    t.right(angle)
+    # 保持当前朝向，递归绘制下一段子曲线。
+    hilbert(depth - 1, angle, step)
+    # 画一条直线，把相邻的子曲线连接起来。
+    t.forward(step)
+    # 保持当前朝向，递归绘制下一段子曲线。
+    hilbert(depth - 1, angle, step)
+    t.right(angle)
+    # 画一条直线，把相邻的子曲线连接起来。
+    t.forward(step)
+    # 反转转向方向，递归绘制较小曲线。
+    hilbert(depth - 1, -angle, step)
+    # 转向，确定第一段子曲线的朝向。
+    t.left(angle)
+
+# 设置4层递归，图形较完整且仍容易观察。
+depth = 4
+# 开始绘图前先抬笔移动到起点。
+t.penup()
+t.goto(-240, -240)
+# 落笔，开始绘制曲线。
+t.pendown()
+hilbert(depth, 90, 480 / (2 ** depth - 1))
+
+t.update()
+t.done()
+</pre></details></section><p class="small"><a href="https://runestone.academy/ns/books/published/httlacs/intro-recursion_programming-exercises.html">原始教学题目来源</a> · 本版已改写为Python标准库turtle。</p></article></section><section class="section" id="data"><h2>二、数据处理与统计</h2><article class="card"><span class="badge" aria-label="难度1星，共5星">★☆☆☆☆ · 基础</span><h3>1. 乘客年龄与票价</h3><section class="problem"><h4>一、题目</h4><p>显示前5行；求平均年龄和最高票价；找出最高票价记录；筛选年龄大于35的记录；画编号与票价折线图。</p><p><a href="practice/passengers.csv" download>下载 passengers.csv</a></p><details><summary>查看题目数据（模拟）</summary><pre class="code">编号,年龄,票价,舱位
+1,12,20,3
+2,36,80,1
+3,28,35,2
+4,45,90,1
+5,16,25,3
+6,33,40,2
+7,60,100,1
+8,22,30,3
+9,40,50,2
+10,18,30,3
+</pre></details></section><section class="explanation"><h4>二、解析</h4><ol><li>read_csv读表，head查看列名和前5行。</li><li>选年龄列求mean，选票价列求max；用票价等于最大值的条件筛选整行，可保留并列最高记录。</li><li>年龄大于35的条件也返回布尔序列，用它筛选df。最后把编号与票价两列交给plot，并补齐标题与轴名。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对结果</summary><p><b>预期结果：</b>平均年龄31；最高票价100；对应编号7；大于35岁的编号为2、4、7、9。</p><a href="practice/passenger_stats.py" download>下载Python代码</a><pre class="code"># 教学改编；CSV为自编模拟数据，非真实乘客或环境观测。
+# pandas读取CSV表格，并提供DataFrame数据操作。
+import pandas as pd
+# pyplot负责创建和显示图表。
+import matplotlib.pyplot as plt
+plt.rcParams[&quot;font.sans-serif&quot;] = [&quot;SimHei&quot;, &quot;PingFang SC&quot;, &quot;Arial Unicode MS&quot;]
+plt.rcParams[&quot;axes.unicode_minus&quot;] = False
+
+# 读取同文件夹中的CSV，并保存为DataFrame变量df。
+df = pd.read_csv(&quot;passengers.csv&quot;)
+# 显示前5行，检查数据和列名是否正确。
+print(df.head())
+# 先选取年龄列，再用mean()计算平均值。
+print(&quot;平均年龄&quot;, df[&quot;年龄&quot;].mean())
+# max()返回票价列中的最大值。
+print(&quot;最高票价&quot;, df[&quot;票价&quot;].max())
+# 筛选票价等于最大值的行；==用于比较是否相等。
+print(df[df[&quot;票价&quot;] == df[&quot;票价&quot;].max()])
+print(&quot;年龄大于35&quot;, df[df[&quot;年龄&quot;] &gt; 35])
+# 横轴为乘客编号、纵轴为票价；marker为每条记录加圆点。
+plt.plot(df[&quot;编号&quot;], df[&quot;票价&quot;], marker=&quot;o&quot;)
+# 设置横轴标签。
+plt.xlabel(&quot;编号&quot;)
+# 设置纵轴标签。
+plt.ylabel(&quot;票价&quot;)
+plt.title(&quot;各乘客票价&quot;)
+
+plt.grid()
+plt.tight_layout()
+# 打开图表窗口。
+plt.show()
+</pre></details></section><p class="small"><a href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/06_calculate_statistics.html">技能与题型来源</a> · 本题为简化改编，数据自编。</p></article><article class="card"><span class="badge" aria-label="难度2星，共5星">★★☆☆☆ · 基础</span><h3>2. 空气质量观察</h3><section class="problem"><h4>一、题目</h4><p>显示前5行；分别求A站、B站均值和最大值；找出A站最大值的时刻；画两站观测值折线图。</p><p><a href="practice/air.csv" download>下载 air.csv</a></p><details><summary>查看题目数据（模拟）</summary><pre class="code">时刻,A站,B站
+8,20,25
+9,25,20
+10,30,28
+11,35,30
+12,40,32
+13,30,25
+14,25,22
+15,20,18
+16,15,15
+17,10,12
+</pre></details></section><section class="explanation"><h4>二、解析</h4><ol><li>先确认每行对应一个时刻，A站与B站是两列数值。</li><li>分别选列求mean和max，不要把时刻列一起算进去；再按A站最大值筛选整行，找到时刻。</li><li>两次plot使用相同横轴，再用legend区分监测站。本练习无缺失值；真实数据应先检查缺失情况。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对结果</summary><p><b>预期结果：</b>A站平均25、最大40；B站平均22.7、最大32；A站最高出现在12时。</p><a href="practice/air_stats.py" download>下载Python代码</a><pre class="code"># 教学改编；CSV为自编模拟数据，非真实乘客或环境观测。
+# pandas读取监测站表格并进行统计。
+import pandas as pd
+# pyplot绘制两个监测站的折线。
+import matplotlib.pyplot as plt
+plt.rcParams[&quot;font.sans-serif&quot;] = [&quot;SimHei&quot;, &quot;PingFang SC&quot;, &quot;Arial Unicode MS&quot;]
+plt.rcParams[&quot;axes.unicode_minus&quot;] = False
+
+# 把CSV读入DataFrame；每行对应一个时刻。
+df = pd.read_csv(&quot;air.csv&quot;)
+print(df.head())
+# 用循环依次处理两个监测站的数据列。
+for station in [&quot;A站&quot;, &quot;B站&quot;]:
+    # 按列名取一列，再计算平均值和最大值。
+    print(station, &quot;均值&quot;, df[station].mean(), &quot;最大值&quot;, df[station].max())
+# 筛选表格，找出A站达到最大值的时刻。
+print(df[df[&quot;A站&quot;] == df[&quot;A站&quot;].max()])
+# 用循环依次处理两个监测站的数据列。
+for station in [&quot;A站&quot;, &quot;B站&quot;]:
+    # x轴是时刻，y轴是读数；label设置曲线名称。
+    plt.plot(df[&quot;时刻&quot;], df[station], marker=&quot;o&quot;, label=station)
+# 显示两条曲线的图例。
+plt.legend()
+plt.xlabel(&quot;时刻&quot;)
+plt.ylabel(&quot;模拟浓度&quot;)
+plt.title(&quot;两站观测记录&quot;)
+
+plt.grid()
+plt.tight_layout()
+plt.show()
+</pre></details></section><p class="small"><a href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/04_plotting.html">技能与题型来源</a> · 本题为简化改编，数据自编。</p></article><article class="card"><span class="badge" aria-label="难度2星，共5星">★★☆☆☆ · 中等</span><h3>3. 监测站差值与比值</h3><section class="problem"><h4>一、题目</h4><p>新增差值=A站−B站、比值=A站÷B站；求差值最大记录；另求绝对差最大的记录；画差值折线图。</p><p><a href="practice/air.csv" download>下载 air.csv</a></p><details><summary>查看题目数据（模拟）</summary><pre class="code">时刻,A站,B站
+8,20,25
+9,25,20
+10,30,28
+11,35,30
+12,40,32
+13,30,25
+14,25,22
+15,20,18
+16,15,15
+17,10,12
+</pre></details></section><section class="explanation"><h4>二、解析</h4><ol><li>差值有正负，表示A站比B站高多少；绝对差只表示相差大小。</li><li>先确认B站不缺失且不为0，再逐列相减、相除，结果直接赋给新列。</li><li>分别用差值最大和绝对差最大的条件筛选记录；画差值随时刻变化图，横轴用时刻而不是行号。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对结果</summary><p><b>预期结果：</b>最大差值8，出现在12时；最大绝对差也是8。8时差值为−5，不要把差值与绝对差混淆。</p><a href="practice/air_compare.py" download>下载Python代码</a><pre class="code"># 教学改编；CSV为自编模拟数据，非真实乘客或环境观测。
+# pandas读取CSV并计算数据列。
+import pandas as pd
+# pyplot绘制差值图。
+import matplotlib.pyplot as plt
+plt.rcParams[&quot;font.sans-serif&quot;] = [&quot;SimHei&quot;, &quot;PingFang SC&quot;, &quot;Arial Unicode MS&quot;]
+plt.rcParams[&quot;axes.unicode_minus&quot;] = False
+
+# 将监测站读数载入DataFrame。
+df = pd.read_csv(&quot;air.csv&quot;)
+# 除法前确认分母不为0；本模拟数据无缺失值
+assert df[&quot;B站&quot;].notna().all() and (df[&quot;B站&quot;] != 0).all()
+# 对应行相减，创建差值列。
+df[&quot;差值&quot;] = df[&quot;A站&quot;] - df[&quot;B站&quot;]
+# 对应行相除；除数不能为0。
+df[&quot;比值&quot;] = df[&quot;A站&quot;] / df[&quot;B站&quot;]
+# abs()取绝对值，比较差距大小时不看正负方向。
+df[&quot;绝对差&quot;] = df[&quot;差值&quot;].abs()
+# 显示原始列和新计算的列。
+print(df)
+# 找出带正负方向的差值中最大的一行。
+print(&quot;最大差值记录&quot;, df[df[&quot;差值&quot;] == df[&quot;差值&quot;].max()])
+# 找出不考虑方向时差距最大的一行。
+print(&quot;最大绝对差记录&quot;, df[df[&quot;绝对差&quot;] == df[&quot;绝对差&quot;].max()])
+# 绘制差值随时间变化的折线。
+plt.plot(df[&quot;时刻&quot;], df[&quot;差值&quot;], marker=&quot;o&quot;)
+plt.xlabel(&quot;时刻&quot;)
+plt.ylabel(&quot;A站减B站&quot;)
+plt.title(&quot;两站差值&quot;)
+
+plt.grid()
+plt.tight_layout()
+# 显示完成的图表。
+plt.show()
+</pre></details></section><p class="small"><a href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/05_add_columns.html">技能与题型来源</a> · 本题为简化改编，数据自编。</p></article><article class="card"><span class="badge" aria-label="难度3星，共5星">★★★☆☆ · 中等</span><h3>4. 国家历年数据统计</h3><section class="problem"><h4>一、题目</h4><p>筛选2010年记录；求当年平均值和最大值，找出对应国家；再筛选甲国并按年份排序，画其历年折线图。</p><p><a href="practice/countries.csv" download>下载 countries.csv</a></p><details><summary>查看题目数据（模拟）</summary><pre class="code">国家,年份,人均指标
+甲国,2000,1000
+甲国,2005,1200
+甲国,2010,1500
+乙国,2000,2000
+乙国,2005,2100
+乙国,2010,2400
+丙国,2000,800
+丙国,2005,1100
+丙国,2010,1800
+丁国,2000,1500
+丁国,2005,1600
+丁国,2010,1900
+</pre></details></section><section class="explanation"><h4>二、解析</h4><ol><li>先用年份等于2010的条件得到子表，再在子表上求平均值和最大值。</li><li>求最大记录也必须使用2010年的子表，避免误选其他年份。</li><li>另选甲国所有记录，按年份排序后画折线图；这展示已有历史数据，不推算未来。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对结果</summary><p><b>预期结果：</b>2010年平均1900、最大2400，对应乙国；甲国依次是1000、1200、1500。</p><a href="practice/country_stats.py" download>下载Python代码</a><pre class="code"># 教学改编；CSV为自编模拟数据，非真实乘客或环境观测。
+# pandas读取、筛选并排序国家数据表。
+import pandas as pd
+# pyplot绘制按年份变化的折线。
+import matplotlib.pyplot as plt
+plt.rcParams[&quot;font.sans-serif&quot;] = [&quot;SimHei&quot;, &quot;PingFang SC&quot;, &quot;Arial Unicode MS&quot;]
+plt.rcParams[&quot;axes.unicode_minus&quot;] = False
+
+# 将CSV记录读入DataFrame。
+df = pd.read_csv(&quot;countries.csv&quot;)
+# 只保留年份为2010的行。
+selected = df[df[&quot;年份&quot;] == 2010]
+# 选取指标列，计算2010年的平均值。
+print(&quot;2010年平均&quot;, selected[&quot;人均指标&quot;].mean())
+# 在2010年的数据中筛选数值最大的一行。
+print(&quot;最大记录&quot;, selected[selected[&quot;人均指标&quot;] == selected[&quot;人均指标&quot;].max()])
+# 先筛选一个国家，再按年份排序后绘图。
+country = df[df[&quot;国家&quot;] == &quot;甲国&quot;].sort_values(&quot;年份&quot;)
+print(country)
+# 根据已有年份记录绘制折线。
+plt.plot(country[&quot;年份&quot;], country[&quot;人均指标&quot;], marker=&quot;o&quot;)
+plt.xlabel(&quot;年份&quot;)
+plt.ylabel(&quot;模拟人均指标&quot;)
+plt.title(&quot;甲国历年记录&quot;)
+
+plt.grid()
+plt.tight_layout()
+# 显示绘制完成的图表。
+plt.show()
+</pre></details></section><p class="small"><a href="https://swcarpentry.github.io/python-novice-gapminder/08-data-frames.html">技能与题型来源</a> · 本题为简化改编，数据自编。</p></article><article class="card"><span class="badge" aria-label="难度4星，共5星">★★★★☆ · 进阶</span><h3>5. 按舱位分类汇总</h3><section class="problem"><h4>一、题目</h4><p>按舱位统计人数和平均票价；找出平均票价最高的舱位；绘制各舱位平均票价柱状图。</p><p><a href="practice/passengers.csv" download>下载 passengers.csv</a></p><details><summary>查看题目数据（模拟）</summary><pre class="code">编号,年龄,票价,舱位
+1,12,20,3
+2,36,80,1
+3,28,35,2
+4,45,90,1
+5,16,25,3
+6,33,40,2
+7,60,100,1
+8,22,30,3
+9,40,50,2
+10,18,30,3
+</pre></details></section><section class="explanation"><h4>二、解析</h4><ol><li>groupby按舱位把记录分组，再选票价列。</li><li>count统计每组有效票价数量，mean统计平均票价；本题票价没有缺失，所以count也等于人数。</li><li>比较汇总表的mean列找出最高组；用舱位作分类横轴、平均票价作柱高，不能把不同舱位的记录直接当成均价。</li></ol></section><section class="solution"><h4>三、参考答案</h4><details><summary>展开完整代码与核对结果</summary><p><b>预期结果：</b>1舱3人、均价90；2舱3人、均价约41.67；3舱4人、均价26.25。</p><a href="practice/group_stats.py" download>下载Python代码</a><pre class="code"># 教学改编；CSV为自编模拟数据，非真实乘客或环境观测。
+# pandas对行分组并计算统计结果。
+import pandas as pd
+# pyplot绘制统计结果柱状图。
+import matplotlib.pyplot as plt
+plt.rcParams[&quot;font.sans-serif&quot;] = [&quot;SimHei&quot;, &quot;PingFang SC&quot;, &quot;Arial Unicode MS&quot;]
+plt.rcParams[&quot;axes.unicode_minus&quot;] = False
+
+# 将乘客记录载入DataFrame。
+df = pd.read_csv(&quot;passengers.csv&quot;)
+# groupby按舱位分组；count计数，mean计算每组平均票价。
+summary = df.groupby(&quot;舱位&quot;)[&quot;票价&quot;].agg([&quot;count&quot;, &quot;mean&quot;])
+# 打印每个舱位的人数和平均票价。
+print(summary)
+# 筛选平均票价等于各组最高均价的舱位。
+print(&quot;平均票价最高的舱位&quot;, summary[summary[&quot;mean&quot;] == summary[&quot;mean&quot;].max()])
+# 柱高表示平均票价，横轴标签表示舱位。
+plt.bar(summary.index.astype(str), summary[&quot;mean&quot;])
+plt.xlabel(&quot;舱位&quot;)
+plt.ylabel(&quot;平均票价&quot;)
+plt.title(&quot;各舱位平均票价&quot;)
+
+plt.grid()
+plt.tight_layout()
+# 显示绘制完成的图表。
+plt.show()
+</pre></details></section><p class="small"><a href="https://pandas.pydata.org/docs/getting_started/intro_tutorials/06_calculate_statistics.html">技能与题型来源</a> · 本题为简化改编，数据自编。</p></article></section></main></html>

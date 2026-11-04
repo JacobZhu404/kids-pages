@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>秘密基地 · 小萝卜和爸爸的学习资料</title>
+<title>小萝卜的秘密花园 · 学习与探索</title>
 <style>
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
@@ -36,6 +36,14 @@
   /* 标题旁静态小蛋仔 */
   header h1 { display:inline-flex; align-items:center; gap:10px; }
 </style>
+
+
+
+
+
+
+
+
 
 
 
@@ -93,6 +101,10 @@ body{padding-left:24px;}
 /* 蛋仔拖动 + 右下角隐形栅栏 */
 #kg-eggy{cursor:grab;touch-action:none;}
 #kg-eggy.kg-dragging{cursor:grabbing;transition:none!important;}
+#kg-eggy.kg-flying{pointer-events:none;transition:none!important;filter:drop-shadow(0 0 12px #38bdf8);}
+#kg-spring{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99997;overflow:hidden;}
+#kg-spring path{fill:none;stroke-linecap:round;filter:drop-shadow(0 0 7px #22d3ee) drop-shadow(0 0 14px #a78bfa);}
+#kg-spring text{font:600 12px sans-serif;fill:#0369a1;stroke:white;stroke-width:3px;paint-order:stroke;}
 @keyframes kg-wall-shake{0%{transform:translateX(0);}30%{transform:translateX(-3px);}60%{transform:translateX(2.5px);}100%{transform:translateX(0);}}
 #kg-eggy svg.kg-wall-shake{animation:kg-wall-shake .22s ease;}
 #kg-dustbox{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:99996;overflow:hidden;}
@@ -105,7 +117,7 @@ body{padding-left:24px;}
 <div class="kg-sb-mask" id="kg-sb-mask"></div>
 <aside id="kg-sidebar">
 <button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>
-<a class="kg-sb-home" href="#top">🏠 秘密基地</a>
+<a class="kg-sb-home" href="#top">🏠 小萝卜的秘密花园</a><a class="kg-sb-page" href="digital-literacy.html">🌱 数智素养考试准备专题</a>
 <div class="kg-sb-topic">📍 ① DFS/BFS</div>
 <a class="kg-sb-page" href="#topic-dfs">· 查看主题</a>
 <div class="kg-sb-topic">📍 ② 树基础</div>
@@ -140,11 +152,22 @@ body{padding-left:24px;}
 
 
 
+
+
+
+
+
+
+
+
 <header>
-  <h1><svg width="44" height="52" viewBox="0 0 100 120" style="vertical-align:middle"><ellipse cx="50" cy="74" rx="40" ry="42" fill="#fde047" stroke="#0ea5e9" stroke-width="3.5"/><ellipse cx="36" cy="50" rx="12" ry="8" fill="#fef9c3" opacity=".6"/><path d="M28 20 Q50 8 72 20 L66 28 Q50 22 34 28 Z" fill="#0ea5e9" stroke="#0284c7" stroke-width="2"/><circle cx="50" cy="16" r="4" fill="#fbbf24"/><circle cx="36" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="64" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="36" cy="68" r="5.5" fill="#1e293b"/><circle cx="64" cy="68" r="5.5" fill="#1e293b"/><circle cx="38" cy="65" r="2" fill="#fff"/><circle cx="66" cy="65" r="2" fill="#fff"/><path d="M28 60 Q26 54 24 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M33 58 Q33 52 35 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M67 58 Q67 52 65 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M72 60 Q74 54 76 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><circle cx="78" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><path d="M42 84 Q50 90 58 84" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="34" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="53" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="37" y="106" width="7" height="8" fill="#fde047"/><rect x="56" y="106" width="7" height="8" fill="#fde047"/></svg>秘密基地</h1>
+  <h1><svg width="44" height="52" viewBox="0 0 100 120" style="vertical-align:middle"><ellipse cx="50" cy="74" rx="40" ry="42" fill="#fde047" stroke="#0ea5e9" stroke-width="3.5"/><ellipse cx="36" cy="50" rx="12" ry="8" fill="#fef9c3" opacity=".6"/><path d="M28 20 Q50 8 72 20 L66 28 Q50 22 34 28 Z" fill="#0ea5e9" stroke="#0284c7" stroke-width="2"/><circle cx="50" cy="16" r="4" fill="#fbbf24"/><circle cx="36" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="64" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="36" cy="68" r="5.5" fill="#1e293b"/><circle cx="64" cy="68" r="5.5" fill="#1e293b"/><circle cx="38" cy="65" r="2" fill="#fff"/><circle cx="66" cy="65" r="2" fill="#fff"/><path d="M28 60 Q26 54 24 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M33 58 Q33 52 35 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M67 58 Q67 52 65 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M72 60 Q74 54 76 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><circle cx="78" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><path d="M42 84 Q50 90 58 84" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="34" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="53" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="37" y="106" width="7" height="8" fill="#fde047"/><rect x="56" y="106" width="7" height="8" fill="#fde047"/></svg>小萝卜的秘密花园</h1>
   <p>小萝卜和爸爸的学习资料</p>
 </header>
 <main>
+  <div class="topic-title" id="topic-python"><h2>🌱 科学素质大赛 · 数智素养考试准备</h2><span class="badge">小学组</span></div>
+  <div class="grid"><a class="card" href="digital-literacy.html"><div class="src">考试准备专题 · 小学组</div><h3>数智素养考试准备：从 C++ 到 Python</h3><p>跟着动画学递归画树和 CSV 数据分析，下载代码与练习数据，完成随堂小测和考前检查。<br><strong>进入专题 →</strong></p></a><a class="card" href="digital-practice.html"><div class="src">考试准备专题 · 练习库</div><h3>递归绘图与数据统计 · 13题</h3><p>分形树、雪花、三角形、H树等8道绘图，乘客与空气质量等5道统计；附预览、提示、代码和CSV。<br><strong>进入练习库 →</strong></p></a></div>
+
 
   <!-- 主题一：深度搜索与广度搜索 -->
   <div class="topic-title" id="topic-dfs" style="scroll-margin-top:56px">
@@ -285,6 +308,18 @@ body{padding-left:24px;}
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 <!-- kg-toc-js-start -->
 <script>
 /* 左侧目录：自动收起 / 悬停展开 */
@@ -310,7 +345,7 @@ body{padding-left:24px;}
 </script>
 <!-- kg-toc-js-end -->
 <!-- kg-eggy-start -->
-<div id="kg-eggy" title="点我玩！连点10次放烟花，30次有大惊喜……">
+<div id="kg-eggy" title="按住向右下角拉满5秒，松手起飞！轻点10次放烟花，30次大惊喜">
   <svg width="70" height="84" viewBox="0 0 100 120">
     <ellipse class="kg-hat" cx="50" cy="30" rx="26" ry="18" fill="#0ea5e9" stroke="#0284c7" stroke-width="2"/>
     <path class="kg-hat" d="M20 30 Q50 22 80 30 L74 34 Q50 28 26 34 Z" fill="#0284c7"/>
@@ -410,8 +445,119 @@ body{padding-left:24px;}
   function bounds(){var vw=window.innerWidth, vh=window.innerHeight;var rw=Math.max(vw/5,150), rh=Math.max(vh/5,120);return {L:vw-rw, T:vh-rh, R:vw, B:vh};}
   function setHome(){homeL=window.innerWidth-W-20;homeT=window.innerHeight-H-20;eggy.style.left=homeL+'px';eggy.style.top=homeT+'px';}
   setHome();
-  window.addEventListener('resize',setHome);
+  window.addEventListener('resize',function(){abortFlight();resetCharge();if(down) release({type:'pointercancel'});setHome();});
   var down=null, dragging=false, wallOn=false, lastDust=0, suppress=0, retTimer=null;
+  // Continuous corner pressure arms the spring even when the pointer stops moving.
+  var chargeTimer=null, chargeRAF=0, chargeSince=0, ready=false, spring=null, tension=0, chargeProgress=0;
+  var flying=false, flightRAF=0, flightTimer=null, activePointer=null;
+  function resetCharge(){
+    if(chargeTimer) clearTimeout(chargeTimer);
+    cancelAnimationFrame(chargeRAF);chargeRAF=0;
+    chargeTimer=null;chargeSince=0;ready=false;chargeProgress=0;
+    if(!flying)eggy.style.filter="";
+    if(spring){spring.remove();spring=null;}
+  }
+  function drawSpring(recoil){
+    if(!spring){
+      spring=document.createElementNS('http://www.w3.org/2000/svg','svg');spring.id='kg-spring';
+      spring.innerHTML='<path stroke="#a78bfa" stroke-width="9" opacity=".4"/><path stroke="#67e8f9" stroke-width="4"/><path stroke="white" stroke-width="1.3"/><text text-anchor="end"/><rect class="kg-charge-track" rx="4" fill="#cbd5e1" opacity=".6"/><rect class="kg-charge-fill" rx="4" fill="#22d3ee"/>';
+      document.body.appendChild(spring);
+    }
+    var w=window.innerWidth,h=window.innerHeight;
+    spring.setAttribute('viewBox','0 0 '+w+' '+h);
+    var span=Math.min(145,w*.28,h*.28), pull=recoil===undefined?10+chargeProgress*(14+tension*38):recoil;
+    // Two anchors form a diagonal trampoline facing the upper-left launch direction.
+    var x=w-12,y=h-12;
+    var d='M '+(x-span)+' '+y+' Q '+(x-span/2+pull)+' '+(y-span/2+pull)+' '+x+' '+(y-span);
+    spring.querySelectorAll('path').forEach(function(path){path.setAttribute('d',d);});
+    var label=spring.querySelector('text');label.setAttribute('x',w-20);label.setAttribute('y',h-span-24);
+    var pulse=.5+.5*Math.sin(Date.now()/140);
+    spring.querySelectorAll('path').forEach(function(path,i){
+      path.style.opacity=String((i===0?.2+.25*pulse:.4+.6*chargeProgress));
+    });
+    label.textContent=recoil!==undefined?'':ready?'蓄力完成 · 松手起飞！':'蓄力 '+Math.floor(chargeProgress*100)+'% · 继续按住';
+    var track=spring.querySelector('.kg-charge-track'),fill=spring.querySelector('.kg-charge-fill');
+    [track,fill].forEach(function(bar){bar.setAttribute('x',w-140);bar.setAttribute('y',h-span-14);bar.setAttribute('height',6);});
+    track.setAttribute('width',120);fill.setAttribute('width',120*chargeProgress);
+    eggy.style.filter='drop-shadow(0 0 '+(3+chargeProgress*10+pulse*3)+'px rgba(34,211,238,'+(.2+chargeProgress*.7)+'))';
+  }
+  function cornerPressure(ox,oy){
+    if(ox<8||oy<8){resetCharge();return;}
+    tension=Math.min(1,Math.hypot(ox,oy)/150);
+    if(ready){drawSpring();return;}
+    if(chargeTimer) return;
+    chargeSince=Date.now();
+    function charging(){
+      if(!down||!dragging)return;
+      chargeProgress=Math.min(1,(Date.now()-chargeSince)/5000);
+      drawSpring();chargeRAF=requestAnimationFrame(charging);
+    }
+    charging();
+    chargeTimer=setTimeout(function(){
+      chargeTimer=null;
+      if(!down||!dragging) return;
+      ready=true;drawSpring();
+    },5000);
+  }
+  function abortFlight(){
+    cancelAnimationFrame(flightRAF);flightRAF=0;
+    if(flightTimer)clearTimeout(flightTimer);flightTimer=null;
+    flying=false;eggy.classList.remove('kg-flying');
+    svg.style.transform='';eggy.style.transition='';eggy.style.transform='';eggy.style.filter='';
+  }
+  function launch(){
+    var x=parseFloat(eggy.style.left),y=parseFloat(eggy.style.top);
+    var started=performance.now(),last=started;
+    var vx=-(window.innerWidth-W)*2.1,vy=-(window.innerHeight-H)*2.55;
+    cancelAnimationFrame(chargeRAF);chargeRAF=0;
+    flying=true;suppress=Date.now()+3100;
+    eggy.classList.remove('kg-bounce');eggy.classList.add('kg-flying');
+    eggy.style.transform='';eggy.style.transition='none';wallOn=false;squashFace(false);
+    mouth.setAttribute('d','M42 82 Q50 96 58 82');
+    if(spring){drawSpring(-35);spring.style.transition='opacity .3s';spring.style.opacity='0';}
+    function finish(){
+      abortFlight();resetCharge();setHome();squashFace(false);
+    }
+    // Damped bounces flow into a Hermite landing with continuous velocity.
+    var landing=null;
+    flightTimer=setTimeout(finish,2850);
+    function frame(now){
+      if(!flying)return;
+      var elapsed=now-started,dt=Math.min((now-last)/1000,.04);last=now;
+      var energy=Math.max(0,1-elapsed/2750);
+      if(elapsed>=1550&&!landing){
+        var duration=(2750-elapsed)/1000;
+        var maxL=Math.max(0,window.innerWidth-W),maxT=Math.max(0,window.innerHeight-H);
+        // Clamp the control point so the entire landing stays on screen.
+        var cx=Math.max(0,Math.min(maxL,x+vx*duration/3));
+        var cy=Math.max(0,Math.min(maxT,y+vy*duration/3));
+        landing={at:elapsed,duration:2750-elapsed,x:x,y:y,cx:cx,cy:cy};
+      }
+      if(landing){
+        var t=Math.min(1,(elapsed-landing.at)/landing.duration),u=1-t;
+        x=u*u*u*landing.x+3*u*u*t*landing.cx+(3*u*t*t+t*t*t)*homeL;
+        y=u*u*u*landing.y+3*u*u*t*landing.cy+(3*u*t*t+t*t*t)*homeT;
+        if(t>=1){finish();return;}
+      }else{
+        var drag=Math.exp(-.32*dt);vx*=drag;vy*=drag;
+        x+=vx*dt;y+=vy*dt;
+        var maxX=Math.max(0,window.innerWidth-W),maxY=Math.max(0,window.innerHeight-H),hit=false;
+        if(x<0||x>maxX){x=Math.max(0,Math.min(x,maxX));vx=-vx*.86;hit=true;}
+        if(y<0||y>maxY){y=Math.max(0,Math.min(y,maxY));vy=-vy*.86;hit=true;}
+        if(hit){dust(vx>0?-1:1,vy>0?-1:1);eggy.style.transform='scale('+(1+.14*energy)+','+(1-.14*energy)+')';}
+        else eggy.style.transform='scale(1,1)';
+      }
+      eggy.style.left=x+'px';eggy.style.top=y+'px';
+      eggy.style.filter='drop-shadow(0 0 '+(12*energy)+'px rgba(56,189,248,'+energy+'))';
+      svg.style.transform='rotate('+(Math.sin(elapsed/140)*18*energy)+'deg)';
+      if(landing)eggy.style.transform='scale(1,1)';
+      flightRAF=requestAnimationFrame(frame);
+    }
+    flightRAF=requestAnimationFrame(frame);
+  }
+  document.addEventListener('visibilitychange',function(){if(document.hidden){if(down)release({type:'pointercancel'});abortFlight();resetCharge();setHome();}});
+  window.addEventListener('blur',function(){if(down)release({type:'pointercancel'});});
+  eggy.addEventListener('lostpointercapture',function(){if(down)release({type:'pointercancel'});});
   function squashFace(on){
     if(on){mouth.setAttribute('d','M42 87 Q50 81 58 87');pl.setAttribute('r','6.8');pr.setAttribute('r','6.8');}
     else{mouth.setAttribute('d',faces[fi][1]);pl.setAttribute('r','5.5');pr.setAttribute('r','5.5');}
@@ -437,16 +583,18 @@ body{padding-left:24px;}
     }
   }
   eggy.addEventListener('pointerdown',function(e){
-    if(eggy.classList.contains('kg-blasted')) return;
+    if(flying||down||eggy.classList.contains('kg-blasted')) return;
     if(e.pointerType==='mouse'&&e.button!==0) return;
     if(retTimer){clearTimeout(retTimer);retTimer=null;}
+    resetCharge();activePointer=e.pointerId;
+    eggy.classList.remove('kg-bounce');eggy.style.transition='';
     var r=eggy.getBoundingClientRect();
     down={x:e.clientX,y:e.clientY,ox:r.left-e.clientX,oy:r.top-e.clientY};
     dragging=false;
     try{eggy.setPointerCapture(e.pointerId);}catch(err){}
   });
   window.addEventListener('pointermove',function(e){
-    if(!down) return;
+    if(!down||e.pointerId!==activePointer) return;
     var dx=e.clientX-down.x, dy=e.clientY-down.y;
     if(!dragging && dx*dx+dy*dy<36) return;
     if(!dragging){dragging=true;eggy.classList.add('kg-dragging');}
@@ -454,6 +602,7 @@ body{padding-left:24px;}
     var lx=down.ox+e.clientX, ly=down.oy+e.clientY;
     var cl=Math.max(b.L,Math.min(lx,b.R-W)), ct=Math.max(b.T,Math.min(ly,b.B-H));
     var ox=lx-cl, oy=ly-ct;
+    cornerPressure(ox,oy);
     eggy.style.left=cl+'px'; eggy.style.top=ct+'px';
     var hit=(ox!==0||oy!==0), now=Date.now();
     if(hit){
@@ -467,10 +616,12 @@ body{padding-left:24px;}
       wallOn=false;squashFace(false);eggy.style.transform='';
     }
   },{passive:true});
-  function release(){
-    if(!down) return;
-    var wasDrag=dragging;
-    down=null;
+  function release(e){
+    if(!down||(e&&e.pointerId!==undefined&&e.pointerId!==activePointer)) return;
+    var wasDrag=dragging, shouldLaunch=ready&&e&&e.type==='pointerup';
+    down=null;activePointer=null;
+    if(shouldLaunch){dragging=false;eggy.classList.remove('kg-dragging');launch();return;}
+    resetCharge();
     if(wasDrag){
       dragging=false;eggy.classList.remove('kg-dragging');
       suppress=Date.now()+400;
@@ -482,7 +633,7 @@ body{padding-left:24px;}
   window.addEventListener('pointerup',release);
   window.addEventListener('pointercancel',release);
   eggy.addEventListener('click',function(e){
-    if(Date.now()<suppress) return;
+    if(flying||Date.now()<suppress) return;
     fi=(fi+1)%faces.length;body.setAttribute('fill',faces[fi][0]);mouth.setAttribute('d',faces[fi][1]);eggy.classList.remove('kg-bounce');void eggy.offsetWidth;eggy.classList.add('kg-bounce');clickCount++;if(clickCount>=30){clickCount=0;fireExplosion();}else if(clickCount%10===0){fireConfetti();}
   });
 })();
