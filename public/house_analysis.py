@@ -14,6 +14,8 @@ df = pd.read_csv("house_price.csv")
 print("前5行：")
 # 显示前5行，检查数据是否读入正确。
 print(df.head())
+# 显示列名，确认后续代码使用的名称准确。
+print("列名：", list(df.columns))
 # 选取房间数这一列，并计算平均值。
 print("平均房间数：", df["房间数"].mean())
 # max()返回房龄列中的最大值。
@@ -27,7 +29,7 @@ maximum = df["每平米价格"].max()
 print("最高每平米价格：", maximum)
 print("对应房屋（并列最高时全部显示）：")
 # 筛选所有并列最大值对应的记录。
-print(df[df["每平米价格"] == maximum])
+print(df.loc[df["每平米价格"] == maximum])
 
 # 按面积排序，让折线图沿面积递增方向连接。
 ordered = df.sort_values("房屋面积(㎡)")

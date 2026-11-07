@@ -9,24 +9,24 @@
 </head>
 <body>
 <header class="hero"><div class="wrap"><a href="/" style="display:inline-block;color:inherit;text-decoration:none;margin-bottom:16px">← 返回小萝卜的秘密花园</a><div class="eyebrow">科学素质大赛 · 数智素养考试准备专题 · 小学组</div><h1>数智素养考试准备</h1><p>跟着动画看懂两类任务：用 turtle 画出会分叉的树；用 pandas 读表、算数、造新特征，再把结果画成图。每一步都可以停下来自己试。</p><span class="pill">预计学习 60–90 分钟</span><span class="pill">按西城区 2026 规则整理</span></div></header>
-<nav class="nav"><div class="wrap"><a href="digital-practice.html">13题练习库 →</a><a href="#map">考试地图</a><a href="#python">Python 热身</a><a href="#python-basics">Python 基本操作</a><a href="#pandas-basics">pandas 行列与运算</a><a href="#turtle-basics">turtle 与递归</a><a href="#tree">任务一：画树</a><a href="#data">任务二：看数据</a><a href="#complete">完整跟做</a><a href="#practice">自己闯关</a><a href="#exam">考场清单</a></div></nav>
+<nav class="nav"><div class="wrap"><a href="digital-practice.html">13题练习库 →</a><a href="#map">考试地图</a><a href="#python">Python 热身</a><a href="#python-basics">Python 基本操作</a><a href="#turtle-basics">turtle 与递归</a><a href="#tree">任务一：画树</a><a href="#data">任务二：完整题目</a><a href="#pandas-basics">pandas 工具讲解</a><a href="#data-steps">任务二：逐项解题</a><a href="#complete">完整跟做：画树</a><a href="#practice">自己闯关</a><a href="#exam">考场清单</a></div></nav>
 <main class="wrap">
-<section class="section" id="map"><h2>先看考试地图</h2><p class="lead">小学组包含 turtle 图形绘制和 CSV 数据分析两类任务。</p><div class="grid"><article class="card"><h3>🌳 图像任务｜turtle</h3><p>用海龟画图，样例是“毕达哥拉斯树”。得分看图形是否接近、角度和长度是否正确、是否居中，以及是否使用递归。</p><span class="badge">画出来 → 画得像 → 画得规范</span></article><article class="card"><h3>📊 数据任务｜CSV + pandas</h3><p>打开房屋数据表，展示前几行，计算平均值和最大值，新增“每平米价格”，最后画出面积与房价的关系图。</p><span class="badge">读数据 → 算一算 → 加新列 → 画图</span></article></div><div class="callout"><b>编程环境：</b>Python 3.8，Python IDLE。</div></section>
-<section class="section" id="python"><h2>热身：把 C++ 思路换成 Python 写法</h2><p class="lead">会 C++ 是优势：判断、循环、变量、函数的意思一样，主要是写法不同。</p><div class="grid"><article class="card"><h3>循环：重复做 5 次</h3><div class="code"># range(5) makes the loop run five times
+<section class="section" id="map"><h2>先看考试地图</h2><p class="lead">小学组包含 turtle 图形绘制和 CSV 数据分析两类任务。</p><div class="grid"><article class="card"><h3>🌳 图像任务｜turtle</h3><p>用海龟画图，样例是“毕达哥拉斯树”。得分看图形是否接近、角度和长度是否正确、是否居中，以及是否使用递归。</p><span class="badge">画出来 → 画得像 → 画得规范</span></article><article class="card"><h3>📊 数据任务｜CSV + pandas</h3><p>打开房屋数据表，展示前几行，计算平均房间数和最大房龄，新增“每平米价格”，找出最高单价记录，再画面积与房价的关系图。</p><span class="badge">读数据 → 算一算 → 加新列 → 画图</span></article></div><div class="callout"><b>编程环境：</b>Python 3.8，Python IDLE。</div></section>
+<section class="section" id="python"><h2>热身：把 C++ 思路换成 Python 写法</h2><p class="lead">会 C++ 是优势：判断、循环、变量、函数的意思一样，主要是写法不同。</p><div class="grid"><article class="card"><h3>循环：重复做 5 次</h3><div class="code"># range(5)让循环重复5次。
 for i in range(5):
-    print(i)  # print the current value</div><p class="small">Python 用冒号 <code>:</code> 开始一个代码块，下一行缩进 4 格。<code>range(5)</code> 会得到 0、1、2、3、4。</p></article><article class="card"><h3>函数：给一件事起名字</h3><div class="code"># def defines a reusable function
+    print(i)  # 打印当前的i值。</div><p class="small">Python 用冒号 <code>:</code> 开始一个代码块，下一行缩进 4 格。<code>range(5)</code> 会得到 0、1、2、3、4。</p></article><article class="card"><h3>函数：给一件事起名字</h3><div class="code"># def用来定义一个可以重复调用的函数。
 def double(x):
-    return x * 2  # return the result to the caller
+    return x * 2  # return把结果交还给调用函数的位置。
 
-print(double(6))  # call the function and print 12</div><p class="small"><code>def</code> 定义函数；调用 <code>double(6)</code> 时，参数 x 就是 6。</p></article></div><div class="card"><h3>最容易忘的三件事</h3><div class="score"><div><b>:</b>行尾冒号</div><div><b>缩进</b>代码块靠缩进</div><div><b>range(n)</b>从 0 到 n-1</div><div><b>==</b>比较是否相等</div><div><b>#</b>后面是注释</div></div></div></section>
-<section class="section" id="python-basics"><h2>Python 基本操作</h2><p class="lead">用 IDLE 打开 .py 文件，按 F5 运行；Shell 窗口显示 print 的结果。Python 用换行分隔语句，用冒号和缩进表示代码块。</p><div class="grid"><article class="card"><h3>导入、打印和赋值</h3><pre class="code"># import loads the module the script needs
+print(double(6))  # 调用函数，并打印结果12。</div><p class="small"><code>def</code> 定义函数；调用 <code>double(6)</code> 时，参数 x 就是 6。</p></article></div><div class="card"><h3>最容易忘的三件事</h3><div class="score"><div><b>:</b>行尾冒号</div><div><b>缩进</b>代码块靠缩进</div><div><b>range(n)</b>从 0 到 n-1</div><div><b>==</b>比较是否相等</div><div><b>#</b>后面是注释</div></div></div></section>
+<section class="section" id="python-basics"><h2>Python 基本操作</h2><p class="lead">用 IDLE 打开 .py 文件，按 F5 运行；Shell 窗口显示 print 的结果。Python 用换行分隔语句，用冒号和缩进表示代码块。</p><div class="grid"><article class="card"><h3>导入、打印和赋值</h3><pre class="code"># import导入程序要使用的模块。
 import turtle
 import pandas as pd
 
 # print 把文字或计算结果显示在 Shell
 print("开始练习")
-score = 90  # assign a value to a variable
-print(score)  # display the value</pre><p><code>import pandas as pd</code> 给 pandas 起简短别名 <code>pd</code>；<code>score = 90</code> 把数值保存到变量里。</p></article><article class="card"><h3>if、冒号和缩进</h3><pre class="code">score = 90
+score = 90  # 把数值保存到变量中。
+print(score)  # 显示变量的值。</pre><p><code>import pandas as pd</code> 给 pandas 起简短别名 <code>pd</code>；<code>score = 90</code> 把数值保存到变量里。</p></article><article class="card"><h3>if、冒号和缩进</h3><pre class="code">score = 90
 
 # if 后面写条件；冒号表示下面开始一个代码块
 if score >= 60:
@@ -44,15 +44,15 @@ while count < 3:
     count = count + 1  # 更新变量，避免循环一直不结束</pre><p>在 IDLE 编辑器中保存为 .py，再按 F5 运行。报错时先看 Shell 最后一行错误提示，再检查冒号、缩进、括号和变量名。</p></div></section>
 <section class="section" id="tree"><h2>任务一：让小树一层层长出来</h2><p class="lead">先用动画理解“递归”：一个大任务拆成两个更小的同类任务。动画是递归结构示意，比赛要求以题目图形为准。</p><div class="grid"><div class="card"><h3>看动画：每按一次，多长一层</h3><div class="canvasbox"><canvas id="treeCanvas" aria-label="递归树生长动画"></canvas></div><div class="controls"><button id="treeStep">长一层</button><button class="secondary" id="treeAuto">自动生长</button><button class="secondary" id="treeReset">重来</button><span class="small" id="treeDepth">现在：第 0 层</span></div><div class="steptext" id="treeExplain">树从一根主干开始。递归函数每次再画两棵更小的“子树”。</div></div></div><div class="card" id="turtle-basics"><h3>turtle 画笔、重复与递归</h3><p><code>turtle</code> 是 Python 自带的绘图模块。先把海龟想成拿着画笔的小车：它有当前位置、朝向和落下或抬起的画笔。</p><div class="grid"><div><p><b>常用动作</b></p><ul><li><code>t.forward(80)</code>：向前画80步</li><li><code>t.left(90)</code> / <code>t.right(90)</code>：转向</li><li><code>t.penup()</code> / <code>t.pendown()</code>：移动时不画 / 开始画</li><li><code>t.goto(x, y)</code>：移动到坐标</li><li><code>t.color("green")</code>：设置颜色</li></ul></div><div><p><b>while 控制重复</b></p><pre class="code"># 重复画正方形的四条边
 for i in range(4):
-    t.forward(80)  # draw one side
-    t.left(90)  # turn before drawing the next side
+    t.forward(80)  # 画正方形的一条边。
+    t.left(90)  # 转向后再画下一条边。
 
 # while 也可以按条件重复
 count = 0
 while count < 4:
-    t.forward(40)  # draw one side
-    t.left(90)  # turn for the next side
-    count = count + 1  # update the counter so while eventually stops</pre></div></div><div class="callout good"><b>递归的三步：</b>①检查停止条件；②画当前这一段；③调用自己画更小的部分。比如 <code>if length &lt; 10: return</code> 表示枝条够短就停止；每次把长度缩小，递归才会走向出口。函数走到 <code>return</code> 后，会回到刚才调用它的位置，继续执行后面的语句。</div><p><code>print()</code> 可以帮助观察递归：打印 <code>depth</code> 或 <code>length</code>，运行时就能看到每一层如何变小。复杂图形可用 <code>t.tracer(False)</code> 暂停逐笔刷新，画完后用 <code>t.update()</code> 一次显示。</p><details><summary>看一段把 turtle 和递归连起来的代码</summary><pre class="code">import turtle as t  # 导入内置绘图模块，并简称为 t
+    t.forward(40)  # 画正方形的一条边。
+    t.left(90)  # 转向，准备画下一条边。
+    count = count + 1  # 更新计数，保证while最终能停止。</pre></div></div><div class="callout good"><b>递归的三步：</b>①检查停止条件；②画当前这一段；③调用自己画更小的部分。比如 <code>if length &lt; 10: return</code> 表示枝条够短就停止；每次把长度缩小，递归才会走向出口。函数走到 <code>return</code> 后，会回到刚才调用它的位置，继续执行后面的语句。</div><p><code>print()</code> 可以帮助观察递归：打印 <code>depth</code> 或 <code>length</code>，运行时就能看到每一层如何变小。复杂图形可用 <code>t.tracer(False)</code> 暂停逐笔刷新，画完后用 <code>t.update()</code> 一次显示。</p><details><summary>看一段把 turtle 和递归连起来的代码</summary><pre class="code">import turtle as t  # 导入内置绘图模块，并简称为 t
 
 def draw_branch(length, depth):
     print("这一层：", depth, "枝长：", length)  # 打印递归过程
@@ -68,16 +68,38 @@ def draw_branch(length, depth):
     t.backward(length)  # 回到本层起点
 
 draw_branch(100, 5)</pre></details></div><div class="grid"><div class="card"><h3>递归程序里最重要的两句话</h3><div class="code"><span class="keyword">def</span> draw(length):
-    # Stop when the branch becomes too short
+    # 枝条太短时停止递归。
     <span class="keyword">if</span> length &lt; 10:
         <span class="keyword">return</span>  <span class="comment"># 停止条件：太短就不画</span>
 
     draw(length * 0.7)  <span class="comment"># 递归画更短的左枝</span>
     draw(length * 0.7)  <span class="comment"># 递归画更短的右枝</span></div><p>停止条件像“安全刹车”。如果没有停止条件，函数会一直叫自己，程序就停不下来。</p><button class="secondary" id="showOfficial">展开：比赛样例代码怎么读</button><div id="official" class="hide"><div class="callout good"><b>样例的读法：</b><code>draw(l)</code> 表示画边长为 l 的结构；每次递归时长度变成原来的 <code>3/5</code> 或 <code>4/5</code>。当 <code>l ≤ 10</code>，条件 <code>if l &gt; 10</code> 不成立，递归自然停下。</div><p class="small">真正的样例还要用 turtle 转向、画正方形、回到起点再画另一支。先理解“长度越来越小 + 递归会停”，再逐句照着任务要求补图形细节。</p></div></div></div><div class="card"><h3>turtle 动作词小抄</h3><div class="grid"><p><code>t.fd(长度)</code>：向前走<br><code>t.bk(长度)</code>：向后退</p><p><code>t.lt(角度)</code>：向左转<br><code>t.rt(角度)</code>：向右转</p><p><code>t.pu()</code>：抬起画笔，移动不留线<br><code>t.pd()</code>：落下画笔，开始画</p><p><code>t.goto(x, y)</code>：移动到坐标<br><code>t.color(...)</code>：改画笔颜色</p></div><p class="small">样例用 <code>t.tracer(False)</code> 暂停逐笔刷新，最后 <code>t.update()</code> 一次显示，能加快复杂图形的绘制。</p></div></section>
-<section class="section" id="data"><h2>任务二：从表格里找到线索</h2><div class="card" id="pandas-basics"><h3>pandas：表格、行列和计算</h3><p>pandas 是处理表格数据的工具。<code>DataFrame</code> 可以理解成一张表：每一列有列名，每一行是一条记录。下面用小表演示常用操作。</p><pre class="code">import pandas as pd
+<section class="section" id="data">
+<h2>任务二：房屋数据分析</h2>
+<p class="lead">先读完整题目，再认识工具，最后按题目顺序逐项完成。下面是学习版题面，按公开任务样例整理，便于练习。</p>
+<article class="card" id="task-brief">
+<h3>任务二完整题目</h3>
+<p>请使用 Python 和 pandas 读取同文件夹中的 <code>house_price.csv</code>，分析房屋记录，并完成以下要求：</p>
+<ol>
+<li>读取 CSV，显示前 5 行，确认数据和列名。</li>
+<li>计算“房间数”的平均值，以及“房龄(年)”的最大值。</li>
+<li>新增“每平米价格”列，计算方法为房价（万元）÷ 房屋面积（㎡）。</li>
+<li>找出每平米价格最高的房屋记录；如果并列最高，显示全部记录。</li>
+<li>绘制房屋面积与房价的关系图，并标出图表标题、横轴名称和纵轴名称。</li>
+</ol>
+<div class="callout"><b>完成标准：</b>程序可以从头运行；统计结果和新列正确；图表能显示且标注完整。</div>
+</article>
+</section>
+<section class="section" id="pandas-basics">
+<h2>先认识工具：pandas 的表格、行列和计算</h2>
+<p class="lead">这部分只讲 pandas 的通用用法，示例使用成绩表。学完后再把这些操作用到房屋题。</p>
+<div class="card">
+<p><code>DataFrame</code> 可以看成一张表：列有列名，行有行标签。用列名取列，用 <code>.loc</code> 按行标签和列名定位。</p>
+<pre class="code">import pandas as pd
 
 # 字典中的每个列表代表一列；相同位置的数据组成一行
 scores = pd.DataFrame({
+    "班级": ["一班", "一班", "二班"],
     "姓名": ["小明", "小红", "小刚"],
     "语文": [80, 92, 75],
     "数学": [90, 88, 85]
@@ -86,98 +108,124 @@ scores = pd.DataFrame({
 # 用列名访问整列
 print(scores["数学"])
 
-# .loc[行标签, 列名] 访问指定行和列；这里行标签0是第一行
+# .loc[行标签, 列名] 访问指定单元格；默认行标签从0开始
 print(scores.loc[0, "姓名"])
 
-# 用切片选取多行、多列；: 表示该方向取全部
+# 选取标签0到1的行（包含1），以及指定的两列
 print(scores.loc[0:1, ["姓名", "语文"]])
 
-# 两列可以逐行相加，结果保存为新列
+# 两列逐行相加，结果存入新列“总分”
 scores["总分"] = scores["语文"] + scores["数学"]
 
-# groupby 按班级分组；sum 对每组的数值列求和
-scores["班级"] = ["一班", "一班", "二班"]
-print(scores.groupby("班级")["总分"].sum())</pre><p><b>记住：</b><code>表["列名"]</code>取列；<code>表.loc[行标签, "列名"]</code>取行列交叉处；<code>新列 = 列A + 列B</code>逐行计算；<code>groupby(...).sum()</code>先分组再求和。读取 CSV 后得到的 <code>df</code> 也是 DataFrame。</p></div><p class="lead">把 CSV 想成一张电子表格：每一行是一套房，每一列是一种信息。我们用一组小数据演示规则里的任务。</p><div class="card"><h3>① 先读表：认清每一列</h3><div class="table-wrap"><table><thead><tr><th>房屋编号</th><th>面积（㎡）</th><th>房间数</th><th>房龄（年）</th><th>房价（万元）</th></tr></thead><tbody><tr><td>1</td><td>120</td><td>3</td><td>5</td><td>450</td></tr><tr><td>2</td><td>90</td><td>2</td><td>10</td><td>320</td></tr><tr><td>3</td><td>150</td><td>4</td><td>2</td><td>680</td></tr><tr><td>4</td><td>80</td><td>2</td><td>15</td><td>280</td></tr></tbody></table></div><div class="code-title">这几行代码在做什么？</div><div class="code"># pandas reads table-shaped data
+# groupby按班级分组；sum计算每组总分之和
+print(scores.groupby("班级")["总分"].sum())</pre>
+<p><b>这几个写法的意思：</b><code>表["列名"]</code>取一列；<code>表.loc[行标签, "列名"]</code>取指定单元格；<code>新列 = 列A + 列B</code>逐行计算；<code>groupby(...).sum()</code>分组后求和。CSV 读入后得到的 <code>df</code> 也是 DataFrame。</p>
+</div>
+</section>
+<section class="section" id="data-steps">
+<h2>按题目要求逐项完成</h2>
+<p class="lead">先看这份小型练习数据，再逐题对应代码。表格内容与下载的 CSV 完全一致。</p>
+<div class="card">
+<h3>数据表：每一行是一套房，每一列是一种信息</h3>
+<div class="table-wrap"><table><thead><tr><th>房屋编号</th><th>房屋面积（㎡）</th><th>房间数</th><th>房龄（年）</th><th>房价（万元）</th></tr></thead><tbody>
+<tr><td>1</td><td>120</td><td>3</td><td>5</td><td>450</td></tr>
+<tr><td>2</td><td>90</td><td>2</td><td>10</td><td>320</td></tr>
+<tr><td>3</td><td>150</td><td>4</td><td>2</td><td>680</td></tr>
+<tr><td>4</td><td>80</td><td>2</td><td>15</td><td>280</td></tr>
+<tr><td>5</td><td>100</td><td>3</td><td>8</td><td>400</td></tr>
+</tbody></table></div>
+</div>
+<div class="grid">
+<article class="card"><h3>第1项｜读取数据并查看列名</h3><p><b>题目要求：</b>读入 CSV，显示前 5 行，确认列名。</p><pre class="code"># pandas读取CSV；pd是pandas的常用简称
 import pandas as pd
 
-# Load the CSV into a DataFrame
+# 读取与程序放在同一文件夹的CSV文件
+# 读入后，df就是一张DataFrame表格
 df = pd.read_csv("house_price.csv")
-print(df.head())  # Preview the first five rows</div><p class="small"><code>import pandas as pd</code> 是把 pandas 工具箱取个短名 pd；<code>read_csv</code> 读入 CSV；<code>head()</code> 默认显示前 5 行。CSV 文件要放在程序能找到的位置，比赛时先看清文件名。</p></div>
-<div class="grid"><article class="card"><h3>② 算统计量</h3><div class="code"># Select one column, then calculate its mean
+
+# 显示前5行，检查读取结果
+print(df.head())
+
+# 显示所有列名，后续取列时要与这里完全一致
+print(list(df.columns))</pre><p>如果列名不一样，后面的代码就要使用文件里的实际列名。<code>head()</code> 默认显示前 5 行。</p></article>
+<article class="card"><h3>第2项｜计算平均房间数和最大房龄</h3><p><b>题目要求：</b>分别对指定列做统计。</p><pre class="code"># 先用列名取出“房间数”这一列，再计算平均值
 mean_rooms = df["房间数"].mean()
-# max finds the largest value in the selected column
-max_age = df["房龄(年)"].max()</div><p>方括号选一列，点号后面选一种计算方法。<code>mean()</code> 算平均数，<code>max()</code> 找最大值。</p><button class="secondary" id="calcStats">点我算一算</button><div id="statsResult" class="answer">房间数平均值：2.75 间<br>房龄最大值：15 年</div></article><article class="card"><h3>③ 做一个新特征</h3><div class="code"># Divide matching rows element by element to create a new column
+
+# 先取“房龄(年)”这一列，再找最大值
+max_age = df["房龄(年)"].max()
+
+print("平均房间数：", mean_rooms)
+print("最大房龄：", max_age)</pre><p><code>mean()</code> 求平均数，<code>max()</code> 求最大值。它们都作用在选出来的那一列上。</p><button class="secondary" id="calcStats">显示核对结果</button><div id="statsResult" class="answer">平均房间数：2.8 间<br>最大房龄：15 年</div></article>
+<article class="card"><h3>第3项｜新增“每平米价格”列</h3><p><b>题目要求：</b>房价（万元）除以房屋面积（㎡）。</p><pre class="code"># 两列按行一一对应相除，并把结果存成新列
+# 每一行都会得到对应房屋的每平米价格
 df["每平米价格"] = (
     df["房价(万元)"] / df["房屋面积(㎡)"]
-)</div><p>新列来自旧列的计算，就叫“特征工程”。这题里每平米价格 = 总房价 ÷ 面积，可以更公平地比较大小不同的房子。</p><button class="secondary" id="calcFeature">显示每平米价格</button><div id="featureResult" class="answer">编号 1：3.75 万元/㎡　编号 2：3.56 万元/㎡<br>编号 3：4.53 万元/㎡　编号 4：3.50 万元/㎡<br><b>最大：编号 3，约 4.53 万元/㎡</b></div></article></div>
-<div class="card"><h3>④ 把关系画出来</h3><p>面积和房价是两列数字。折线图的横轴放面积，纵轴放房价；点和线帮助我们观察“面积变化时，房价大致怎么变”。画图前按面积排序，线就不容易来回折返。</p><div class="flow" id="dataFlow"><div>读 CSV</div><div>计算统计</div><div>新增特征</div><div>画图展示</div></div><div class="controls"><button class="green" id="runFlow">动画演示完整流程</button><span class="small" id="flowText">点击后看数据分析步骤依次点亮。</span></div><div class="code-title">比赛样例的绘图骨架</div><div class="code"># Sort rows by area so the line connects points in order
-df_sorted = df.sort_values("房屋面积(㎡)")
-# x values are area; y values are price
-plt.plot(df_sorted["房屋面积(㎡)"],
-         df_sorted["房价(万元)"], marker="o")
-# Add a title and axis labels so the chart is easy to read
-plt.title("房屋面积与房价关系图")  # chart title
-plt.xlabel("房屋面积 (㎡)")  # horizontal axis
-plt.ylabel("房价 (万元)")  # vertical axis
-plt.grid()  # Show a light grid
-plt.show()  # Open the chart</div><p class="small">图表要有标题、横轴名、纵轴名；<code>marker="o"</code> 给每个数据点画圆点；<code>show()</code> 显示图形。绘图前要按规则导入 <code>matplotlib.pyplot as plt</code>。</p></div>
-</section>
-<section class="section" id="complete"><h2>进阶跟做：真正的毕达哥拉斯树</h2><p class="lead">观察正方形、直角三角形和两个较小正方形的递归关系。</p><div class="card"><canvas id="squareTree" style="width:100%;height:400px" aria-label="毕达哥拉斯树分层动画"></canvas><div class="controls"><button id="sqNext">长一层</button><button id="sqPlay">自动演示</button><button id="sqReset">重来</button><span id="sqStatus" aria-live="polite"></span></div><p>把大正方形的边长当作 5，两个小正方形的边长就是 3 和 4：3² + 4² = 5²。因此分支长度分别是原来的 0.6 和 0.8。动画中的虚线表示三角形的两条直角边。</p><p>按顺序试：①只画一层；②改成两层，找到两个小正方形；③观察每次调用的长度和层数都在变小。下面代码用坐标直接画四个顶点，递归返回后无需恢复海龟方向。</p></div><div class="card"><h3>完整画树代码（教学改编）</h3><p><a href="pythagoras_tree.py" download>下载 pythagoras_tree.py</a></p><details><summary>展开完整代码</summary><pre class="code">import turtle as t
-import random
-import math
+)
 
-def draw(x, y, size, angle, depth):
-    # 停止条件：层数用完就返回
-    if depth == 0:
-        return
-    a = math.radians(angle)  # convert degrees to radians for trig functions
-    ux, uy = math.cos(a), math.sin(a)  # direction of the square base
-    vx, vy = -uy, ux  # perpendicular direction for its sides
-    # 正方形四个顶点
-    A = (x, y)  # lower-left corner
-    B = (x + size * ux, y + size * uy)  # lower-right corner
-    D = (x + size * vx, y + size * vy)  # upper-left corner
-    C = (B[0] + size * vx, B[1] + size * vy)  # upper-right corner
-    t.pu()
-    t.goto(A)
-    t.pd()
-    t.color(random.random(), random.random(), random.random())
-    for point in [B, C, D, A]:  # visit corners and close the square
-        t.goto(point)
-    # 直角三角形的两条直角边：0.6s 与 0.8s
-    P = (D[0] + .36 * size * ux + .48 * size * vx,
-         D[1] + .36 * size * uy + .48 * size * vy)
-    draw(D[0], D[1], size * .6,
-         angle + math.degrees(math.atan2(4, 3)), depth - 1)
-    draw(P[0], P[1], size * .8,
-         angle - math.degrees(math.atan2(3, 4)), depth - 1)
+# 查看新列，核对计算结果
+print(df[["房屋编号", "每平米价格"]])</pre><p>pandas 会把同一行的房价除以该行的面积。新增列里的每个值仍对应原表中的同一套房。</p><button class="secondary" id="calcFeature">显示核对结果</button><div id="featureResult" class="answer">编号1：3.75　编号2：约3.5556　编号3：约4.5333<br>编号4：3.5　编号5：4（单位均为万元/㎡）</div></article>
+<article class="card"><h3>第4项｜找出最高单价房屋</h3><p><b>题目要求：</b>找到“每平米价格”最大值，并显示对应的整行记录。</p><pre class="code"># 先从新列中找出最高单价
+max_price = df["每平米价格"].max()
 
-t.setup(900, 700)
-t.tracer(False)
-t.ht()
-draw(-60, -250, 120, 0, 7)
-t.update()
-t.done()
-</pre></details></div><div class="card"><h3>完整数据分析代码（教学改编）</h3><p><a href="house_analysis.py" download>下载 house_analysis.py</a></p><details><summary>展开完整代码</summary><pre class="code">import pandas as pd
+# 条件会逐行判断是否等于最高单价
+# 用.loc筛选符合条件的整行，保留所有并列记录
+highest_houses = df.loc[
+    df["每平米价格"] == max_price
+]
+print(highest_houses)</pre><p>本练习最高约为 <b>4.5333 万元/㎡</b>，对应房屋编号 <b>3</b>。如果最高值并列，条件筛选会把并列行都显示出来。</p></article>
+<article class="card"><h3>第5项｜绘制面积与房价关系图</h3><p><b>题目要求：</b>横轴表示面积，纵轴表示房价，并为图表加标题和坐标名称。</p><pre class="code"># pyplot在完整程序开头导入，简称plt
+# 按面积从小到大排列，让折线依次连接相邻面积
+ordered = df.sort_values("房屋面积(㎡)")
+
+# 横轴放面积，纵轴放房价；圆点标出每套房
+plt.plot(
+    ordered["房屋面积(㎡)"],
+    ordered["房价(万元)"],
+    marker="o"
+)
+plt.title("房屋面积与房价关系图")
+plt.xlabel("房屋面积（㎡）")
+plt.ylabel("房价（万元）")
+plt.grid()
+plt.tight_layout()
+plt.show()</pre><p>按面积排序只是为了让折线按横轴顺序连接，不会改变原始 <code>df</code> 中各行数据。若正式题目指定图表类型，以题目要求为准。</p></article>
+</div>
+<div class="card"><h3>回顾完整流程</h3><div class="flow" id="dataFlow"><div>读CSV、核对列名</div><div>计算平均值和最大值</div><div>新增单价并筛选最高记录</div><div>绘图并检查标注</div></div><div class="controls"><button class="green" id="runFlow">按顺序回顾</button><span class="small" id="flowText">点击后按顺序回顾四个阶段，覆盖题目五项要求。</span></div></div>
+<div class="card"><h3>合并后的完整程序</h3><p>下面程序把五项要求按顺序串起来。代码中的注释对应上面的分步讲解。</p><p><a href="house_analysis.py" download>下载 house_analysis.py</a>　<a href="house_price.csv" download>下载 house_price.csv（5条练习数据）</a>。把两个文件放在同一文件夹，在 IDLE 打开程序并按 F5 运行。</p>
+<pre class="code"># pandas读取CSV并执行表格操作。
+import pandas as pd
+# pyplot负责绘制最终图表。
 import matplotlib.pyplot as plt
 
 # 文件和本程序放在同一目录；在 IDLE 中打开并按 F5
+# 选择常见中文字体，让图表标签能显示中文。
 plt.rcParams[&quot;font.sans-serif&quot;] = [&quot;SimHei&quot;, &quot;PingFang SC&quot;, &quot;Arial Unicode MS&quot;]
+# 确保负号能和所选字体一起正常显示。
 plt.rcParams[&quot;axes.unicode_minus&quot;] = False
 
+# 将同文件夹中的CSV读入DataFrame变量df。
 df = pd.read_csv(&quot;house_price.csv&quot;)
 print(&quot;前5行：&quot;)
+# 显示前5行，检查数据是否读入正确。
 print(df.head())
+# 显示列名，确认后续代码使用的名称准确。
+print(&quot;列名：&quot;, list(df.columns))
+# 选取房间数这一列，并计算平均值。
 print(&quot;平均房间数：&quot;, df[&quot;房间数&quot;].mean())
+# max()返回房龄列中的最大值。
 print(&quot;最大房龄：&quot;, df[&quot;房龄(年)&quot;].max())
 
-# 本练习面积都大于0；其他数据应先检查缺失值和零面积
+# 本练习的面积都大于0；其他数据应先检查缺失值和零面积。
+# 将对应行的数值相除，生成新的计算列。
 df[&quot;每平米价格&quot;] = df[&quot;房价(万元)&quot;] / df[&quot;房屋面积(㎡)&quot;]
+# 找出新列中的最大值。
 maximum = df[&quot;每平米价格&quot;].max()
 print(&quot;最高每平米价格：&quot;, maximum)
 print(&quot;对应房屋（并列最高时全部显示）：&quot;)
-print(df[df[&quot;每平米价格&quot;] == maximum])
+# 筛选所有并列最大值对应的记录。
+print(df.loc[df[&quot;每平米价格&quot;] == maximum])
 
+# 按面积排序，让折线图沿面积递增方向连接。
 ordered = df.sort_values(&quot;房屋面积(㎡)&quot;)
 plt.plot(ordered[&quot;房屋面积(㎡)&quot;], ordered[&quot;房价(万元)&quot;], marker=&quot;o&quot;)
 plt.title(&quot;房屋面积与房价关系图&quot;)
@@ -185,13 +233,74 @@ plt.xlabel(&quot;房屋面积（㎡）&quot;)
 plt.ylabel(&quot;房价（万元）&quot;)
 plt.grid()
 plt.tight_layout()
+# 显示绘制完成的图表。
 plt.show()
-</pre></details></div><div class="card"><h3>下载数据，亲自运行</h3><p><a href="house_price.csv" download>下载 house_price.csv（自编练习数据，5条）</a>，与 house_analysis.py 放在同一文件夹。用装好 pandas、matplotlib 的 Python 在 IDLE 打开程序，按 F5 运行。网页动画是 JavaScript 演示；Python 代码需要在电脑上运行。</p><p>核对结果：平均房间数 <b>2.8</b>；最大房龄 <b>15</b>；最高每平米价格约 <b>4.5333 万元/㎡</b>，对应编号 <b>3</b>。原教程四行示意数据的平均值是 2.75，下载版增加了第5行。</p><p>再挑战：把编号5的房价改成500，再运行。它的单价会变为5万元/㎡，最高记录应该变成编号5。</p><p>遇到 KeyError：先 print(df.columns)，逐字核对列名和括号。遇到 FileNotFoundError：检查文件名及程序与 CSV 是否在同一文件夹。中文变成方框：换成电脑上已安装的中文字体。</p><p class="small">资料线索：<a href="https://www.cnblogs.com/kkman2000/p/23242753">kkman2000 的赛事整理</a>。该文称样题来自官方任务书；此处未独立核验附件来源。海淀信息不能代替西城区正式规则。</p></div></section><section class="section" id="practice"><h2>自己闯关：试着不看答案</h2><p class="lead">先自己说或写出答案，再点“核对”。答错也没关系，知道卡在哪里就能补上。</p><div class="grid"><article class="card checks"><h3>闯关 A｜递归画树</h3><p>想让递归停止，下面哪种写法最关键？</p><label><input type="radio" name="q1" value="a">把函数名字写得很长</label><label><input type="radio" name="q1" value="b">设一个停止条件，让长度变小到一定程度就 return</label><label><input type="radio" name="q1" value="c">每次都把长度变大</label><button class="secondary" data-check="q1" data-answer="b" data-out="ans1">核对答案</button><div class="answer" id="ans1">正确！停止条件是递归的刹车；同时每次要朝停止条件前进。</div></article><article class="card checks"><h3>闯关 B｜pandas 找最大值</h3><p>想找“房龄(年)”这一列的最大值，该写哪句？</p><label><input type="radio" name="q2" value="a"><code>df["房龄(年)"].mean()</code></label><label><input type="radio" name="q2" value="b"><code>df.max("房龄(年)")</code></label><label><input type="radio" name="q2" value="c"><code>df["房龄(年)"].max()</code></label><button class="secondary" data-check="q2" data-answer="c" data-out="ans2">核对答案</button><div class="answer" id="ans2">对啦！先选列，再用 <code>max()</code> 求最大值。平均数则用 <code>mean()</code>。</div></article><article class="card checks"><h3>闯关 C｜特征工程</h3><p>面积 100㎡、房价 400 万元，每平米价格是多少？</p><div class="row"><input id="answerPrice" type="number" placeholder="输入数字" style="padding:9px;border:1px solid var(--line);border-radius:9px;width:140px">万元/㎡<button class="secondary" id="checkPrice">核对</button></div><div class="answer" id="ans3">答案是 4 万元/㎡：400 ÷ 100 = 4。记住先确认单位，再做除法。</div></article><article class="card"><h3>闯关 D｜图表检查</h3><p>你把面积和房价画成图后，还要检查哪些内容？</p><label><input type="checkbox" class="chartCheck">图标题是否说明主题</label><label><input type="checkbox" class="chartCheck">横轴和纵轴有没有名称、单位</label><label><input type="checkbox" class="chartCheck">代码是否能运行并显示图</label><button class="secondary" id="checkChart">查看检查结果</button><div class="answer" id="ans4">这三项都要检查。题目若指定图表类型，就按要求作图。</div></article></div></section>
+</pre>
+<p><b>运行结果核对：</b>平均房间数为 <b>2.8</b>；最大房龄为 <b>15</b> 年；最高每平米价格约为 <b>4.5333</b> 万元/㎡，对应房屋编号 <b>3</b>。图表标题、横轴和纵轴均应显示。</p>
+<p>遇到 <code>KeyError</code>，先运行 <code>print(list(df.columns))</code> 并逐字核对列名。遇到 <code>FileNotFoundError</code>，检查 CSV 文件名，以及 CSV 与程序是否放在同一文件夹。练习数据中的房屋面积均大于 0；处理其他数据时，还要留意缺失值和除数为 0。</p>
+<p class="small">数据为本专题自编的小型练习数据。题目与考场要求以西城区正式规则和现场任务书为准。</p></div>
+</section>
+<section class="section" id="complete"><h2>进阶跟做：真正的毕达哥拉斯树</h2><p class="lead">观察正方形、直角三角形和两个较小正方形的递归关系。</p><div class="card"><canvas id="squareTree" style="width:100%;height:400px" aria-label="毕达哥拉斯树分层动画"></canvas><div class="controls"><button id="sqNext">长一层</button><button id="sqPlay">自动演示</button><button id="sqReset">重来</button><span id="sqStatus" aria-live="polite"></span></div><p>把大正方形的边长当作 5，两个小正方形的边长就是 3 和 4：3² + 4² = 5²。因此分支长度分别是原来的 0.6 和 0.8。动画中的虚线表示三角形的两条直角边。</p><p>按顺序试：①只画一层；②改成两层，找到两个小正方形；③观察每次调用的长度和层数都在变小。下面代码用坐标直接画四个顶点，递归返回后无需恢复海龟方向。</p></div><div class="card"><h3>完整画树代码（教学改编）</h3><p><a href="pythagoras_tree.py" download>下载 pythagoras_tree.py</a></p><details><summary>展开完整代码</summary><pre class="code"># turtle用可移动的画笔绘图。
+import turtle as t
+# random随机选择树枝颜色。
+import random
+# math用于角度换算和三角函数计算。
+import math
+
+# 先画一个正方形，再递归画上方的小正方形。
+def draw(x, y, size, angle, depth):
+    # 停止条件：层数用完就返回。
+    if depth == 0:
+        return
+    # 将角度换成sin和cos函数使用的弧度。
+    a = math.radians(angle)
+    # 底边的单位方向向量。
+    ux, uy = math.cos(a), math.sin(a)
+    # 与底边垂直的边方向向量。
+    vx, vy = -uy, ux
+    # 正方形四个顶点
+    A = (x, y)
+    B = (x + size * ux, y + size * uy)
+    D = (x + size * vx, y + size * vy)
+    C = (B[0] + size * vx, B[1] + size * vy)
+    # 抬笔移动到角点，不画连接线。
+    t.pu()
+    t.goto(A)
+    # 落笔，开始绘制正方形。
+    t.pd()
+    # 随机选择红、绿、蓝三个颜色分量。
+    t.color(random.random(), random.random(), random.random())
+    # 依次经过四个顶点，回到起点闭合正方形。
+    for point in [B, C, D, A]:
+        t.goto(point)
+    # 直角三角形的两条直角边：0.6s 与 0.8s
+    # 根据3、4、5直角三角形的比例计算屋顶顶点。
+    P = (D[0] + .36 * size * ux + .48 * size * vx,
+         D[1] + .36 * size * uy + .48 * size * vy)
+    # 左侧子正方形边长为父正方形的3/5。
+    draw(D[0], D[1], size * .6,
+         angle + math.degrees(math.atan2(4, 3)), depth - 1)
+    # 右侧子正方形边长为父正方形的4/5。
+    draw(P[0], P[1], size * .8,
+         angle - math.degrees(math.atan2(3, 4)), depth - 1)
+
+# 设置合适大小的绘图窗口。
+t.setup(900, 700)
+# 暂停逐笔刷新，加快绘图速度。
+t.tracer(False)
+# 隐藏海龟光标。
+t.ht()
+draw(-60, -250, 120, 0, 7)
+# 图形画完后刷新屏幕。
+t.update()
+# 保持绘图窗口打开，直到手动关闭。
+t.done()
+</pre></details></div></section><section class="section" id="practice"><h2>自己闯关：试着不看答案</h2><p class="lead">先自己说或写出答案，再点“核对”。答错也没关系，知道卡在哪里就能补上。</p><div class="grid"><article class="card checks"><h3>闯关 A｜递归画树</h3><p>想让递归停止，下面哪种写法最关键？</p><label><input type="radio" name="q1" value="a">把函数名字写得很长</label><label><input type="radio" name="q1" value="b">设一个停止条件，让长度变小到一定程度就 return</label><label><input type="radio" name="q1" value="c">每次都把长度变大</label><button class="secondary" data-check="q1" data-answer="b" data-out="ans1">核对答案</button><div class="answer" id="ans1">正确！停止条件是递归的刹车；同时每次要朝停止条件前进。</div></article><article class="card checks"><h3>闯关 B｜pandas 找最大值</h3><p>想找“房龄(年)”这一列的最大值，该写哪句？</p><label><input type="radio" name="q2" value="a"><code>df["房龄(年)"].mean()</code></label><label><input type="radio" name="q2" value="b"><code>df.max("房龄(年)")</code></label><label><input type="radio" name="q2" value="c"><code>df["房龄(年)"].max()</code></label><button class="secondary" data-check="q2" data-answer="c" data-out="ans2">核对答案</button><div class="answer" id="ans2">对啦！先选列，再用 <code>max()</code> 求最大值。平均数则用 <code>mean()</code>。</div></article><article class="card checks"><h3>闯关 C｜特征工程</h3><p>面积 100㎡、房价 400 万元，每平米价格是多少？</p><div class="row"><input id="answerPrice" type="number" placeholder="输入数字" style="padding:9px;border:1px solid var(--line);border-radius:9px;width:140px">万元/㎡<button class="secondary" id="checkPrice">核对</button></div><div class="answer" id="ans3">答案是 4 万元/㎡：400 ÷ 100 = 4。记住先确认单位，再做除法。</div></article><article class="card"><h3>闯关 D｜图表检查</h3><p>你把面积和房价画成图后，还要检查哪些内容？</p><label><input type="checkbox" class="chartCheck">图标题是否说明主题</label><label><input type="checkbox" class="chartCheck">横轴和纵轴有没有名称、单位</label><label><input type="checkbox" class="chartCheck">代码是否能运行并显示图</label><button class="secondary" id="checkChart">查看检查结果</button><div class="answer" id="ans4">这三项都要检查。题目若指定图表类型，就按要求作图。</div></article></div></section>
 <section class="section" id="exam"><h2>考场前：把分数一项项捡起来</h2><p class="lead">规则给出的数据科学类评分，五个维度各 4 分。代码写得清楚、图表标得完整，都能帮助拿分。</p><div class="card"><div class="score"><div><b>4 分</b>读入与预处理</div><div><b>4 分</b>统计与分析</div><div><b>4 分</b>特征工程</div><div><b>4 分</b>数据可视化</div><div><b>4 分</b>代码质量</div></div><div class="callout good"><b>提交前快速检查：</b>文件名和列名拼对了吗？程序从头运行成功了吗？平均值、最大值算对了吗？新列是否创建？图有没有标题、轴名？代码有没有分段注释？</div><div class="grid"><article><h3>💻 设备与环境</h3><ul><li>赛前在 Python 3.8 + IDLE 里亲自运行练习代码。</li><li>确认电脑电量充足；规则说明现场无电源、无网络。</li><li>比赛不能联网；不带 U 盘、计算器、对讲机等规则禁止的工具。</li><li>第三方库以正式通知为准；赛前可能调整，向老师确认最新版。</li></ul></article><article><h3>⏱️ 做题顺序</h3><ol><li>先读完题目，圈出每个小要求。</li><li>先完成自己最熟的部分，保证程序能运行。</li><li>再补统计、特征和图表细节。</li><li>最后留时间检查输出与保存文件。</li></ol></article></div></div></section>
 <footer class="footer">根据《2026年西城区中小学生科学素质大赛数智素养规则》整理。练习代码用于学习，考试以现场任务书和组委会最新要求为准。</footer>
 </main>
 <script>
-const canvas=document.getElementById('treeCanvas'),ctx=canvas.getContext('2d');let depth=0,timer=null;function fit(){const dpr=window.devicePixelRatio||1;canvas.width=canvas.clientWidth*dpr;canvas.height=canvas.clientHeight*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);drawTree()}function branch(x,y,len,angle,level,max){if(level>max||len<4)return;const rad=angle*Math.PI/180,x2=x+Math.cos(rad)*len,y2=y-Math.sin(rad)*len;ctx.strokeStyle=`hsl(${145-level*14} 52% ${34+level*4}%)`;ctx.lineWidth=Math.max(1,8-level*1.45);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x2,y2);ctx.stroke();if(level<max){branch(x2,y2,len*.7,angle-38,level+1,max);branch(x2,y2,len*.7,angle+38,level+1,max)}}function drawTree(){const w=canvas.clientWidth,h=canvas.clientHeight;ctx.clearRect(0,0,w,h);ctx.strokeStyle='#dbe6f0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(12,h-18);ctx.lineTo(w-12,h-18);ctx.stroke();branch(w/2,h-18,Math.min(h*.42,w*.24),90,0,depth)}function setDepth(n){depth=Math.min(7,Math.max(0,n));drawTree();document.getElementById('treeDepth').textContent=`现在：第 ${depth} 层`;document.getElementById('treeExplain').textContent=depth===0?'树从一根主干开始。递归函数每次再画两棵更小的“子树”。':`第 ${depth} 层：每条枝又分出两条更短的枝；长度越来越小，最终碰到停止条件。`}window.addEventListener('resize',fit);fit();document.getElementById('treeStep').onclick=()=>setDepth(depth+1);document.getElementById('treeReset').onclick=()=>{clearInterval(timer);timer=null;setDepth(0)};document.getElementById('treeAuto').onclick=()=>{clearInterval(timer);timer=setInterval(()=>{if(depth>=7){clearInterval(timer);timer=null}else setDepth(depth+1)},650)};document.getElementById('showOfficial').onclick=()=>document.getElementById('official').classList.toggle('hide');document.getElementById('calcStats').onclick=()=>document.getElementById('statsResult').classList.toggle('show');document.getElementById('calcFeature').onclick=()=>document.getElementById('featureResult').classList.toggle('show');document.getElementById('runFlow').onclick=()=>{const cells=[...document.querySelectorAll('#dataFlow div')],labels=['pandas 读进房屋表格','mean / max 计算统计量','用房价 ÷ 面积新增一列','matplotlib 把关系画出来'];cells.forEach(x=>x.classList.remove('on'));let i=0;document.getElementById('flowText').textContent=labels[0];const t=setInterval(()=>{if(i<cells.length){cells[i].classList.add('on');document.getElementById('flowText').textContent=labels[i];i++}else clearInterval(t)},700)};document.querySelectorAll('[data-check]').forEach(btn=>btn.onclick=()=>{const picked=document.querySelector(`input[name="${btn.dataset.check}"]:checked`);const out=document.getElementById(btn.dataset.out);out.classList.add('show');if(!picked){out.innerHTML='先选一个答案，再核对哦。';return}if(picked.value!==btn.dataset.answer){out.innerHTML='再想一想：提示在上面的讲解里。答案是 <b>'+btn.dataset.answer.toUpperCase()+'</b>。点开讲解卡再读一次。'}else out.innerHTML='答对了！'+(btn.dataset.check==='q1'?'停止条件是递归的刹车；每次调用都要朝停止条件前进。':'先选中房龄这一列，再用 max() 求最大值。')});document.getElementById('checkPrice').onclick=()=>{const v=Number(document.getElementById('answerPrice').value),el=document.getElementById('ans3');el.classList.add('show');el.innerHTML=v===4?'答对了！400 ÷ 100 = 4 万元/㎡。':'再试试：每平米价格 = 总房价 ÷ 面积。答案是 4 万元/㎡。'};document.getElementById('checkChart').onclick=()=>document.getElementById('ans4').classList.add('show');
+const canvas=document.getElementById('treeCanvas'),ctx=canvas.getContext('2d');let depth=0,timer=null;function fit(){const dpr=window.devicePixelRatio||1;canvas.width=canvas.clientWidth*dpr;canvas.height=canvas.clientHeight*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);drawTree()}function branch(x,y,len,angle,level,max){if(level>max||len<4)return;const rad=angle*Math.PI/180,x2=x+Math.cos(rad)*len,y2=y-Math.sin(rad)*len;ctx.strokeStyle=`hsl(${145-level*14} 52% ${34+level*4}%)`;ctx.lineWidth=Math.max(1,8-level*1.45);ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x2,y2);ctx.stroke();if(level<max){branch(x2,y2,len*.7,angle-38,level+1,max);branch(x2,y2,len*.7,angle+38,level+1,max)}}function drawTree(){const w=canvas.clientWidth,h=canvas.clientHeight;ctx.clearRect(0,0,w,h);ctx.strokeStyle='#dbe6f0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(12,h-18);ctx.lineTo(w-12,h-18);ctx.stroke();branch(w/2,h-18,Math.min(h*.42,w*.24),90,0,depth)}function setDepth(n){depth=Math.min(7,Math.max(0,n));drawTree();document.getElementById('treeDepth').textContent=`现在：第 ${depth} 层`;document.getElementById('treeExplain').textContent=depth===0?'树从一根主干开始。递归函数每次再画两棵更小的“子树”。':`第 ${depth} 层：每条枝又分出两条更短的枝；长度越来越小，最终碰到停止条件。`}window.addEventListener('resize',fit);fit();document.getElementById('treeStep').onclick=()=>setDepth(depth+1);document.getElementById('treeReset').onclick=()=>{clearInterval(timer);timer=null;setDepth(0)};document.getElementById('treeAuto').onclick=()=>{clearInterval(timer);timer=setInterval(()=>{if(depth>=7){clearInterval(timer);timer=null}else setDepth(depth+1)},650)};document.getElementById('showOfficial').onclick=()=>document.getElementById('official').classList.toggle('hide');document.getElementById('calcStats').onclick=()=>document.getElementById('statsResult').classList.toggle('show');document.getElementById('calcFeature').onclick=()=>document.getElementById('featureResult').classList.toggle('show');document.getElementById('runFlow').onclick=()=>{const cells=[...document.querySelectorAll('#dataFlow div')],labels=['① 读CSV并核对列名','② 计算平均房间数和最大房龄','③ 新增每平米价格并筛选最高记录','④ 排序作图并检查标题和坐标名称'];cells.forEach(x=>x.classList.remove('on'));let i=0;document.getElementById('flowText').textContent=labels[0];const t=setInterval(()=>{if(i<cells.length){cells[i].classList.add('on');document.getElementById('flowText').textContent=labels[i];i++}else clearInterval(t)},700)};document.querySelectorAll('[data-check]').forEach(btn=>btn.onclick=()=>{const picked=document.querySelector(`input[name="${btn.dataset.check}"]:checked`);const out=document.getElementById(btn.dataset.out);out.classList.add('show');if(!picked){out.innerHTML='先选一个答案，再核对哦。';return}if(picked.value!==btn.dataset.answer){out.innerHTML='再想一想：提示在上面的讲解里。答案是 <b>'+btn.dataset.answer.toUpperCase()+'</b>。点开讲解卡再读一次。'}else out.innerHTML='答对了！'+(btn.dataset.check==='q1'?'停止条件是递归的刹车；每次调用都要朝停止条件前进。':'先选中房龄这一列，再用 max() 求最大值。')});document.getElementById('checkPrice').onclick=()=>{const v=Number(document.getElementById('answerPrice').value),el=document.getElementById('ans3');el.classList.add('show');el.innerHTML=v===4?'答对了！400 ÷ 100 = 4 万元/㎡。':'再试试：每平米价格 = 总房价 ÷ 面积。答案是 4 万元/㎡。'};document.getElementById('checkChart').onclick=()=>document.getElementById('ans4').classList.add('show');
 
 (()=>{const c=document.getElementById('squareTree'),g=c.getContext('2d');let n=1,clock=null;
 function build(x,y,s,a,d,out){if(d===0)return;let u=[Math.cos(a),Math.sin(a)],v=[-u[1],u[0]],B=[x+s*u[0],y+s*u[1]],D=[x+s*v[0],y+s*v[1]],C=[B[0]+s*v[0],B[1]+s*v[1]],P=[D[0]+.36*s*u[0]+.48*s*v[0],D[1]+.36*s*u[1]+.48*s*v[1]];out.push({points:[[x,y],B,C,D],roof:[D,P,C],d});build(...D,s*.6,a+Math.atan2(4,3),d-1,out);build(...P,s*.8,a-Math.atan2(3,4),d-1,out)}
