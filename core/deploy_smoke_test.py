@@ -37,12 +37,14 @@ def main() -> None:
         for meta in ('name="description"', 'name="theme-color"', 'property="og:title"'):
             if meta not in html:
                 fail(f"{rel}: missing {meta}")
-        if html.count('id="kg-eggy"') != 1:
-            fail(f"{rel}: expected exactly one mascot")
-        if html.count("/assets/eggy.js") != 1:
-            fail(f"{rel}: expected one shared mascot script reference")
-        if html.count("/assets/eggy.css") != 1:
-            fail(f"{rel}: expected one shared mascot stylesheet reference")
+        mascot_opt_out = rel.as_posix() == "python-fun-competition.html"
+        if not mascot_opt_out:
+            if html.count('id="kg-eggy"') != 1:
+                fail(f"{rel}: expected exactly one mascot")
+            if html.count("/assets/eggy.js") != 1:
+                fail(f"{rel}: expected one shared mascot script reference")
+            if html.count("/assets/eggy.css") != 1:
+                fail(f"{rel}: expected one shared mascot stylesheet reference")
         for match in re.finditer(r'(?:href|src)=["\']([^"\']+)["\']', html):
             url = match.group(1)
             if url.startswith(("https://", "http://", "data:", "#", "mailto:")):

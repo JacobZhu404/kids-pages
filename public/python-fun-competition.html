@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="小萝卜的宝藏大陆 3.2：2026 北京市 Python 趣味编程备考教程（小学高年级组）。">
+<meta name="theme-color" content="#4263eb">
+<meta property="og:title" content="2026 北京市 Python 趣味编程 · 小萝卜的宝藏大陆 3.2">
+<meta property="og:description" content="2026 北京市 Python 趣味编程备考教程：Python 基础、闯关指令、字符串与列表字典练习。">
+<title>3.2 2026 北京市 Python 趣味编程</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<style>
+:root{--ink:#203047;--muted:#62748c;--paper:#f3f7fc;--card:#fff;--blue:#4263eb;--teal:#0d9c87;--gold:#f0a323;--line:#dce6f1;--code:#172033;--mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}.hero{background:linear-gradient(130deg,#243b78,#4263eb 58%,#13a48e);color:white;padding:40px 20px}.wrap{max-width:1000px;margin:auto;padding:0 20px}.hero .wrap{padding:0 20px}.eyebrow{opacity:.85;font-weight:700}.hero h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.2;margin:.3em 0}.hero p{max-width:760px;color:#edf2ff;margin:.5em 0}.pill{display:inline-block;border:1px solid #ffffff55;background:#ffffff20;border-radius:99px;padding:4px 11px;margin:4px 5px 0 0;font-size:.88rem}.nav{position:sticky;top:0;z-index:4;background:#ffffffed;border-bottom:1px solid var(--line);backdrop-filter:blur(10px)}.nav .wrap{display:flex;gap:8px;overflow:auto;padding-top:8px;padding-bottom:8px}.nav a{white-space:nowrap;color:var(--muted);text-decoration:none;padding:6px 10px;border-radius:99px;font-weight:700}.nav a:hover{background:#eaf0ff;color:var(--blue)}main{padding:20px 0 55px}.section{scroll-margin-top:70px;margin:26px 0 38px}.section h2{font-size:1.65rem;line-height:1.25;margin:0 0 6px}.lead{color:var(--muted);margin:0 0 16px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:18px;box-shadow:0 8px 25px #233b650c}.card h3{margin:0 0 8px}.callout{padding:12px 15px;border-left:4px solid var(--gold);border-radius:9px;background:#fff7e7;margin:14px 0}.success{border-color:var(--teal);background:#eaf8f4}.notice{border-color:var(--blue);background:#edf2ff}.muted{color:var(--muted)}.code{background:var(--code);color:#edf2ff;border-radius:12px;padding:15px;overflow:auto;white-space:pre;font:14px/1.65 var(--mono);margin:10px 0}.code .comment{color:#8dbba6}.badge{display:inline-block;background:#edf1ff;color:var(--blue);font-size:.84rem;font-weight:800;padding:2px 8px;border-radius:7px}.tablewrap{overflow-x:auto}table{border-collapse:collapse;width:100%;background:white}th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}th{background:#edf2ff}.controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}button{font:inherit;font-weight:750;border:0;border-radius:10px;padding:9px 14px;background:var(--blue);color:white;cursor:pointer}button.secondary{background:#eaf0ff;color:var(--blue)}button:hover{filter:brightness(.96)}.map{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:560px;margin:14px auto}.cell{display:grid;place-items:center;min-height:62px;border:1px solid var(--line);border-radius:12px;background:#f7faff;font-size:1.4rem}.cell.path{background:#e6f7f2}.cell.hero-cell{background:#fff1c7;border-color:var(--gold)}.cell.goal{background:#e9edff}.step{font-weight:750;min-height:2em;text-align:center;color:var(--muted)}.answer{display:none;padding:12px 14px;background:#eaf8f4;border-radius:10px;margin-top:10px}.answer.show{display:block}.quiz label{display:block;background:#f6f8fc;border-radius:10px;padding:9px 12px;margin:8px 0;cursor:pointer}.quiz input{accent-color:var(--teal)}.feedback{font-weight:750;min-height:1.7em}.footer{text-align:center;color:var(--muted);font-size:.9rem;padding:15px}.toplink{color:var(--blue);font-weight:700;text-decoration:none}@media(max-width:700px){.grid{grid-template-columns:1fr}.hero{padding:32px 0}.card{padding:15px}.map{gap:5px}.cell{min-height:52px}}
+</style>
+<style>
+/* 本页目录与蓝白教程配色一致，覆盖展开，不挤压正文。 */
+#toc-toggle{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:20;border:1px solid var(--line);border-left:0;border-radius:0 10px 10px 0;padding:12px 8px;background:#ffffffed;color:#4058d8;box-shadow:0 4px 14px #20304720;writing-mode:vertical-rl;letter-spacing:.08em}
+#toc-toggle:hover,#toc-toggle[aria-expanded="true"]{background:var(--blue);color:white}
+#page-toc{position:fixed;z-index:22;left:0;top:0;bottom:0;width:min(280px,86vw);padding:22px 14px;background:#f8faff;border-right:1px solid var(--line);box-shadow:12px 0 32px #20304720;transform:translateX(-105%);transition:transform .22s ease;overflow:auto}
+body.toc-open #page-toc{transform:translateX(0)}
+#page-toc .toc-head{display:flex;align-items:center;justify-content:space-between;margin:0 2px 16px;font-size:1.05rem;font-weight:850}
+#page-toc .toc-close{padding:7px 10px;background:#eaf0ff;color:var(--blue)}
+#page-toc a{display:block;text-decoration:none;color:#35445b;padding:10px 11px;border-radius:9px;font-weight:700;margin:3px 0}
+#page-toc a:hover,#page-toc a:focus-visible{background:#edf1ff;color:#344bc2}
+#page-toc a.toc-sub{padding-left:22px;font-size:.93rem;font-weight:600;color:var(--muted)}
+#toc-backdrop{position:fixed;inset:0;z-index:21;background:#17203355;opacity:0;pointer-events:none;transition:opacity .2s ease}
+body.toc-open #toc-backdrop{opacity:1;pointer-events:auto}
+#page-toc a:focus-visible,#page-toc button:focus-visible,#toc-toggle:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){#page-toc,#toc-backdrop{transition:none}}
+@media(max-width:700px){#toc-toggle{top:auto;bottom:18px;transform:none;padding:11px 9px;writing-mode:horizontal-tb;border-left:0}}
+</style>
+
+<meta name="twitter:card" content="summary">
+<style id="kg-nav-style">
+#kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
+#kg-nav .kg-home{color:#0284c7;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
+#kg-nav.kg-nav-standalone{justify-content:flex-start;gap:16px;}
+#kg-nav.kg-nav-standalone~#kg-sidebar{display:none;}
+#kg-nav .kg-back{color:#475569;text-decoration:none;padding:4px 10px;border-radius:999px;font-size:12px;white-space:nowrap;}
+#kg-nav .kg-back:hover{background:#e0f2fe;color:#0284c7;}
+#kg-nav .kg-topics{display:flex;gap:6px;}
+#kg-nav .kg-topics a{color:#475569;text-decoration:none;padding:4px 10px;border-radius:999px;font-size:12px;white-space:nowrap;transition:background .15s,color .15s;}
+#kg-nav .kg-topics a:hover{background:#e0f2fe;color:#0284c7;}
+#kg-nav .kg-topics a.kg-active{background:#0ea5e9;color:#fff;}
+body{padding-top:46px;}
+@media(max-width:520px){#kg-nav .kg-home{font-size:13px;}#kg-nav .kg-topics a{padding:3px 7px;font-size:11px;}}
+
+/* 左侧目录：默认收起，悬停把手/移入滑出 */
+#kg-sidebar{position:fixed;left:0;top:46px;bottom:0;width:248px;background:#f8faff;border-right:1px solid #dce6f1;box-shadow:8px 0 28px rgba(32,48,71,.12);z-index:99990;overflow-y:auto;padding:30px 12px 28px;box-sizing:border-box;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transform:translateX(-102%);transition:transform .24s cubic-bezier(.2,.7,.25,1);}
+body.kg-sb-open #kg-sidebar{transform:translateX(0);}
+#kg-sidebar::-webkit-scrollbar{width:6px;}
+#kg-sidebar::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:3px;}
+#kg-sidebar .kg-sb-home{display:block;font-weight:800;font-size:14px;color:#3147b9;text-decoration:none;padding:9px 11px;border-radius:11px;background:#eaf0ff;margin-bottom:12px;transition:background .15s,transform .15s;}
+#kg-sidebar .kg-sb-home:hover{background:#dfe7ff;transform:translateY(-1px);}
+#kg-sidebar .kg-sb-topic{font-weight:800;font-size:12px;color:#50617a;padding:13px 10px 5px;letter-spacing:.02em;}
+#kg-sidebar a.kg-sb-page{display:block;font-size:13px;color:#35445b;text-decoration:none;padding:7px 10px;border-radius:8px;margin:2px 0;line-height:1.45;transition:background .15s,color .15s;}
+#kg-sidebar a.kg-sb-page:hover{background:#edf1ff;color:#344bc2;}
+#kg-sidebar a.kg-sb-page.kg-sb-active{background:#4263eb;color:#fff;font-weight:700;box-shadow:0 3px 10px #4263eb33;}
+#kg-sidebar a:focus-visible,#kg-sidebar button:focus-visible,#kg-sb-toggle:focus-visible{outline:3px solid #f0a323;outline-offset:2px;}
+/* ✕ 收起按钮 */
+#kg-sidebar #kg-sb-x{position:sticky;top:0;float:right;margin:-24px 0 0;width:22px;height:22px;border:none;border-radius:6px;background:#e0f2fe;color:#0369a1;font-size:12px;line-height:1;cursor:pointer;z-index:2;}
+#kg-sidebar #kg-sb-x:hover{background:#fecaca;color:#b91c1c;}
+/* ☰ 展开把手：收起时留在左缘 */
+#kg-sb-toggle{position:fixed;left:0;top:46px;bottom:0;width:20px;z-index:99989;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:transparent;}
+#kg-sb-toggle .kg-sb-tg-ic{display:block;writing-mode:vertical-rl;font-size:14px;color:#4058d8;background:rgba(255,255,255,.94);padding:10px 4px;border:1px solid #dce6f1;border-left:0;border-radius:0 9px 9px 0;box-shadow:0 3px 12px rgba(32,48,71,.14);transition:background .15s,color .15s;}
+#kg-sb-toggle:hover .kg-sb-tg-ic{background:#4263eb;color:#fff;}
+/* 半透明遮罩：展开时盖在内容上，点击可收起 */
+.kg-sb-mask{position:fixed;left:0;top:46px;right:0;bottom:0;background:rgba(15,23,42,.25);z-index:99988;opacity:0;pointer-events:none;transition:opacity .26s;}
+body.kg-sb-open .kg-sb-mask{opacity:1;pointer-events:auto;}
+/* 内容永远不左右移动：padding 固定，sidebar 覆盖在内容上方 */
+body{padding-left:24px;}
+@media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}.kg-sb-mask{display:none;}body{padding-left:0!important;}}
+</style>
+<link rel="stylesheet" href="/assets/eggy.css">
+</head>
+<body>
+<!-- kg-nav-start -->
+<nav id="kg-nav">
+  <a class="kg-home" href="index.html">秘密基地</a>
+  <div class="kg-topics"><a href="index.html#topic-dfs">① DFS/BFS</a><a href="index.html#topic-tree">② 树基础</a><a href="index.html#topic-p11962">③ 树上漫步</a><a href="index.html#topic-cbt">④ 完全二叉树</a><a href="index.html#topic-full">⑤ 满二叉树</a><a href="digital-literacy.html">⑥ 数智素养</a><a href="index.html#topic-python-fun" class="kg-active">3.2 2026 北京市 Python 趣味编程</a></div>
+</nav>
+<!-- kg-nav-end -->
+<!-- kg-sb-start -->
+<button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>
+<div class="kg-sb-mask" id="kg-sb-mask"></div>
+<aside id="kg-sidebar">
+<button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>
+<a class="kg-sb-home" href="index.html">🏠 秘密基地</a>
+<div class="kg-sb-topic">📍 ① DFS/BFS</div>
+<a class="kg-sb-page" href="gesp6-dfs-bfs.html">· 千问 · 深搜广搜通关站</a>
+<a class="kg-sb-page" href="dsfs-bfs-walkthrough.html">· WorkBuddy · 深搜广搜</a>
+<a class="kg-sb-page" href="dfs-bfs/index.html">· TRAE · 深搜广搜互动</a>
+<div class="kg-sb-topic">📍 ② 树基础</div>
+<a class="kg-sb-page" href="gesp6-tree-intro.html">· 千问 · 树入门</a>
+<a class="kg-sb-page" href="gesp6-tree-basics.html">· WorkBuddy · 树基础</a>
+<a class="kg-sb-page" href="tree-basics/index.html">· TRAE · 树基础互动</a>
+<div class="kg-sb-topic">📍 ③ 树上漫步</div>
+<a class="kg-sb-page" href="gesp6-p11962-tutorial.html">· 千问 · 树上漫步</a>
+<a class="kg-sb-page" href="p11962-tree-walk.html">· WorkBuddy · 树上漫步</a>
+<a class="kg-sb-page" href="tree-stroll/index.html">· TRAE · 树上漫步互动</a>
+<div class="kg-sb-topic">📍 ④ 完全二叉树</div>
+<a class="kg-sb-page" href="gesp6-cbt-counter.html">· 千问 · 完全二叉计数</a>
+<a class="kg-sb-page" href="cbt-counter-tutorial.html">· WorkBuddy · 完全二叉计数</a>
+<a class="kg-sb-page" href="cbt-counter/index.html">· TRAE · 完全二叉计数互动</a>
+<div class="kg-sb-topic">📍 ⑤ 满二叉树</div>
+<a class="kg-sb-page" href="gesp6-full-tree-counter.html">· 千问 · 满二叉子树计数</a>
+<div class="kg-sb-topic">📍 ⑥ 数智素养</div>
+<a class="kg-sb-page" href="digital-literacy.html">· 数智素养 · 考试准备</a>
+<a class="kg-sb-page" href="digital-practice.html">· 数智素养 · 练习库</a>
+<div class="kg-sb-topic">📍 3.2 2026 北京市 Python 趣味编程</div>
+<a class="kg-sb-page kg-sb-active" href="python-fun-competition.html">· 2026 北京市 Python 趣味编程</a>
+</aside>
+<!-- kg-sb-end -->
+
+<!-- This focused tutorial intentionally omits the shared mascot. -->
+<button id="toc-toggle" type="button" aria-controls="page-toc" aria-expanded="false">☰ 本页目录</button>
+<div id="toc-backdrop" hidden></div>
+<aside id="page-toc" aria-label="本页目录" inert>
+  <div class="toc-head"><span>本页目录</span><button class="toc-close" type="button" aria-label="收起目录">收起</button></div>
+  <a href="#map">比赛地图</a>
+  <a href="#basics">Python 写法与游戏指令</a>
+  <a class="toc-sub" href="#commands">平台闯关指令表</a>
+  <a class="toc-sub" href="#route-demo">路线推演</a>
+  <a href="#data-types">字符串、列表与字典</a>
+  <a href="#examples">例题练习</a>
+  <a href="#quiz">快问快答</a>
+  <a href="#exam">考场策略</a>
+</aside>
+<header class="hero" id="top"><div class="wrap">
+  <div class="eyebrow">小萝卜的宝藏大陆 · 竞赛专题 3.2</div>
+  <h1>2026 北京市<br>Python 趣味编程</h1>
+  <span class="pill">选择题 + 编程闯关</span><span class="pill">每题按关卡条件争取星级</span>
+</div></header>
+<nav class="nav"><div class="wrap"><a href="index.html">← 宝藏大陆</a><a href="#map">比赛地图</a><a href="#basics">Python 基础</a><a href="#commands">闯关指令</a><a href="#data-types">字符串与列表</a><a href="#examples">例题练习</a><a href="#exam">考场策略</a></div></nav>
+<main class="wrap">
+<section class="section" id="map"><h2>先看比赛地图</h2><p class="lead">依据你提供的《Python趣味编程竞赛规则（线上）》附件：60 分钟，选择题与编程题两部分。编程题目标明确，使用平台已有函数闯关；得分还会看指定知识点和程序简洁性。</p>
+  <div class="grid">
+    <article class="card"><span class="badge">五年级 · 高年级组</span><h3>按内容逐步准备</h3><p>先复习 Python 基础与平台指令，再补字符串、列表切片和字典。C++ 学过的变量、判断、循环和运算思路可以继续用。</p><p class="muted">低优先级：暂时不学 pandas、CSV、turtle、机器学习或复杂算法。</p></article>
+    <article class="card"><span class="badge">星级看关卡要求</span><h3>先读本关的评分条件</h3><p>规则附件写明每题过关可得 1–3 星，每星 2 分；评判会考虑指定知识点和程序是否简洁。附件示意图里也展示了某关的“三星条件”。</p><p class="muted">每题条件可能不同：先满足目标与指定知识点，再按屏幕上的条件调整代码。</p></article>
+  </div>
+  <div class="callout notice"><b>资料边界：</b>你给的 DOCX 是 2023 年版本规则，并没有列出可直接照抄的正式编程真题。下面的基础题是按整理稿所列题型做的练习改编，平台路线题是教学示例，都不是官方真题。第六届的最新规则和平台语法以学校/组委会当届说明为准。</div>
+</section>
+
+<section class="section" id="basics"><h2>模块一：Python 写法与游戏指令</h2><p class="lead">目标：看懂代码块，能把“向前走、转弯、遇到目标就行动”翻译成程序。</p>
+ <div class="grid">
+  <article class="card"><h3>① 快速认 Python 语法</h3><div class="code"><span class="comment"># 赋值：把数值放进变量</span>
+steps = 3
+
+<span class="comment"># if 后面写条件，冒号后缩进表示要执行的内容</span>
+if steps == 3:
+    print("走三步")
+
+<span class="comment"># repeat 是比赛平台提供的循环指令示例</span>
+repeat(steps):
+    move(1)</div><p><b>记住：</b><code>=</code> 是赋值，<code>==</code> 是比较；冒号后面的代码要缩进。Python 用缩进表示“这些指令属于 if 或循环”。</p></article>
+  <article class="card"><h3>② 先读目标，再想步骤</h3><ol><li>角色现在在哪、朝哪个方向？</li><li>目标在前后左右哪个位置？中间有障碍吗？</li><li>重复动作能不能用 <code>repeat()</code>？</li><li>题目有没有要求使用某个知识点或限制代码行数？</li></ol><p class="muted">运行后如果走错，先检查方向和步数，再检查条件是否写反。</p></article>
+ </div>
+ <article class="card" id="commands"><h3>规则附件中的闯关指令</h3><div class="tablewrap"><table><thead><tr><th>指令/写法</th><th>按附件的解释</th><th>练习时检查</th></tr></thead><tbody>
+ <tr><td><code>move(n)</code></td><td>向前或向后走 n 步。</td><td>确认当前朝向和步数。</td></tr><tr><td><code>turnLeft()</code><br><code>turnRight()</code></td><td>向左转、向右转。</td><td>转向后角色朝哪边？</td></tr><tr><td><code>attack()</code></td><td>攻击相邻目标，可砍树或顶石头；按附件描述会检查前后左右目标。</td><td>先确认目标是否在可攻击范围。</td></tr><tr><td><code>repeat(n)</code></td><td>重复执行其缩进代码 n 次。</td><td>循环次数、缩进层级。</td></tr><tr><td><code>press()</code></td><td>按下开关。</td><td>角色是否已经到达开关处。</td></tr><tr><td><code>goto(target)</code></td><td>走向某个对象。</td><td>目标名称和路线情况。</td></tr><tr><td><code>dTo(target)</code></td><td>测量水平或垂直方向的距离；不在同一水平线或垂直线上时不能测量。</td><td>先判断对象是否在同一行或同一列。</td></tr><tr><td><code>for x in items:</code></td><td>按顺序遍历序列元素，也可遍历字符串和字典。</td><td>每轮 x 代表当前元素。</td></tr><tr><td><code>if / else</code></td><td>条件成立执行 if 缩进块，否则执行 else 缩进块。</td><td>条件、冒号、两块缩进。</td></tr><tr><td><code>prop</code>、<code>stone.big</code>、<code>not</code></td><td>附件提到读取目标属性、判断石头大小和否定条件。</td><td>对象名、属性名和平台实际语法以测试关卡为准。</td></tr>
+ </tbody></table></div><div class="callout"><b>小心：</b>附件里部分命令说明较简略（例如 <code>prop</code> 和对象属性的具体写法）。不要凭空猜语法，先看老师演示或平台测试关卡。</div></article>
+ <article class="card" id="route-demo"><h3>路线推演：走到宝箱</h3><p>教学地图：小萝卜从左下角出发，向右走两格，再向上走两格到宝箱。点击按钮逐步执行，看看每一步位置如何改变。</p>
+   <div class="map" id="mapGrid" aria-label="五乘五路线示意图"></div><div class="step" id="mapStep" aria-live="polite">准备出发：起点在左下角，宝箱在右上方。</div>
+   <div class="controls"><button id="nextMove">走下一步</button><button class="secondary" id="resetMap">重新开始</button></div>
+   <div class="code">move(1)       <span class="comment"># 向右移动一格（示意）</span>
+move(1)
+turnLeft()     <span class="comment"># 转向上方（方向以平台初始朝向为准）</span>
+move(1)
+move(1)</div>
+   <p class="muted">这里的网格只演示“动作按顺序执行”的思路；实际比赛地图和初始朝向可能不同。应以题面为准。</p>
+ </article>
+</section>
+
+<section class="section" id="data-types"><h2>模块二：字符串、列表与字典</h2><p class="lead">目标：熟悉高年级组知识范围里的字符串、列表切片和字典操作，为选择题与综合练习做准备。</p>
+ <div class="grid">
+  <article class="card"><h3>字符串：切片和常用方法</h3><div class="code">word = "treasure"
+print(word[0])      <span class="comment"># 第一个字符：t</span>
+print(word[1:4])    <span class="comment"># 下标 1 到 3：rea</span>
+print(word[::-1])   <span class="comment"># 倒序：erusaert</span>
+print("a-b-c".split("-")) <span class="comment"># 按短横线拆分</span></div><p>切片左边界包含、右边界不包含；从 0 开始数位置。</p></article>
+  <article class="card"><h3>列表：切片、增删与排序</h3><div class="code">items = ["钥匙", "石头", "金币", "地图"]
+print(items[0:2])    <span class="comment"># 取前两项</span>
+items.append("宝箱") <span class="comment"># 末尾添加一项</span>
+items.remove("石头") <span class="comment"># 删除指定值</span>
+numbers = [4, 1, 3]
+numbers.sort()        <span class="comment"># 原列表从小到大排序</span></div><p>考试更重要的是读懂列表、下标和方法的效果，不必背很多冷门方法。</p></article>
+  <article class="card"><h3>字典：用名字查属性</h3><div class="code">treasure = {"位置": "右边", "数量": 2}
+print(treasure["位置"])       <span class="comment"># 按键取值</span>
+treasure["数量"] = 3          <span class="comment"># 更新数量</span>
+
+for key in treasure:
+    print(key, treasure[key]) <span class="comment"># 依次查看键和值</span></div><p>把字典想成“标签 → 内容”：键是标签，值是内容。</p></article>
+  <article class="card"><h3>最后做一次 60 分钟模拟</h3><ol><li>先快速浏览所有题目，记下会做的题。</li><li>选择题先做熟悉的，别在一道题上停太久。</li><li>编程关卡先读目标和星级条件，再写动作。</li><li>每关运行后观察结果，必要时重置再试。</li><li>交卷前检查未完成题和提交状态。</li></ol><p class="muted">交卷后不能重新登录；实际交卷操作听从考场老师安排。</p></article>
+ </div>
+</section>
+
+<section class="section" id="examples"><h2>例题练习：从基础到组合</h2><p class="lead">这组练习来自你提供的备考整理内容并作了教学化改写，附件本身没有发布这些真题。先自己做，再展开答案核对。</p>
+ <article class="card"><span class="badge">练习 1 · 余数</span><h3>输入一个正整数，输出它除以 5 的余数。</h3><p>样例：输入 <code>12</code>，输出 <code>2</code>。想一想：输入得到的是文字，如何转成整数？</p><button class="secondary reveal" data-target="ans1">展开参考答案</button><div class="answer" id="ans1"><div class="code">x = int(input())  <span class="comment"># 读入文字并转换成整数</span>
+print(x % 5)       <span class="comment"># % 计算余数</span></div>解析：先用 <code>input()</code> 读入，再用 <code>int()</code> 转整数，最后取余并输出。</div></article>
+ <article class="card" style="margin-top:14px"><span class="badge">练习 2 · 列表统计</span><h3>输入一行空格分隔的身高，输出最大身高与最小身高的差。</h3><p>样例：输入 <code>168 152 140 179 155</code>，输出 <code>39</code>。请先用熟悉的写法完成，再考虑是否能简化。</p><button class="secondary reveal" data-target="ans2">展开参考答案</button><div class="answer" id="ans2"><div class="code">heights = list(map(int, input().split()))
+print(max(heights) - min(heights))</div>解析：<code>split()</code> 按空格拆开，<code>map(int, ...)</code> 把每项转成整数，<code>max()</code> 和 <code>min()</code> 求最大最小值。</div></article>
+ <article class="card" style="margin-top:14px"><span class="badge">练习 3 · 字符串遍历</span><h3>输入一个字符串，把每个字符重复一次后连起来输出。</h3><p>样例：输入 <code>abc</code>，输出 <code>aabbcc</code>。</p><button class="secondary reveal" data-target="ans3">展开参考答案</button><div class="answer" id="ans3"><div class="code">s = input().strip()
+result = ""
+for ch in s:
+    result += ch * 2
+print(result)</div>解析：循环依次取出字符 <code>ch</code>，把它重复两次并加到结果字符串中。这里特意用基础循环，便于看懂；先掌握思路，再学更简洁的写法。</div></article>
+ <article class="card" style="margin-top:14px"><span class="badge">练习 4 · 游戏条件</span><h3>角色前方是小石头时攻击；否则向前走一步。</h3><p>用规则里的 <code>if/else</code>、石头属性和动作命令表达思路。先指出条件，再判断两个分支各执行什么。</p><button class="secondary reveal" data-target="ans4">展开思路示例</button><div class="answer" id="ans4"><p>思路：检查题目指定对象的大小属性；若为小石头就攻击，否则移动。</p><div class="code">if stone.big == False:
+    attack()
+else:
+    move(1)</div><p>注意：这只是依据规则文字写的示意代码。<code>stone</code> 是否代表当前目标、属性比较的具体语法，都要以平台实际示例为准；可以用 <code>not stone.big</code> 表达否定，但也应先确认平台支持的写法。</p></div></article>
+ <div class="callout notice"><b>关于“简洁”：</b>不需要把代码硬挤成一行。先保证关卡目标正确、用了要求的知识点，再删掉重复或多余动作；不要为了短而漏条件。</div>
+</section>
+
+<section class="section" id="quiz"><h2>三道快问快答</h2><div class="card quiz">
+ <p><b>1.</b> Python 的 <code>==</code> 表示什么？</p><label><input type="radio" name="q1" value="a"> 赋值</label><label><input type="radio" name="q1" value="b"> 比较是否相等</label>
+ <p><b>2.</b> <code>items[1:3]</code> 会取哪些下标？</p><label><input type="radio" name="q2" value="a"> 1 和 2</label><label><input type="radio" name="q2" value="b"> 1、2 和 3</label>
+ <p><b>3.</b> 关卡写了“需要使用 repeat”，只用四条 move 走通就满足指定知识点了吗？</p><label><input type="radio" name="q3" value="a"> 满足，结果一样就行</label><label><input type="radio" name="q3" value="b"> 不满足，还要按题目要求使用 repeat</label>
+ <button id="checkQuiz">检查答案</button> <span class="feedback" id="quizFeedback" aria-live="polite"></span>
+ </div></section>
+
+<section class="section" id="exam"><h2>最后带走这张清单</h2><div class="card"><ul><li>看清题目目标、对象名和关卡星级条件。</li><li>先把动作顺序说出来，再写代码。</li><li>检查冒号、缩进、循环次数和方向。</li><li>确认条件中的对象属性与平台演示一致。</li><li>代码通过后，查看是否用到了指定知识点。</li><li>留意时间，按监考老师要求提交；交卷后不能重新进入。</li></ul></div></section>
+<p class="footer"><a class="toplink" href="index.html">返回小萝卜的宝藏大陆</a> · <a class="toplink" href="#top">回到顶部 ↑</a></p>
+</main>
+<script>
+(function(){
+  const grid=document.getElementById('mapGrid');
+  let pos={r:4,c:0}, step=0;
+  const route=[{r:4,c:1,label:'向右一步'},{r:4,c:2,label:'再向右一步'},{r:3,c:2,label:'转向后向上一步'},{r:2,c:2,label:'向上一步'}];
+  function draw(){
+    grid.innerHTML='';
+    for(let r=0;r<5;r++)for(let c=0;c<5;c++){
+      const d=document.createElement('div');d.className='cell';
+      if(r===4&&c===0)d.textContent='🚩';
+      if(r===2&&c===2){d.textContent='🧰';d.classList.add('goal');}
+      if(r===pos.r&&c===pos.c){d.textContent='🧑‍🚀';d.classList.add('hero-cell');}
+      else if(route.slice(0,step).some(p=>p.r===r&&p.c===c)){d.textContent='·';d.classList.add('path');}
+      grid.appendChild(d);
+    }
+  }
+  document.getElementById('nextMove').addEventListener('click',function(){
+    if(step<route.length){const m=route[step++];pos={r:m.r,c:m.c};document.getElementById('mapStep').textContent='第 '+step+' 步：'+m.label+'。先想清位置变化，再看地图。';draw();}
+    else document.getElementById('mapStep').textContent='路线示意完成。实际关卡请根据地图和初始方向重新判断。';
+  });
+  document.getElementById('resetMap').addEventListener('click',function(){step=0;pos={r:4,c:0};document.getElementById('mapStep').textContent='准备出发：起点在左下角，宝箱在右上方。';draw();});
+  draw();
+  document.querySelectorAll('.reveal').forEach(btn=>btn.addEventListener('click',function(){const el=document.getElementById(btn.dataset.target);el.classList.toggle('show');btn.textContent=el.classList.contains('show')?'收起答案':'展开参考答案';}));
+  document.getElementById('checkQuiz').addEventListener('click',function(){
+    const answers={q1:'b',q2:'a',q3:'b'};let score=0;
+    Object.keys(answers).forEach(q=>{const picked=document.querySelector('input[name="'+q+'"]:checked');if(picked&&picked.value===answers[q])score++;});
+    document.getElementById('quizFeedback').textContent='答对 '+score+' / 3 题'+(score===3?'，全对！':'，回到对应知识点再看一遍。');
+  });
+  const toggle=document.getElementById('toc-toggle'),toc=document.getElementById('page-toc'),backdrop=document.getElementById('toc-backdrop'),close=toc.querySelector('.toc-close');
+  function setToc(open){document.body.classList.toggle('toc-open',open);toggle.setAttribute('aria-expanded',String(open));toc.inert=!open;backdrop.hidden=!open;if(open)close.focus();else toggle.focus();}
+  toggle.addEventListener('click',function(){setToc(toggle.getAttribute('aria-expanded')!=='true');});
+  close.addEventListener('click',function(){setToc(false);});
+  backdrop.addEventListener('click',function(){setToc(false);});
+  toc.querySelectorAll('a').forEach(function(link){link.addEventListener('click',function(){setToc(false);});});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&toggle.getAttribute('aria-expanded')==='true')setToc(false);});
+})();
+</script>
+<!-- kg-toc-js-start -->
+<script>
+/* 左侧目录：自动收起 / 悬停展开 */
+(function(){
+  var sb=document.getElementById('kg-sidebar');
+  var tg=document.getElementById('kg-sb-toggle');
+  var x=document.getElementById('kg-sb-x');
+  var mask=document.getElementById('kg-sb-mask');
+  if(!sb||!tg) return;
+  var open = document.body.classList.contains('kg-sb-open');
+  function setOpen(v){
+    open=v;
+    if(v){document.body.classList.add('kg-sb-open');}
+    else{document.body.classList.remove('kg-sb-open');}
+  }
+  tg.addEventListener('mouseenter',function(){setOpen(true);});
+  tg.addEventListener('focus',function(){setOpen(true);});
+  tg.addEventListener('click',function(e){e.stopPropagation();setOpen(!open);});
+  if(x){x.addEventListener('click',function(e){e.stopPropagation();setOpen(false);});}
+  if(mask){mask.addEventListener('click',function(){setOpen(false);});}
+  sb.addEventListener('mouseenter',function(){setOpen(true);});
+  sb.addEventListener('mouseleave',function(){setOpen(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')setOpen(false);});
+})();
+</script>
+<!-- kg-toc-js-end -->
+<!-- kg-eggy-start -->
+<div id="kg-eggy" title="按住向右下角拉满1.5秒，松手起飞！轻点10次放烟花，30次大惊喜">
+  <svg width="70" height="84" viewBox="0 0 100 120">
+    <ellipse class="kg-hat" cx="50" cy="30" rx="26" ry="18" fill="#0ea5e9" stroke="#0284c7" stroke-width="2"/>
+    <path class="kg-hat" d="M20 30 Q50 22 80 30 L74 34 Q50 28 26 34 Z" fill="#0284c7"/>
+    <ellipse class="kg-hat" cx="50" cy="30" rx="42" ry="6" fill="#0ea5e9" opacity=".9"/>
+    <ellipse class="kg-hat" cx="50" cy="28" rx="26" ry="16" fill="#38bdf8" opacity=".4"/>
+    <circle class="kg-hat" cx="50" cy="12" r="5" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5"/>
+    <ellipse class="kg-egg-body" cx="50" cy="74" rx="40" ry="42" fill="#fde047" stroke="#0ea5e9" stroke-width="3.5"/>
+    <ellipse cx="36" cy="50" rx="12" ry="8" fill="#fef9c3" opacity=".6"/>
+    <g id="kg-eggy-eyes">
+      <circle id="kg-eye-l" cx="36" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/>
+      <circle id="kg-eye-r" cx="64" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/>
+      <circle id="kg-pupil-l" cx="36" cy="68" r="5.5" fill="#1e293b"/>
+      <circle id="kg-pupil-r" cx="64" cy="68" r="5.5" fill="#1e293b"/>
+      <circle cx="38" cy="65" r="2" fill="#fff"/>
+      <circle cx="66" cy="65" r="2" fill="#fff"/>
+    </g>
+    <path d="M28 60 Q26 54 24 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M33 58 Q33 52 35 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M67 58 Q67 52 65 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <path d="M72 60 Q74 54 76 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <circle cx="22" cy="76" r="5.5" fill="#fb7185" opacity=".55"/>
+    <circle cx="78" cy="76" r="5.5" fill="#fb7185" opacity=".55"/>
+    <ellipse class="kg-tear" cx="27" cy="83" rx="2.8" ry="4.2" fill="#38bdf8"/>
+    <ellipse class="kg-tear" cx="73" cy="83" rx="2.8" ry="4.2" fill="#38bdf8"/>
+    <path id="kg-eggy-mouth" d="M42 84 Q50 90 58 84" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    <rect class="kg-leg" x="37" y="106" width="7" height="8" fill="#fde047"/>
+    <rect class="kg-leg" x="56" y="106" width="7" height="8" fill="#fde047"/>
+    <rect x="34" y="112" width="13" height="8" rx="3" fill="#1e293b"/>
+    <rect x="53" y="112" width="13" height="8" rx="3" fill="#1e293b"/>
+    <g class="kg-dirt"><circle cx="26" cy="72" r="5" fill="#292524" opacity=".8"/><circle cx="46" cy="82" r="4" fill="#292524" opacity=".7"/><circle cx="64" cy="80" r="5.5" fill="#292524" opacity=".75"/><circle cx="33" cy="88" r="3.5" fill="#292524" opacity=".6"/><circle cx="72" cy="70" r="4" fill="#292524" opacity=".65"/></g>
+    <g class="kg-smoke"><circle cx="50" cy="12" r="7" fill="#9ca3af" opacity=".5"/><circle cx="62" cy="6" r="5" fill="#9ca3af" opacity=".35"/><circle cx="40" cy="4" r="4" fill="#9ca3af" opacity=".3"/></g>
+  </svg>
+</div>
+<!-- kg-eggy-end -->
+<!-- kg-eggy-js-start -->
+<script src="/assets/eggy.js" defer></script>
+<!-- kg-eggy-js-end -->
+</body>
+</html>

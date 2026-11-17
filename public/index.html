@@ -63,51 +63,65 @@
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://kids-pages-1pw.pages.dev/">
 <meta name="twitter:card" content="summary">
-<style id="kg-sb-style">
-/* 左侧目录：首页默认展开，可悬停/✕收起 */
-#kg-sidebar{position:fixed;left:0;top:0;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:34px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;transform:translateX(-100%);transition:transform .26s cubic-bezier(.25,.7,.3,1);}
-body.kg-sb-open #kg-sidebar{transform:translateX(0);}
-#kg-sidebar .kg-sb-home{display:block;font-weight:800;font-size:14px;color:#0369a1;text-decoration:none;padding:8px 10px;border-radius:10px;background:#e0f2fe;margin-bottom:12px;transition:background .15s;}
-#kg-sidebar .kg-sb-home:hover{background:#bae6fd;}
-#kg-sidebar .kg-sb-topic{font-weight:700;font-size:12px;color:#0f766e;padding:10px 10px 4px;letter-spacing:.5px;}
-#kg-sidebar a.kg-sb-page{display:block;font-size:12.5px;color:#334155;text-decoration:none;padding:5px 10px;border-radius:6px;margin:1px 0;line-height:1.45;}
-#kg-sidebar a.kg-sb-page:hover{background:#e0f2fe;color:#0369a1;}
-#kg-sidebar #kg-sb-x{position:sticky;top:0;float:right;margin:-24px 0 0;width:22px;height:22px;border:none;border-radius:6px;background:#e0f2fe;color:#0369a1;font-size:12px;line-height:1;cursor:pointer;z-index:2;}
-#kg-sidebar #kg-sb-x:hover{background:#fecaca;color:#b91c1c;}
-#kg-sb-toggle{position:fixed;left:0;top:0;bottom:0;width:20px;z-index:99989;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:transparent;}
-#kg-sb-toggle .kg-sb-tg-ic{display:block;writing-mode:vertical-rl;font-size:14px;color:#0ea5e9;background:rgba(224,242,254,.85);padding:8px 3px;border-radius:0 8px 8px 0;box-shadow:0 1px 5px rgba(2,132,199,.18);transition:background .15s,color .15s;}
-#kg-sb-toggle:hover .kg-sb-tg-ic{background:#0ea5e9;color:#fff;}
-/* 半透明遮罩 */
-.kg-sb-mask{position:fixed;left:0;top:0;right:0;bottom:0;background:rgba(15,23,42,.25);z-index:99988;opacity:0;pointer-events:none;transition:opacity .26s;}
-body.kg-sb-open .kg-sb-mask{opacity:1;pointer-events:auto;}
-/* 内容不左右移动 */
-body{padding-left:24px;}
-@media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}.kg-sb-mask{display:none;}body{padding-left:0!important;}}
+<style id="home-directory-style">
+#home-directory-toggle, #home-directory-close {
+  font: inherit; font-weight: 750; cursor: pointer;
+  border: 1px solid var(--line); background: #fff; color: var(--teal);
+  border-radius: 12px; padding: 9px 13px; min-height: 44px;
+}
+#home-directory-toggle {
+  position: fixed; left: 12px; top: 18px; z-index: 100;
+  box-shadow: 0 4px 16px #243b4a1a;
+}
+#home-directory {
+  position: fixed; inset: 0 auto 0 0; margin: 0;
+  width: min(310px, 88vw); max-width: none; max-height: 100%;
+  height: 100%; border: 0; border-right: 1px solid var(--line);
+  padding: 20px; background: var(--paper); color: var(--ink);
+  box-shadow: 8px 0 28px #243b4a26;
+}
+#home-directory::backdrop { background: #243b4a55; }
+#home-directory .directory-heading {
+  display: flex; justify-content: space-between; align-items: center;
+  gap: 12px; margin-bottom: 14px;
+}
+#home-directory .directory-heading h2 { font-size: 20px; }
+#home-directory a {
+  display: block; color: var(--teal); text-decoration: none; font-weight: 750;
+  padding: 10px 12px; border-radius: 12px; margin-bottom: 4px;
+}
+#home-directory a.directory-child { padding-left: 24px; font-weight: 600; }
+#home-directory a:hover, #home-directory button:hover,
+#home-directory-toggle:hover { background: #e6f2ee; }
+#home-directory :focus-visible, #home-directory-toggle:focus-visible {
+  outline: 3px solid var(--teal); outline-offset: 2px;
+}
+@media (max-width: 680px) {
+  #home-directory-toggle { top: auto; bottom: max(12px, env(safe-area-inset-bottom)); }
+}
 </style>
 <link rel="stylesheet" href="/assets/eggy.css">
 </head>
 <body>
 <!-- kg-sb-start -->
-<button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>
-<div class="kg-sb-mask" id="kg-sb-mask"></div>
-<aside id="kg-sidebar">
-<button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>
-<a class="kg-sb-home" href="#top">🏠 秘密基地</a>
-<div class="kg-sb-topic">📍 ① DFS/BFS</div>
-<a class="kg-sb-page" href="#topic-dfs">· 查看主题</a>
-<div class="kg-sb-topic">📍 ② 树基础</div>
-<a class="kg-sb-page" href="#topic-tree">· 查看主题</a>
-<div class="kg-sb-topic">📍 ③ 树上漫步</div>
-<a class="kg-sb-page" href="#topic-p11962">· 查看主题</a>
-<div class="kg-sb-topic">📍 ④ 完全二叉树</div>
-<a class="kg-sb-page" href="#topic-cbt">· 查看主题</a>
-<div class="kg-sb-topic">📍 ⑤ 满二叉树</div>
-<a class="kg-sb-page" href="#topic-full">· 查看主题</a>
-<div class="kg-sb-topic">📍 ⑥ 数智素养</div>
-<a class="kg-sb-page" href="#digital-literacy.html">· 查看主题</a>
-</aside>
+<button id="home-directory-toggle" type="button" aria-haspopup="dialog"
+        aria-controls="home-directory" aria-expanded="false">☰ 目录</button>
+<dialog id="home-directory" aria-labelledby="home-directory-title">
+  <div class="directory-heading">
+    <h2 id="home-directory-title">宝藏大陆目录</h2>
+    <button id="home-directory-close" type="button" autofocus>收起</button>
+  </div>
+  <nav aria-label="首页栏目">
+    <a href="#topic-notebook">1. 错题本</a>
+    <a href="#topic-cpp">2. C++ 编程</a>
+    <a class="directory-child" href="#topic-tree">2.1 树</a>
+    <a class="directory-child" href="#topic-dfs">2.2 深搜和广搜</a>
+    <a href="#topic-contest-entry">3. 竞赛专题</a>
+    <a class="directory-child" href="#topic-contest">3.1 数智素养 2026</a>
+    <a class="directory-child" href="#topic-python-fun">3.2 Python 趣味编程竞赛</a>
+  </nav>
+</dialog>
 <!-- kg-sb-end -->
-
 <header id="top">
   <h1><svg width="44" height="52" viewBox="0 0 100 120" style="vertical-align:middle"><ellipse cx="50" cy="74" rx="40" ry="42" fill="#fde047" stroke="#0ea5e9" stroke-width="3.5"/><ellipse cx="36" cy="50" rx="12" ry="8" fill="#fef9c3" opacity=".6"/><path d="M28 20 Q50 8 72 20 L66 28 Q50 22 34 28 Z" fill="#0ea5e9" stroke="#0284c7" stroke-width="2"/><circle cx="50" cy="16" r="4" fill="#fbbf24"/><circle cx="36" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="64" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="36" cy="68" r="5.5" fill="#1e293b"/><circle cx="64" cy="68" r="5.5" fill="#1e293b"/><circle cx="38" cy="65" r="2" fill="#fff"/><circle cx="66" cy="65" r="2" fill="#fff"/><path d="M28 60 Q26 54 24 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M33 58 Q33 52 35 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M67 58 Q67 52 65 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M72 60 Q74 54 76 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><circle cx="78" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><path d="M42 84 Q50 90 58 84" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="34" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="53" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="37" y="106" width="7" height="8" fill="#fde047"/><rect x="56" y="106" width="7" height="8" fill="#fde047"/></svg>宝藏大陆</h1>
   <p>小萝卜和蛋仔的秘密宝藏</p>
@@ -164,6 +178,14 @@ body{padding-left:24px;}
     </div>
     </details>
   </div>
+  <div class="subtopic" id="topic-python-fun" aria-label="2026 北京市 Python 趣味编程">
+    <div class="subtopic-head"><h3>3.2 2026 北京市 Python 趣味编程</h3><span>五年级 · 考前重点复习</span></div>
+    <details class="details-toggle"><summary>展开备考教程</summary>
+    <div class="grid">
+      <a class="card special" href="python-fun-competition.html"><span class="src">考试准备专题 · 小学高年级组</span><h3>2026 北京市 Python 趣味编程</h3><p>复习 Python 基础、关卡指令、字符串和列表字典，附短题练习与互动路线推演。</p><span class="enter">进入专题 →</span></a>
+    </div>
+    </details>
+  </div>
   </section>
   <p class="legend">日拱一卒，功不唐捐！</p>
 </main>
@@ -188,30 +210,37 @@ body{padding-left:24px;}
   });
 })();
 </script>
-<!-- kg-toc-js-start -->
 <script>
-/* 左侧目录：自动收起 / 悬停展开 */
-(function(){
-  var sb=document.getElementById('kg-sidebar');
-  var tg=document.getElementById('kg-sb-toggle');
-  var x=document.getElementById('kg-sb-x');
-  var mask=document.getElementById('kg-sb-mask');
-  if(!sb||!tg) return;
-  var open = document.body.classList.contains('kg-sb-open');
-  function setOpen(v){
-    open=v;
-    if(v){document.body.classList.add('kg-sb-open');}
-    else{document.body.classList.remove('kg-sb-open');}
-  }
-  tg.addEventListener('mouseenter',function(){setOpen(true);});
-  tg.addEventListener('click',function(e){e.stopPropagation();setOpen(!open);});
-  if(x){x.addEventListener('click',function(e){e.stopPropagation();setOpen(false);});}
-  if(mask){mask.addEventListener('click',function(){setOpen(false);});}
-  sb.addEventListener('mouseenter',function(){setOpen(true);});
-  sb.addEventListener('mouseleave',function(){setOpen(false);});
+(function () {
+  const directory = document.getElementById('home-directory');
+  const toggle = document.getElementById('home-directory-toggle');
+
+  toggle.addEventListener('click', function () {
+    directory.showModal();
+    toggle.setAttribute('aria-expanded', 'true');
+  });
+  directory.addEventListener('close', function () {
+    toggle.setAttribute('aria-expanded', 'false');
+  });
+  document.getElementById('home-directory-close').addEventListener('click', function () {
+    directory.close();
+  });
+  directory.addEventListener('click', function (event) {
+    const bounds = directory.getBoundingClientRect();
+    if (event.target === directory && event.clientX > bounds.right) directory.close();
+  });
+  directory.querySelectorAll('a').forEach(function (link) {
+    link.addEventListener('click', function () {
+      directory.close();
+      const section = document.querySelector(link.hash);
+      const lessons = section.querySelector('details') || section.nextElementSibling;
+      if (link.classList.contains('directory-child') && lessons?.tagName === 'DETAILS') {
+        lessons.open = true;
+      }
+    });
+  });
 })();
 </script>
-<!-- kg-toc-js-end -->
 <!-- kg-eggy-start -->
 <div id="kg-eggy" title="按住向右下角拉满1.5秒，松手起飞！轻点10次放烟花，30次大惊喜">
   <svg width="70" height="84" viewBox="0 0 100 120">

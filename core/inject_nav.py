@@ -32,6 +32,7 @@ PAGES = {
     "gesp6-full-tree-counter.html": "full",
     "digital-literacy.html": "digital",
     "digital-practice.html": "digital",
+    "python-fun-competition.html": "python-fun",
 }
 
 TOPIC_LABELS = {
@@ -41,6 +42,7 @@ TOPIC_LABELS = {
     "cbt": ("④ 完全二叉树", "topic-cbt"),
     "full": ("⑤ 满二叉树", "topic-full"),
     "digital": ("⑥ 数智素养", "digital-literacy.html"),
+    "python-fun": ("3.2 2026 北京市 Python 趣味编程", "topic-python-fun"),
 }
 
 # 每个页面在侧边栏里显示的名字（短名）
@@ -60,6 +62,7 @@ PAGE_SHORT_NAMES = {
     "gesp6-full-tree-counter.html": "千问 · 满二叉子树计数",
     "digital-literacy.html": "数智素养 · 考试准备",
     "digital-practice.html": "数智素养 · 练习库",
+    "python-fun-competition.html": "2026 北京市 Python 趣味编程",
 }
 
 NAV_CSS = """<style id="kg-nav-style">
@@ -77,23 +80,24 @@ body{padding-top:46px;}
 @media(max-width:520px){#kg-nav .kg-home{font-size:13px;}#kg-nav .kg-topics a{padding:3px 7px;font-size:11px;}}
 
 /* 左侧目录：默认收起，悬停把手/移入滑出 */
-#kg-sidebar{position:fixed;left:0;top:46px;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:34px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;transform:translateX(-100%);transition:transform .26s cubic-bezier(.25,.7,.3,1);}
+#kg-sidebar{position:fixed;left:0;top:46px;bottom:0;width:248px;background:#f8faff;border-right:1px solid #dce6f1;box-shadow:8px 0 28px rgba(32,48,71,.12);z-index:99990;overflow-y:auto;padding:30px 12px 28px;box-sizing:border-box;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;transform:translateX(-102%);transition:transform .24s cubic-bezier(.2,.7,.25,1);}
 body.kg-sb-open #kg-sidebar{transform:translateX(0);}
 #kg-sidebar::-webkit-scrollbar{width:6px;}
 #kg-sidebar::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:3px;}
-#kg-sidebar .kg-sb-home{display:block;font-weight:800;font-size:14px;color:#0369a1;text-decoration:none;padding:8px 10px;border-radius:10px;background:#e0f2fe;margin-bottom:12px;transition:background .15s;}
-#kg-sidebar .kg-sb-home:hover{background:#bae6fd;}
-#kg-sidebar .kg-sb-topic{font-weight:700;font-size:12px;color:#0f766e;padding:10px 10px 4px;letter-spacing:.5px;}
-#kg-sidebar a.kg-sb-page{display:block;font-size:12.5px;color:#334155;text-decoration:none;padding:5px 10px;border-radius:6px;margin:1px 0;line-height:1.45;}
-#kg-sidebar a.kg-sb-page:hover{background:#e0f2fe;color:#0369a1;}
-#kg-sidebar a.kg-sb-page.kg-sb-active{background:#0ea5e9;color:#fff;font-weight:600;}
+#kg-sidebar .kg-sb-home{display:block;font-weight:800;font-size:14px;color:#3147b9;text-decoration:none;padding:9px 11px;border-radius:11px;background:#eaf0ff;margin-bottom:12px;transition:background .15s,transform .15s;}
+#kg-sidebar .kg-sb-home:hover{background:#dfe7ff;transform:translateY(-1px);}
+#kg-sidebar .kg-sb-topic{font-weight:800;font-size:12px;color:#50617a;padding:13px 10px 5px;letter-spacing:.02em;}
+#kg-sidebar a.kg-sb-page{display:block;font-size:13px;color:#35445b;text-decoration:none;padding:7px 10px;border-radius:8px;margin:2px 0;line-height:1.45;transition:background .15s,color .15s;}
+#kg-sidebar a.kg-sb-page:hover{background:#edf1ff;color:#344bc2;}
+#kg-sidebar a.kg-sb-page.kg-sb-active{background:#4263eb;color:#fff;font-weight:700;box-shadow:0 3px 10px #4263eb33;}
+#kg-sidebar a:focus-visible,#kg-sidebar button:focus-visible,#kg-sb-toggle:focus-visible{outline:3px solid #f0a323;outline-offset:2px;}
 /* ✕ 收起按钮 */
 #kg-sidebar #kg-sb-x{position:sticky;top:0;float:right;margin:-24px 0 0;width:22px;height:22px;border:none;border-radius:6px;background:#e0f2fe;color:#0369a1;font-size:12px;line-height:1;cursor:pointer;z-index:2;}
 #kg-sidebar #kg-sb-x:hover{background:#fecaca;color:#b91c1c;}
 /* ☰ 展开把手：收起时留在左缘 */
 #kg-sb-toggle{position:fixed;left:0;top:46px;bottom:0;width:20px;z-index:99989;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;background:transparent;}
-#kg-sb-toggle .kg-sb-tg-ic{display:block;writing-mode:vertical-rl;font-size:14px;color:#0ea5e9;background:rgba(224,242,254,.85);padding:8px 3px;border-radius:0 8px 8px 0;box-shadow:0 1px 5px rgba(2,132,199,.18);transition:background .15s,color .15s;}
-#kg-sb-toggle:hover .kg-sb-tg-ic{background:#0ea5e9;color:#fff;}
+#kg-sb-toggle .kg-sb-tg-ic{display:block;writing-mode:vertical-rl;font-size:14px;color:#4058d8;background:rgba(255,255,255,.94);padding:10px 4px;border:1px solid #dce6f1;border-left:0;border-radius:0 9px 9px 0;box-shadow:0 3px 12px rgba(32,48,71,.14);transition:background .15s,color .15s;}
+#kg-sb-toggle:hover .kg-sb-tg-ic{background:#4263eb;color:#fff;}
 /* 半透明遮罩：展开时盖在内容上，点击可收起 */
 .kg-sb-mask{position:fixed;left:0;top:46px;right:0;bottom:0;background:rgba(15,23,42,.25);z-index:99988;opacity:0;pointer-events:none;transition:opacity .26s;}
 body.kg-sb-open .kg-sb-mask{opacity:1;pointer-events:auto;}
@@ -216,11 +220,13 @@ TOC_JS = """<!-- kg-toc-js-start -->
     else{document.body.classList.remove('kg-sb-open');}
   }
   tg.addEventListener('mouseenter',function(){setOpen(true);});
+  tg.addEventListener('focus',function(){setOpen(true);});
   tg.addEventListener('click',function(e){e.stopPropagation();setOpen(!open);});
   if(x){x.addEventListener('click',function(e){e.stopPropagation();setOpen(false);});}
   if(mask){mask.addEventListener('click',function(){setOpen(false);});}
   sb.addEventListener('mouseenter',function(){setOpen(true);});
   sb.addEventListener('mouseleave',function(){setOpen(false);});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')setOpen(false);});
 })();
 </script>
 <!-- kg-toc-js-end -->"""
@@ -238,12 +244,16 @@ EGGY_JS = """<script>
   var eyeL=document.getElementById('kg-eye-l'), eyeR=document.getElementById('kg-eye-r');
   var faces=[["#fde047","M42 84 Q50 90 58 84"],["#fca5a5","M42 86 Q50 80 58 86"],["#86efac","M42 82 Q50 92 58 82"],["#93c5fd","M42 88 Q50 84 58 88"]];
   var fi=0;
-  var W=70,H=84;
+  var desktopW=70,desktopH=84;
+  function viewportMetrics(){var v=window.visualViewport;return v?{left:v.offsetLeft||0,top:v.offsetTop||0,width:v.width,height:v.height}:{left:0,top:0,width:window.innerWidth,height:window.innerHeight};}
+  var initialViewport=viewportMetrics();
+  var W=Math.min(desktopW,Math.max(48,initialViewport.width<=860?56:70));
+  var H=Math.round(desktopH*W/desktopW);
   function mp(p,cx,cy,mx,my){var r=eggy.getBoundingClientRect();var dx=mx-(r.left+cx*0.7+35),dy=my-(r.top+cy*0.7+42);var d=Math.sqrt(dx*dx+dy*dy)||1,max=4;p.setAttribute('cx',cx+Math.min(max,dx/d*max));p.setAttribute('cy',cy+Math.min(max,dy/d*max));}
   document.addEventListener('mousemove',function(e){if(flying)return;mp(pl,36,68,e.clientX,e.clientY);mp(pr,64,68,e.clientX,e.clientY);});
   document.addEventListener('touchmove',function(e){if(flying)return;if(e.touches[0]){mp(pl,36,68,e.touches[0].clientX,e.touches[0].clientY);mp(pr,64,68,e.touches[0].clientX,e.touches[0].clientY);}},{passive:true});
   var clickCount=0;
-  function fireConfetti(){var box=document.getElementById('kg-confetti');if(!box){box=document.createElement('div');box.id='kg-confetti';document.body.appendChild(box);}var colors=['#0ea5e9','#fde047','#fb7185','#86efac','#fbbf24','#a78bfa','#f97316','#38bdf8'];var cx=window.innerWidth-55,cy=window.innerHeight-50;for(var i=0;i<60;i++){var p=document.createElement('div');p.className='kg-cf';p.style.background=colors[i%colors.length];p.style.left=cx+'px';p.style.top=cy+'px';var ang=Math.random()*Math.PI*2,sp=60+Math.random()*120;var dx=Math.cos(ang)*sp,dy=Math.sin(ang)*sp-80;p.style.transition='transform 1.2s cubic-bezier(.2,.6,.4,1),opacity 1.2s ease';box.appendChild(p);requestAnimationFrame(function(el,xx,yy){return function(){el.style.opacity='1';el.style.transform='translate('+xx+'px,'+yy+'px) scale('+(0.5+Math.random())+') rotate('+(Math.random()*720)+'deg)';};}(p,dx,dy));setTimeout(function(el){return function(){el.style.opacity='0';};}(p),900);}setTimeout(function(){if(box.parentNode)box.parentNode.removeChild(box);},1500);}
+  function fireConfetti(){var box=document.getElementById('kg-confetti');if(!box){box=document.createElement('div');box.id='kg-confetti';document.body.appendChild(box);}var colors=['#0ea5e9','#fde047','#fb7185','#86efac','#fbbf24','#a78bfa','#f97316','#38bdf8'];var v=viewportMetrics(),cx=v.left+v.width-55,cy=v.top+v.height-50;for(var i=0;i<60;i++){var p=document.createElement('div');p.className='kg-cf';p.style.background=colors[i%colors.length];p.style.left=cx+'px';p.style.top=cy+'px';var ang=Math.random()*Math.PI*2,sp=60+Math.random()*120;var dx=Math.cos(ang)*sp,dy=Math.sin(ang)*sp-80;p.style.transition='transform 1.2s cubic-bezier(.2,.6,.4,1),opacity 1.2s ease';box.appendChild(p);requestAnimationFrame(function(el,xx,yy){return function(){el.style.opacity='1';el.style.transform='translate('+xx+'px,'+yy+'px) scale('+(0.5+Math.random())+') rotate('+(Math.random()*720)+'deg)';};}(p,dx,dy));setTimeout(function(el){return function(){el.style.opacity='0';};}(p),900);}setTimeout(function(){if(box.parentNode)box.parentNode.removeChild(box);},1500);}
   function fireExplosion(){
     var flash=document.getElementById('kg-flash');
     if(!flash){flash=document.createElement('div');flash.id='kg-flash';document.body.appendChild(flash);}
@@ -251,7 +261,7 @@ EGGY_JS = """<script>
     setTimeout(function(){flash.classList.remove('kg-on');},750);
     var box=document.getElementById('kg-confetti');
     if(!box){box=document.createElement('div');box.id='kg-confetti';document.body.appendChild(box);}
-    var cx=window.innerWidth-55, cy=window.innerHeight-50;
+    var v=viewportMetrics(),cx=v.left+v.width-55,cy=v.top+v.height-50;
     function blob(){
       var p=document.createElement('div');p.className='kg-cf';
       var roll=Math.random();
@@ -289,10 +299,25 @@ EGGY_JS = """<script>
   }
   /* ==== 拖动 + 右下角隐形栅栏（墙在网页右下角 1/5 处）==== */
   var homeL=0, homeT=0;
-  function bounds(){var vw=window.innerWidth, vh=window.innerHeight;var rw=Math.max(vw/5,150), rh=Math.max(vh/5,120);return {L:vw-rw, T:vh-rh, R:vw, B:vh};}
-  function setHome(){homeL=window.innerWidth-W-20;homeT=window.innerHeight-H-20;eggy.style.left=homeL+'px';eggy.style.top=homeT+'px';}
-  setHome();
-  window.addEventListener('resize',function(){abortFlight();resetCharge();if(down) release({type:'pointercancel'});setHome();});
+  function bounds(){var v=viewportMetrics(),vw=v.width,vh=v.height;var rw=Math.max(vw/5,150),rh=Math.max(vh/5,120);return {L:v.left+vw-rw,T:v.top+vh-rh,R:v.left+vw,B:v.top+vh};}
+  function setHome(){
+    var v=viewportMetrics();W=Math.min(desktopW,Math.max(48,v.width<=860?56:70));H=Math.round(desktopH*W/desktopW);
+    eggy.style.width=W+'px';eggy.style.height=H+'px';if(svg){svg.setAttribute('width',W);svg.setAttribute('height',H);}
+    homeL=Math.max(v.left+8,v.left+v.width-W-20);homeT=Math.max(v.top+8,v.top+v.height-H-20);
+    eggy.style.left=homeL+'px';eggy.style.top=homeT+'px';eggy.style.right='auto';eggy.style.bottom='auto';
+  }
+  function resetAppearance(){
+    eggy.classList.remove('kg-blasted','kg-flying','kg-fallen','kg-crying','kg-dragging');svg.classList.remove('kg-wall-shake');svg.style.transform='';
+    eggy.style.transform='';eggy.style.filter='';eggy.style.transition='';eggy.style.opacity='1';body.setAttribute('fill',faces[fi][0]);
+    pl.setAttribute('cx','36');pr.setAttribute('cx','64');pl.setAttribute('cy','68');pr.setAttribute('cy','68');pl.setAttribute('r','5.5');pr.setAttribute('r','5.5');
+    eyeL.setAttribute('cx','36');eyeR.setAttribute('cx','64');eyeL.setAttribute('r','11');eyeR.setAttribute('r','11');mouth.setAttribute('d',faces[fi][1]);mouth.setAttribute('fill','none');
+    var dirt=eggy.querySelector('.kg-dirt');if(dirt)dirt.style.opacity='0';var smoke=eggy.querySelector('.kg-smoke');if(smoke)smoke.style.opacity='0';var dustbox=document.getElementById('kg-dustbox');if(dustbox)dustbox.remove();
+  }
+  resetAppearance();setHome();
+  function updateViewportHome(){if(down||flying)return;var v=viewportMetrics(),r=eggy.getBoundingClientRect();if(r.right>v.left+v.width||r.left<v.left||r.bottom>v.top+v.height||r.top<v.top)setHome();}
+  window.addEventListener('resize',function(){abortFlight();resetCharge();if(down)release({type:'pointercancel'});setHome();});
+  if(window.visualViewport){window.visualViewport.addEventListener('resize',updateViewportHome);window.visualViewport.addEventListener('scroll',updateViewportHome);}
+  window.addEventListener('load',updateViewportHome,{once:true});[0,100,350,900].forEach(function(ms){setTimeout(updateViewportHome,ms);});
   var down=null, dragging=false, wallOn=false, lastDust=0, suppress=0, retTimer=null;
   // Continuous corner pressure arms the spring even when the pointer stops moving.
   var chargeTimer=null, chargeRAF=0, chargeSince=0, ready=false, spring=null, tension=0, chargeProgress=0, launchAngle=Math.PI/4;
@@ -761,7 +786,6 @@ def inject_page(rel_path: str, topic: str):
         print(f"  ⚠ 无 <body> 标签，跳过导航栏/侧边栏注入: {rel_path}")
 
     # 注入互动蛋仔 HTML+JS 到 </body> 前（先注入侧边栏交互脚本）
-    eggy_block = EGGY_HTML + "\n" + "<!-- kg-eggy-js-start -->\n" + EGGY_JS + "\n<!-- kg-eggy-js-end -->"
     if "</body>" in html:
         html = html.replace("</body>", TOC_JS + "\n" + EGGY_HTML + "\n" + eggy_script_tag() + "\n</body>", 1)
     else:
@@ -800,6 +824,7 @@ def inject_home():
     html = re.sub(r"<!-- kg-toc-js-start -->.*?<!-- kg-toc-js-end -->", "", html, flags=re.S)
     html = normalize_slots(html)
 
+    has_home_directory = 'id="home-directory"' in html or 'id="home-directory"' in (existing_sb or "")
     sb_css = """<style id="kg-sb-style">
 /* 左侧目录：首页默认展开，可悬停/✕收起 */
 #kg-sidebar{position:fixed;left:0;top:0;bottom:0;width:206px;background:#f0f9ff;border-right:1px solid #bae6fd;z-index:99990;overflow-y:auto;padding:34px 10px 30px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;transform:translateX(-100%);transition:transform .26s cubic-bezier(.25,.7,.3,1);}
@@ -822,7 +847,8 @@ body{padding-left:24px;}
 @media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}.kg-sb-mask{display:none;}body{padding-left:0!important;}}
 </style>"""
     if "</head>" in html:
-        html = html.replace("</head>", sb_css + "\n</head>", 1)
+        if not has_home_directory:
+            html = html.replace("</head>", sb_css + "\n</head>", 1)
         if eggy_asset_tags() not in html:
             html = html.replace("</head>", eggy_asset_tags() + "\n</head>", 1)
     else:
@@ -860,7 +886,7 @@ body{padding-left:24px;}
         print("  ⚠ 首页无 <body>，跳过侧边栏注入")
 
     if "</body>" in html:
-        html = html.replace("</body>", TOC_JS + "\n" + EGGY_HTML + "\n" + eggy_script_tag() + "\n</body>", 1)
+        html = html.replace("</body>", (TOC_JS + "\n" if not has_home_directory else "") + EGGY_HTML + "\n" + eggy_script_tag() + "\n</body>", 1)
     else:
         print("  ⚠ 首页无 </body>，跳过 TOC JS")
 
