@@ -3,39 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>小萝卜的秘密花园 · 学习与探索</title>
+<title>小萝卜的宝藏大陆</title>
 <style>
+  :root { --ink:#243b4a; --muted:#718792; --teal:#287e82; --blue:#357c9d; --paper:#f3f7f2; --line:#dce8df; --gold:#e9ad52; }
   * { margin:0; padding:0; box-sizing:border-box; }
   body { font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
-         background:linear-gradient(135deg,#e0f2fe,#fef9c3); min-height:100vh; color:#1e293b; }
-  header { background:linear-gradient(135deg,#0ea5e9,#06b6d4 60%,#f59e0b); color:#fff; padding:42px 20px 34px; text-align:center; }
-  header h1 { font-size:32px; letter-spacing:3px; text-shadow:0 2px 8px rgba(2,132,199,.4); }
-  header p { margin-top:8px; font-size:16px; opacity:.95; }
-  main { max-width:880px; margin:0 auto; padding:24px 18px 60px; }
-  .topic-title, .topic-section { margin:28px 0 6px; padding-bottom:8px; border-bottom:2px solid #bae6fd; }
-  .topic-title { display:flex; align-items:center; gap:10px; }
-  .topic-title h2, .topic-section h2 { font-size:22px; color:#0284c7; }
-  .topic-title .badge, .topic-section .badge { background:#e0f2fe; color:#0284c7; border-radius:999px; padding:2px 10px; font-size:12px; }
-  .grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; margin-top:12px; }
-  @media (max-width:720px){ .grid{ grid-template-columns:1fr; } }
-  .card { background:#fff; border-radius:14px; padding:16px; box-shadow:0 1px 8px rgba(15,23,42,.07);
-          text-decoration:none; color:inherit; display:block; border-top:4px solid #0ea5e9;
-          transition:transform .12s, box-shadow .12s; }
-  a.card:hover { transform:translateY(-3px); box-shadow:0 8px 22px rgba(14,165,233,.2); }
-  .card .src { font-size:12px; font-weight:700; color:#0284c7; letter-spacing:.5px; }
-  .card p  { font-size:14px; color:#475569; line-height:1.55; margin-top:6px; }
-  .card.empty { background:#f1f5f9; border-top-color:#cbd5e1; cursor:not-allowed; }
-  .card.empty .src { color:#94a3b8; }
-  .card.empty p { color:#94a3b8; }
-  .empty-tag { display:inline-block; background:#e2e8f0; color:#64748b; border-radius:999px;
-               padding:2px 9px; font-size:11px; margin-top:8px; }
-  .legend { background:#ecfeff; border-left:5px solid #06b6d4; border-radius:10px; padding:12px 16px;
-            margin:22px 0; font-size:13.5px; color:#155e75; line-height:1.7; }
-  @keyframes kg-flash { 0%{background:#bae6fd;} 100%{background:transparent;} }
-  .kg-flash { animation: kg-flash 1.8s ease-out; border-radius:10px; }
-  /* 标题旁静态小蛋仔 */
-  header h1 { display:inline-flex; align-items:center; gap:10px; }
+         background:radial-gradient(ellipse at 12% 0%,#e4f4f5 0,transparent 38%),linear-gradient(145deg,#f7f5e9,#eef6f1 52%,#f4f7f7); min-height:100vh; color:var(--ink); }
+  header { position:relative; overflow:hidden; background:linear-gradient(115deg,#176b78,#2d9a9a 55%,#e7ad55); color:#fff; padding:44px 22px 42px; text-align:center; }
+  header:before, header:after { content:""; position:absolute; border:1px solid #ffffff30; border-radius:50%; width:250px; height:250px; }
+  header:before { left:-90px; top:-155px; } header:after { right:-100px; bottom:-200px; width:330px; height:330px; }
+  header h1 { position:relative; display:inline-flex; align-items:center; gap:12px; font-family:"Marker Felt","Chalkboard SE","STHupo","PingFang SC",sans-serif; font-size:clamp(32px,6vw,48px); font-weight:900; letter-spacing:3px; text-shadow:0 3px 0 #176b7866,0 5px 14px #164f5566; }
+  header p { margin-top:10px; font-size:17px; letter-spacing:2px; color:#f3fffb; }
+  main { max-width:1120px; margin:0 auto; padding:30px 24px 64px; }
+  .welcome { margin:0 0 28px; padding:20px 22px; border:1px solid #dce9e4; border-radius:18px; background:#ffffffc9; box-shadow:0 10px 30px #355c5210; color:#287e82; text-align:center; font-family:"Marker Felt","Chalkboard SE","STHupo","PingFang SC",sans-serif; font-weight:800; font-size:clamp(21px,4vw,28px); letter-spacing:2px; line-height:1.5; }
+  .category { margin:34px 0 0; padding:24px; border:1px solid #dce8df; border-radius:24px; background:#ffffffb8; box-shadow:0 12px 34px #355c520c; }
+  .category-head { display:flex; align-items:center; gap:14px; margin-bottom:20px; }
+  .category-number { display:grid; place-items:center; flex:none; width:48px; height:48px; border-radius:16px; background:#e6f2ee; color:var(--teal); font-weight:800; font-size:19px; }
+  .category-head h2 { font-size:clamp(22px,3vw,29px); color:var(--ink); }
+  .category-head h2 a { color:inherit; text-decoration:none; }
+  .category-head h2 a:hover { color:var(--blue); text-decoration:underline; text-underline-offset:4px; }
+  .category-head p { margin-top:3px; color:var(--muted); font-size:14px; }
+  .subtopic { margin-top:24px; padding-top:20px; border-top:1px solid var(--line); scroll-margin-top:24px; }
+  .subtopic-head { display:flex; align-items:center; gap:10px; margin-bottom:13px; }
+  .subtopic-head h3 { font-size:19px; color:var(--teal); }
+  .subtopic-head span { font-size:13px; color:var(--muted); }
+  .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+  .card { min-height:132px; position:relative; background:#fff; border:1px solid #e0eae4; border-radius:17px; padding:18px 19px;
+          text-decoration:none; color:inherit; display:block; box-shadow:0 5px 16px #345e5010; transition:transform .16s,box-shadow .16s,border-color .16s; }
+  a.card:hover { transform:translateY(-3px); border-color:#a5d0c2; box-shadow:0 12px 25px #2b76631a; }
+  .card .src { display:inline-block; font-size:12px; font-weight:700; color:var(--teal); letter-spacing:.4px; }
+  .card h3 { margin-top:8px; font-size:18px; }
+  .card p { font-size:14px; color:#667982; line-height:1.65; margin-top:6px; }
+  .card .enter { display:inline-block; margin-top:10px; color:var(--blue); font-size:14px; font-weight:750; }
+  .card.special { background:linear-gradient(135deg,#fff,#f2faf6); border-color:#cfe4d9; }
+  .card.special .src { color:#b0782e; }
+  .subject-counts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+  .subject-count { padding:15px 18px; border:1px solid #dce8df; border-radius:14px; background:#fff; color:var(--ink); }
+  .subject-count span { display:block; color:var(--muted); font-size:13px; }
+  .subject-count strong { display:block; margin-top:5px; font-size:21px; }
+  .details-toggle { margin-top:18px; border:1px solid var(--line); border-radius:14px; background:#f7faf8; color:var(--blue); }
+  .details-toggle summary { cursor:pointer; padding:13px 16px; font-weight:700; }
+  .details-toggle[open] summary { border-bottom:1px solid var(--line); }
+  .details-toggle .grid { padding:14px; }
+  .legend { margin:24px 0 0; text-align:center; color:#81928d; font-size:13px; }
+  @keyframes kg-flash { 0%{background:#d7eee6;} 100%{background:transparent;} }
+  .kg-flash { animation:kg-flash 1.8s ease-out; border-radius:10px; }
+  @media(max-width:680px) { header { padding:34px 16px; } main { padding:20px 14px 44px; } .category { padding:19px 15px; border-radius:20px; } .grid { grid-template-columns:1fr; } .subject-counts { grid-template-columns:1fr; } .card { min-height:0; } .category-head { align-items:flex-start; } }
 </style>
+
+
 
 
 
@@ -118,23 +134,20 @@ body{padding-left:24px;}
 .kg-dust{position:absolute;width:6px;height:6px;border-radius:50%;background:#cbd5e1;box-shadow:0 0 5px rgba(148,163,184,.9);opacity:0;transition:transform .55s ease-out,opacity .55s ease-out;}
 </style>
 </head>
-<body class="kg-sb-open">
+<body>
 <!-- kg-sb-start -->
 <button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>
 <div class="kg-sb-mask" id="kg-sb-mask"></div>
 <aside id="kg-sidebar">
 <button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>
-<a class="kg-sb-home" href="#top">🏠 小萝卜的秘密花园</a><a class="kg-sb-page" href="digital-literacy.html">🌱 数智素养考试准备专题</a>
-<div class="kg-sb-topic">📍 ① DFS/BFS</div>
-<a class="kg-sb-page" href="#topic-dfs">· 查看主题</a>
-<div class="kg-sb-topic">📍 ② 树基础</div>
-<a class="kg-sb-page" href="#topic-tree">· 查看主题</a>
-<div class="kg-sb-topic">📍 ③ 树上漫步</div>
-<a class="kg-sb-page" href="#topic-p11962">· 查看主题</a>
-<div class="kg-sb-topic">📍 ④ 完全二叉树</div>
-<a class="kg-sb-page" href="#topic-cbt">· 查看主题</a>
-<div class="kg-sb-topic">📍 ⑤ 满二叉树</div>
-<a class="kg-sb-page" href="#topic-full">· 查看主题</a>
+<a class="kg-sb-home" href="#top">🏠 宝藏大陆</a>
+<div class="kg-sb-topic">1. 错题集</div>
+<a class="kg-sb-page" href="https://xiaoluobo-d5gpdhnw4db3bf5c9-1449544153.ap-shanghai.app.tcloudbase.com/" target="_blank" rel="noopener noreferrer">1.1 数学错题本</a>
+<div class="kg-sb-topic">2. C++ 编程</div>
+<a class="kg-sb-page" href="#topic-tree">2.1 树</a>
+<a class="kg-sb-page" href="#topic-dfs">2.2 深搜和广搜</a>
+<div class="kg-sb-topic">3. 竞赛专题</div>
+<a class="kg-sb-page" href="#topic-contest">3.1 数智素养 2026</a>
 </aside>
 <!-- kg-sb-end -->
 
@@ -173,121 +186,66 @@ body{padding-left:24px;}
 
 
 
-<header>
-  <h1><svg width="44" height="52" viewBox="0 0 100 120" style="vertical-align:middle"><ellipse cx="50" cy="74" rx="40" ry="42" fill="#fde047" stroke="#0ea5e9" stroke-width="3.5"/><ellipse cx="36" cy="50" rx="12" ry="8" fill="#fef9c3" opacity=".6"/><path d="M28 20 Q50 8 72 20 L66 28 Q50 22 34 28 Z" fill="#0ea5e9" stroke="#0284c7" stroke-width="2"/><circle cx="50" cy="16" r="4" fill="#fbbf24"/><circle cx="36" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="64" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="36" cy="68" r="5.5" fill="#1e293b"/><circle cx="64" cy="68" r="5.5" fill="#1e293b"/><circle cx="38" cy="65" r="2" fill="#fff"/><circle cx="66" cy="65" r="2" fill="#fff"/><path d="M28 60 Q26 54 24 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M33 58 Q33 52 35 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M67 58 Q67 52 65 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M72 60 Q74 54 76 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><circle cx="78" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><path d="M42 84 Q50 90 58 84" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="34" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="53" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="37" y="106" width="7" height="8" fill="#fde047"/><rect x="56" y="106" width="7" height="8" fill="#fde047"/></svg>小萝卜的秘密花园</h1>
-  <p>小萝卜和爸爸的学习资料</p>
+
+
+<header id="top">
+  <h1><svg width="44" height="52" viewBox="0 0 100 120" style="vertical-align:middle"><ellipse cx="50" cy="74" rx="40" ry="42" fill="#fde047" stroke="#0ea5e9" stroke-width="3.5"/><ellipse cx="36" cy="50" rx="12" ry="8" fill="#fef9c3" opacity=".6"/><path d="M28 20 Q50 8 72 20 L66 28 Q50 22 34 28 Z" fill="#0ea5e9" stroke="#0284c7" stroke-width="2"/><circle cx="50" cy="16" r="4" fill="#fbbf24"/><circle cx="36" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="64" cy="66" r="11" fill="#fff" stroke="#0284c7" stroke-width="2.5"/><circle cx="36" cy="68" r="5.5" fill="#1e293b"/><circle cx="64" cy="68" r="5.5" fill="#1e293b"/><circle cx="38" cy="65" r="2" fill="#fff"/><circle cx="66" cy="65" r="2" fill="#fff"/><path d="M28 60 Q26 54 24 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M33 58 Q33 52 35 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M67 58 Q67 52 65 53" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><path d="M72 60 Q74 54 76 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="22" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><circle cx="78" cy="76" r="5.5" fill="#fb7185" opacity=".55"/><path d="M42 84 Q50 90 58 84" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/><rect x="34" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="53" y="112" width="13" height="8" rx="3" fill="#1e293b"/><rect x="37" y="106" width="7" height="8" fill="#fde047"/><rect x="56" y="106" width="7" height="8" fill="#fde047"/></svg>宝藏大陆</h1>
+  <p>小萝卜和蛋仔的秘密宝藏</p>
 </header>
 <main>
-  <div class="topic-title" id="topic-python"><h2>🌱 科学素质大赛 · 数智素养考试准备</h2><span class="badge">小学组</span></div>
-  <div class="grid"><a class="card" href="digital-literacy.html"><div class="src">考试准备专题 · 小学组</div><h3>数智素养考试准备：从 C++ 到 Python</h3><p>跟着动画学递归画树和 CSV 数据分析，下载代码与练习数据，完成随堂小测和考前检查。<br><strong>进入专题 →</strong></p></a><a class="card" href="digital-practice.html"><div class="src">考试准备专题 · 练习库</div><h3>递归绘图与数据统计 · 13题</h3><p>分形树、雪花、三角形、H树等8道绘图，乘客与空气质量等5道统计；附预览、提示、代码和CSV。<br><strong>进入练习库 →</strong></p></a></div>
+  <p class="welcome">好好学习，天天向上</p>
 
+  <section class="category" id="topic-notebook" aria-labelledby="notebook-title">
+    <div class="category-head"><div class="category-number">1</div><div><h2 id="notebook-title"><a href="https://xiaoluobo-d5gpdhnw4db3bf5c9-1449544153.ap-shanghai.app.tcloudbase.com/" target="_blank" rel="noopener noreferrer">错题集 ↗</a></h2><p>收集错题 → 分析知识点 → 举一反三</p></div></div>
+    <div class="subject-counts" aria-label="各学科错题数量">
+      <div class="subject-count"><span>1.1 数学</span><strong>2 道题</strong></div>
+      <div class="subject-count"><span>1.2 语文</span><strong>0 道题</strong></div>
+      <div class="subject-count"><span>1.3 英语</span><strong>0 道题</strong></div>
+    </div>
+  </section>
 
-  <!-- 主题一：深度搜索与广度搜索 -->
-  <div class="topic-title" id="topic-dfs" style="scroll-margin-top:56px">
-    <h2>① 深度搜索与广度搜索（DFS / BFS）</h2>
-    <span class="badge">3 个版本齐</span>
+  <section class="category" id="topic-cpp" aria-labelledby="cpp-title">
+    <div class="category-head"><div class="category-number">2</div><div><h2 id="cpp-title">C++ 编程</h2><p>拆解算法，动手练习。</p></div></div>
+  <div class="subtopic" id="topic-tree" aria-label="树专题">
+    <div class="subtopic-head"><h3>2.1 树</h3><span>基础知识与树上问题</span></div>
+    <details class="details-toggle"><summary>展开树专题教程与互动练习</summary>
+    <div class="grid">
+      <a class="card" href="gesp6-tree-intro.html"><span class="src">千问 · QWEN</span><h3>树的入门教程</h3><p>树的术语、邻接表存储、DFS/BFS 遍历与 LCA 前置知识。</p><span class="enter">打开教程 →</span></a>
+      <a class="card" href="gesp6-tree-basics.html"><span class="src">WorkBuddy</span><h3>树的基础：从树到树上漫步</h3><p>八个学习关卡，含 BFS 分层染色与唯一路径演示。</p><span class="enter">打开教程 →</span></a>
+      <a class="card" href="tree-basics/"><span class="src">TRAE · 互动版</span><h3>树的基础互动练习</h3><p>亲自操作四种遍历、子树递归、LCA 与树上距离。</p><span class="enter">开始互动 →</span></a>
+      <a class="card" href="gesp6-p11962-tutorial.html"><span class="src">千问 · QWEN</span><h3>树上漫步：图文动画</h3><p>逐段理解 DFS 和树上距离的奇偶性。</p><span class="enter">打开教程 →</span></a>
+      <a class="card" href="p11962-tree-walk.html"><span class="src">WorkBuddy</span><h3>树上漫步：互动教学</h3><p>像互动板书一样，一步步推理并验证答案。</p><span class="enter">打开教程 →</span></a>
+      <a class="card" href="tree-stroll/"><span class="src">TRAE · 互动版</span><h3>树上漫步练习场</h3><p>自己建树、计算节点答案，再完成知识小测。</p><span class="enter">开始互动 →</span></a>
+      <a class="card" href="gesp6-cbt-counter.html"><span class="src">千问 · QWEN</span><h3>完全二叉树子树计数</h3><p>用状态推理、后序动画和判案练习理解树形 DP。</p><span class="enter">打开教程 →</span></a>
+      <a class="card" href="cbt-counter-tutorial.html"><span class="src">WorkBuddy</span><h3>完全二叉树：七关互动闯关</h3><p>从题目解读到样例推演，逐行看懂代码。</p><span class="enter">开始闯关 →</span></a>
+      <a class="card" href="cbt-counter/"><span class="src">TRAE · 互动版</span><h3>完全二叉树属性实验</h3><p>点击节点查看属性，播放算法动画并完成测验。</p><span class="enter">开始互动 →</span></a>
+      <a class="card" href="gesp6-full-tree-counter.html"><span class="src">千问 · QWEN</span><h3>满二叉树子树计数</h3><p>学习满二叉树判定，并与完全二叉树做对比。</p><span class="enter">打开教程 →</span></a>
+    </div>
+    </details>
+    <div class="subtopic-head" id="topic-dfs" style="margin-top:28px"><h3>2.2 深搜和广搜</h3><span>DFS / BFS 概念、过程与互动走查</span></div>
+    <details class="details-toggle"><summary>展开深搜和广搜教程</summary>
+    <div class="grid">
+      <a class="card" href="gesp6-dfs-bfs.html"><span class="src">千问 · QWEN</span><h3>深搜广搜通关站</h3><p>理解 DFS 与 BFS 的核心概念、区别和典型题目。</p><span class="enter">打开教程 →</span></a>
+      <a class="card" href="dsfs-bfs-walkthrough.html"><span class="src">WorkBuddy</span><h3>DFS / BFS 走查教程</h3><p>跟着步骤看搜索算法如何访问每个节点。</p><span class="enter">打开教程 →</span></a>
+      <a class="card" href="dfs-bfs/"><span class="src">TRAE · 互动版</span><h3>DFS / BFS 互动实验</h3><p>自己搭建图，运行深搜、广搜和迷宫搜索。</p><span class="enter">开始互动 →</span></a>
+    </div>
+    </details>
   </div>
-  <div class="grid">
-    <a class="card" href="gesp6-dfs-bfs.html">
-      <span class="src">千问 (QWEN)</span>
-      <p>深搜广搜通关站：核心概念、区别、典型题目全通关，配图配例。</p>
-    </a>
-    <a class="card" href="dsfs-bfs-walkthrough.html">
-      <span class="src">WorkBuddy</span>
-      <p>DFS / BFS 走查教程：一步步走查深搜与广搜的执行过程。</p>
-    </a>
-    <a class="card" href="dfs-bfs/">
-      <span class="src">TRAE</span>
-      <p>DFS/BFS 互动教程：可交互走查，动画展示深搜与广搜的执行过程。</p>
-    </a>
-  </div>
+  </section>
 
-  <!-- 主题二：树的基础入门 -->
-  <div class="topic-section" id="topic-tree" style="scroll-margin-top:56px">
-    <h2>② 树的基础入门（树的定义 · 遍历 · LCA）</h2>
-    <span class="badge">3 个版本齐</span>
+  <section class="category" id="topic-contest-entry" aria-labelledby="contest-title">
+    <div class="category-head"><div class="category-number">3</div><div><h2 id="contest-title">竞赛专题</h2><p>围绕比赛要求，准备知识与练习。</p></div></div>
+  <div class="subtopic" id="topic-contest" aria-label="数智素养竞赛专题">
+    <div class="subtopic-head"><h3>3.1 数智素养 2026</h3><span>小学组 · Python 图形绘制与数据处理</span></div>
+    <details class="details-toggle"><summary>展开备考专题与练习库</summary>
+    <div class="grid">
+      <a class="card special" href="digital-literacy.html"><span class="src">考试准备专题 · 小学组</span><h3>从 C++ 到 Python：数智素养备考</h3><p>跟着动画学递归画树和 CSV 数据分析，完成随堂练习与考前检查。</p><span class="enter">进入专题 →</span></a>
+      <a class="card special" href="digital-practice.html"><span class="src">练习库 · 共 13 题</span><h3>递归绘图与数据统计</h3><p>8 道绘图、5 道数据统计练习，配有提示、参考代码和 CSV 数据。</p><span class="enter">进入练习库 →</span></a>
+    </div>
+    </details>
   </div>
-  <div class="grid">
-    <a class="card" href="gesp6-tree-intro.html">
-      <span class="src">千问 · QWEN</span>
-      <p>树的入门·交互教程（GESP 六级前置）：术语、邻接表存储、DFS/BFS 遍历、LCA。</p>
-    </a>
-    <a class="card" href="gesp6-tree-basics.html">
-      <span class="src">WorkBuddy</span>
-      <p>树的基础教程·从树到树上漫步：八大关卡，含 BFS 分层染色与唯一路径演示。</p>
-    </a>
-    <a class="card" href="tree-basics/">
-      <span class="src">TRAE</span>
-      <p>树的基础教程·互动版：四种遍历、子树递归、LCA 与树上距离。</p>
-    </a>
-  </div>
-
-  <!-- 主题三：树上漫步 -->
-  <div class="topic-section" id="topic-p11962" style="scroll-margin-top:56px">
-    <h2>③ 树上漫步（GESP 六级真题 P11962）</h2>
-    <span class="badge">3 个版本齐</span>
-  </div>
-  <div class="grid">
-    <a class="card" href="gesp6-p11962-tutorial.html">
-      <span class="src">千问 · QWEN</span>
-      <p>树上漫步·图文动画精讲：逐段讲解思路、深度优先遍历与奇偶步数判断。</p>
-    </a>
-    <a class="card" href="p11962-tree-walk.html">
-      <span class="src">WorkBuddy</span>
-      <p>树上漫步·互动教学：互动式板书，一步步引导推理，动手验证。</p>
-    </a>
-    <a class="card" href="tree-stroll/">
-      <span class="src">TRAE</span>
-      <p>树上漫步·互动版：可交互小程序，自己动手走一遍，看动画理解每一步。</p>
-    </a>
-  </div>
-
-  <!-- 主题四：完全二叉树子树计数 -->
-  <div class="topic-section" id="topic-cbt" style="scroll-margin-top:56px">
-    <h2>④ 完全二叉树子树计数（GESP 202603 六级真题）</h2>
-    <span class="badge">3 个版本齐</span>
-  </div>
-  <div class="grid">
-    <a class="card" href="gesp6-cbt-counter.html">
-      <span class="src">千问 · QWEN</span>
-      <p>完全二叉树子树计数·精讲：树 DP 三状态（高度/满/完全）、后序动画、判案练习。</p>
-    </a>
-    <a class="card" href="cbt-counter-tutorial.html">
-      <span class="src">WorkBuddy</span>
-      <p>完全二叉子树计数·互动闯关：七关从题目解读到样例推演，代码逐行讲解。</p>
-    </a>
-    <a class="card" href="cbt-counter/">
-      <span class="src">TRAE</span>
-      <p>完全二叉子树计数·互动版：点击节点查看属性、算法动画、知识测验。</p>
-    </a>
-  </div>
-
-  <!-- 主题五：满二叉树子树计数 -->
-  <div class="topic-section" id="topic-full" style="scroll-margin-top:56px">
-    <h2>⑤ 满二叉树子树计数（GESP 六级 · 完全二叉树的姊妹题）</h2>
-    <span class="badge">1 个版本</span>
-  </div>
-  <div class="grid">
-    <a class="card" href="gesp6-full-tree-counter.html">
-      <span class="src">千问 · QWEN</span>
-      <p>满二叉树子树计数·精讲：树 DP 两状态（高度/满）、后序动画、判案练习，并与「完全二叉树」对比。</p>
-    </a>
-    <a class="card empty" href="#">
-      <span class="src">WorkBuddy</span>
-      <p>这个版本还没做，等 WorkBuddy 来挑战～</p>
-      <span class="empty-tag">敬请期待</span>
-    </a>
-    <a class="card empty" href="#">
-      <span class="src">TRAE</span>
-      <p>这个版本还没做，等 TRAE 来挑战～</p>
-      <span class="empty-tag">敬请期待</span>
-    </a>
-  </div>
-
-  <div class="legend">
-    📌 <b>全齐了</b> · 五个主题、来源（千问 / WorkBuddy / TRAE），13 个网页到位。祝学习愉快 🎉
-  </div>
-
+  </section>
+  <p class="legend">日拱一卒，功不唐捐！</p>
 </main>
 <script>
 // 从导航栏主题标签跳来时，高亮闪烁对应主题块
@@ -310,6 +268,9 @@ body{padding-left:24px;}
   });
 })();
 </script>
+
+
+
 
 
 
@@ -510,8 +471,9 @@ body{padding-left:24px;}
     eggy.style.filter='drop-shadow(0 0 '+(3+chargeProgress*10+pulse*3)+'px rgba(34,211,238,'+(.2+chargeProgress*.7)+'))';
   }
   function cornerPressure(ox,oy){
-    if(ox<8||oy<8){resetCharge();return;}
-    launchAngle=Math.max(Math.PI/12,Math.min(Math.PI*5/12,Math.atan2(oy,ox)));
+    if(!chargeSince&&(ox<8||oy<8))return;
+    // Once engaged, aiming remains latched until release or cancellation.
+    if(ox>0||oy>0)launchAngle=Math.max(Math.PI/12,Math.min(Math.PI*5/12,Math.atan2(Math.max(0,oy),Math.max(0,ox))));
     tension=Math.min(1,Math.hypot(ox,oy)/150);
     if(ready){drawSpring();return;}
     if(chargeTimer) return;
@@ -549,7 +511,7 @@ body{padding-left:24px;}
       abortFlight();resetCharge();setHome();squashFace(false);
     }
     // Gravity and inelastic collisions dissipate energy; land before walking home.
-    var phase='air',phaseAt=0,fallAngle=0,walkStart=0;
+    var phase='air',phaseAt=0,fallAngle=0,walkStart=0,rollStart=0,rollEnd=0,rollDirection=1;
     var gravity=Math.max(450,window.innerHeight*.95),impulse=0;
     // A safety cleanup only; normal completion is driven by landing, not a deadline.
     flightTimer=setTimeout(finish,20000);
@@ -561,20 +523,35 @@ body{padding-left:24px;}
       var energy=Math.max(0,Math.min(1,Math.hypot(vx,vy)/Math.hypot((window.innerWidth-W)*2.1,(window.innerHeight-H)*2.55)));
       var angle=0,sx=1,sy=1;
       if(phase==='air'){
-        vx*=Math.exp(-.23*dt);vy+=gravity*dt;
+        vx*=Math.exp(-.10*dt);vy+=gravity*dt;
         x+=vx*dt;y+=vy*dt;
         if(x<0||x>maxX){x=Math.max(0,Math.min(x,maxX));vx=-vx*.72;impulse=1;dust(vx>0?-1:1,0);}
         if(y<0){y=0;vy=Math.abs(vy)*.68;impulse=1;dust(0,-1);}
         if(y>=floor){
           y=floor;
           if(Math.abs(vy)<200&&elapsed>1200){
-            phase='fallen';phaseAt=now;fallAngle=vx<0?-24:24;vx=0;vy=0;
+            phase='roll';phaseAt=now;rollStart=x;
+            rollDirection=vx<0?-1:1;
+            var distance=Math.min(220,Math.max(130,Math.abs(vx)*.85));
+            if((rollDirection<0?x:maxX-x)<distance*.65)rollDirection=-rollDirection;
+            rollEnd=Math.max(0,Math.min(maxX,x+rollDirection*distance));
+            fallAngle=rollDirection*24;vx=0;vy=0;
             eggy.classList.add('kg-fallen');mouth.setAttribute('d','M42 88 Q50 81 58 88');dust(0,1);
-          }else{vy=-Math.abs(vy)*.66;vx*=.82;impulse=1;dust(0,1);}
+          }else{vy=-Math.abs(vy)*.66;vx*=.94;impulse=1;dust(0,1);}
         }
         impulse=Math.max(0,impulse-dt*5);
         sx=1+impulse*.18;sy=1-impulse*.16;
         angle=Math.sin(elapsed/150)*16*energy;
+      }
+      if(phase==='roll'){
+        var rt=Math.min(1,(now-phaseAt)/950),rp=1-Math.pow(1-rt,2);
+        x=rollStart+(rollEnd-rollStart)*rp;
+        // Keep the rotating 70x84 box above the floor throughout the tumble.
+        angle=rollDirection*360*rp;
+        var radians=angle*Math.PI/180;
+        var extent=(Math.abs(Math.sin(radians))*W+Math.abs(Math.cos(radians))*H)/2;
+        y=floor-Math.max(0,extent-H/2)-Math.sin(rt*Math.PI)*7;
+        if(rt>=1){phase='fallen';phaseAt=now;}
       }
       if(phase==='fallen'){
         var t=Math.min(1,(now-phaseAt)/800);
@@ -657,6 +634,12 @@ body{padding-left:24px;}
     var cl=Math.max(b.L,Math.min(lx,b.R-W)), ct=Math.max(b.T,Math.min(ly,b.B-H));
     var ox=lx-cl, oy=ly-ct;
     cornerPressure(ox,oy);
+    if(chargeSince){
+      eggy.style.left=(b.R-W)+'px';eggy.style.top=(b.B-H)+'px';
+      eggy.style.transform='scale(1,1)';wallOn=false;squashFace(false);
+      svg.classList.remove('kg-wall-shake');
+      return;
+    }
     eggy.style.left=cl+'px'; eggy.style.top=ct+'px';
     var hit=(ox!==0||oy!==0), now=Date.now();
     if(hit){
