@@ -30,6 +30,8 @@ PAGES = {
     "cbt-counter-tutorial.html": "cbt",
     "cbt-counter/index.html": "cbt",
     "gesp6-full-tree-counter.html": "full",
+    "digital-literacy.html": "digital",
+    "digital-practice.html": "digital",
 }
 
 TOPIC_LABELS = {
@@ -38,6 +40,7 @@ TOPIC_LABELS = {
     "p11962": ("③ 树上漫步", "topic-p11962"),
     "cbt": ("④ 完全二叉树", "topic-cbt"),
     "full": ("⑤ 满二叉树", "topic-full"),
+    "digital": ("⑥ 数智素养", "digital-literacy.html"),
 }
 
 # 每个页面在侧边栏里显示的名字（短名）
@@ -55,11 +58,17 @@ PAGE_SHORT_NAMES = {
     "cbt-counter-tutorial.html": "WorkBuddy · 完全二叉计数",
     "cbt-counter/index.html": "TRAE · 完全二叉计数互动",
     "gesp6-full-tree-counter.html": "千问 · 满二叉子树计数",
+    "digital-literacy.html": "数智素养 · 考试准备",
+    "digital-practice.html": "数智素养 · 练习库",
 }
 
 NAV_CSS = """<style id="kg-nav-style">
 #kg-nav{position:fixed;top:0;left:0;right:0;z-index:99999;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.12);display:flex;align-items:center;justify-content:space-between;padding:0 14px;height:46px;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:14px;box-sizing:border-box;}
 #kg-nav .kg-home{color:#0284c7;font-weight:700;text-decoration:none;font-size:15px;white-space:nowrap;}
+#kg-nav.kg-nav-standalone{justify-content:flex-start;gap:16px;}
+#kg-nav.kg-nav-standalone~#kg-sidebar{display:none;}
+#kg-nav .kg-back{color:#475569;text-decoration:none;padding:4px 10px;border-radius:999px;font-size:12px;white-space:nowrap;}
+#kg-nav .kg-back:hover{background:#e0f2fe;color:#0284c7;}
 #kg-nav .kg-topics{display:flex;gap:6px;}
 #kg-nav .kg-topics a{color:#475569;text-decoration:none;padding:4px 10px;border-radius:999px;font-size:12px;white-space:nowrap;transition:background .15s,color .15s;}
 #kg-nav .kg-topics a:hover{background:#e0f2fe;color:#0284c7;}
@@ -94,7 +103,8 @@ body{padding-left:24px;}
 </style>"""
 
 EGGY_CSS = """<style id="kg-eggy-style">
-#kg-eggy{position:fixed;right:20px;bottom:20px;width:70px;height:84px;z-index:99998;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1);user-select:none;}
+#kg-eggy{position:fixed;right:20px;bottom:20px;width:70px;height:84px;z-index:99998;cursor:pointer;transition:transform .3s cubic-bezier(.34,1.56,.64,1);user-select:none;display:block!important;visibility:visible!important;opacity:1!important;}
+@media(max-width:860px){#kg-eggy{display:block!important;visibility:visible!important;opacity:1!important;right:12px;bottom:12px;width:56px;height:68px;}#kg-eggy svg{width:56px;height:68px;}}
 #kg-eggy.kg-bounce{animation:kg-eggy-bounce .5s ease;}
 @keyframes kg-eggy-bounce{0%{transform:translateY(0) scale(1);}40%{transform:translateY(-18px) scale(1.08,.92);}70%{transform:translateY(0) scale(.95,1.05);}100%{transform:translateY(0) scale(1);}}
 #kg-eggy:hover{transform:scale(1.06);}
@@ -121,7 +131,8 @@ EGGY_CSS = """<style id="kg-eggy-style">
 /* 蛋仔拖动 + 右下角隐形栅栏 */
 #kg-eggy{cursor:grab;touch-action:none;}
 #kg-eggy.kg-dragging{cursor:grabbing;transition:none!important;}
-#kg-eggy.kg-flying{pointer-events:none;transition:none!important;filter:drop-shadow(0 0 12px #38bdf8);}\n#kg-eggy.kg-fallen{transform-origin:50% 100%;}
+#kg-eggy.kg-flying{pointer-events:none;transition:none!important;filter:drop-shadow(0 0 12px #38bdf8);}
+#kg-eggy.kg-fallen{transform-origin:50% 100%;}
 #kg-spring{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:99997;overflow:hidden;}
 #kg-spring path{fill:none;stroke-linecap:round;filter:drop-shadow(0 0 7px #22d3ee) drop-shadow(0 0 14px #a78bfa);}
 #kg-spring text{font:600 12px sans-serif;fill:#0369a1;stroke:white;stroke-width:3px;paint-order:stroke;}
@@ -133,10 +144,24 @@ EGGY_CSS = """<style id="kg-eggy-style">
 
 
 def build_nav_html(current_topic: str, home_path: str) -> str:
+    if current_topic == "digital":
+        # This is a standalone long-form topic. Keep its authored sticky section nav;
+        # provide a compact site/home switcher instead of duplicating all anchors.
+        prefix = home_path[:-len("index.html")] if home_path.endswith("index.html") else ""
+        return (
+            "<!-- kg-nav-start -->\n"
+            '<nav id="kg-nav" class="kg-nav-standalone">'
+            f'<a class="kg-home" href="{home_path}">🏠 秘密基地</a>'
+            f'<a class="kg-back" href="{prefix}digital-literacy.html">考试准备教程</a>'
+            f'<a class="kg-back" href="{prefix}digital-practice.html">13题练习库</a>'
+            "</nav>\n<!-- kg-nav-end -->"
+        )
+    prefix = home_path[:-len("index.html")] if home_path.endswith("index.html") else ""
     topics_html = ""
     for key, (label, anchor) in TOPIC_LABELS.items():
         active = ' class="kg-active"' if key == current_topic else ""
-        topics_html += f'<a href="{home_path}#{anchor}"{active}>{label}</a>'
+        target = f"{prefix}digital-literacy.html" if anchor == "digital-literacy.html" else f"{home_path}#{anchor}"
+        topics_html += f'<a href="{target}"{active}>{label}</a>'
     return (
         "<!-- kg-nav-start -->\n"
         '<nav id="kg-nav">\n'
@@ -149,6 +174,8 @@ def build_nav_html(current_topic: str, home_path: str) -> str:
 
 def build_sidebar_html(current_topic: str, prefix: str) -> str:
     """左侧目录（覆盖式自动隐藏）。prefix: 相对当前页回到 public 根的路径（如 "" 或 "../"）。"""
+    if current_topic == "digital":
+        return "<!-- kg-sb-start --><!-- kg-sb-end -->"
     parts = ["<!-- kg-sb-start -->"]
     # ☰ 展开把手：始终留在左侧边缘
     parts.append('<button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>')
@@ -567,6 +594,117 @@ EGGY_HTML = """<!-- kg-eggy-start -->
 <!-- kg-eggy-end -->"""
 
 
+def eggy_asset_tags() -> str:
+    """Shared site-wide eggy files keep 16 copies of its runtime in sync."""
+    return '<link rel="stylesheet" href="/assets/eggy.css">'
+
+
+def eggy_script_tag() -> str:
+    return '<!-- kg-eggy-js-start -->\n<script src="/assets/eggy.js" defer></script>\n<!-- kg-eggy-js-end -->'
+
+
+def ensure_page_meta(html: str, rel_path: str) -> str:
+    """Add useful browser theme and social-preview metadata without overwriting authored tags."""
+    title_match = re.search(r"<title>(.*?)</title>", html, flags=re.I | re.S)
+    title_overrides = {"digital-practice.html": "数智素养练习库｜小萝卜的秘密花园"}
+    title = title_overrides.get(rel_path) or (re.sub(r"\s+", " ", title_match.group(1)).strip() if title_match else "小萝卜的宝藏大陆")
+    if rel_path == "digital-practice.html" and title_match:
+        html = html[:title_match.start()] + f"<title>{title}</title>" + html[title_match.end():]
+    descriptions = {
+        "index.html": "小萝卜的宝藏大陆：收集错题本、C++ 编程教程、树与搜索算法互动课，以及数智素养考试练习。",
+        "digital-literacy.html": "用 turtle 递归画树、用 pandas 分析 CSV：小萝卜的数智素养考试准备互动教程。",
+        "digital-practice.html": "递归绘图与数据统计练习库：13 道 Python 练习，附解析、答案、CSV 与下载代码。",
+    }
+    description = descriptions.get(rel_path, f"{title}：小萝卜的宝藏大陆互动学习教程，配有图解、动画和练习。")
+    page_path = "" if rel_path == "index.html" else rel_path
+    if page_path.endswith("index.html"):
+        page_path = page_path[:-len("index.html")]
+    page_url = "https://kids-pages-1pw.pages.dev/" + page_path
+    tags = [
+        f'<meta name="description" content="{description}">',
+        '<meta name="theme-color" content="#287e82">',
+        f'<meta property="og:title" content="{title}">',
+        f'<meta property="og:description" content="{description}">',
+        '<meta property="og:type" content="website">',
+        f'<meta property="og:url" content="{page_url}">',
+        '<meta name="twitter:card" content="summary">',
+    ]
+    additions = []
+    if not re.search(r'<meta\s+charset=', html, re.I): additions.append('<meta charset="UTF-8">')
+    if not re.search(r'<meta\s+name=["\']viewport["\']', html, re.I): additions.append('<meta name="viewport" content="width=device-width, initial-scale=1.0">')
+    if not re.search(r'<title\b', html, re.I): additions.append(f"<title>{title}</title>")
+    if not re.search(r'<meta\s+name=["\']description["\']', html, re.I): additions.append(tags[0])
+    if not re.search(r'<meta\s+name=["\']theme-color["\']', html, re.I): additions.append(tags[1])
+    if not re.search(r'<meta\s+property=["\']og:title["\']', html, re.I): additions.extend(tags[2:6])
+    if not re.search(r'<meta\s+name=["\']twitter:card["\']', html, re.I): additions.append(tags[6])
+    if additions:
+        html = re.sub(r"</head>", "\\n" + "\\n".join(additions) + "\\n</head>", html, count=1, flags=re.I)
+    if not re.search(r'<link[^>]+rel=["\']icon["\']', html, re.I):
+        html = re.sub(r"</head>", '\\n<link rel="icon" type="image/svg+xml" href="/favicon.svg">\\n</head>', html, count=1, flags=re.I)
+    return html
+
+
+def ensure_eggy_assets() -> None:
+    """Emit the canonical shared assets from injector source constants."""
+    assets = PUBLIC_DIR / "assets"
+    assets.mkdir(parents=True, exist_ok=True)
+    css = re.sub(r"^<style[^>]*>|</style>$", "", EGGY_CSS.strip(), flags=re.S)
+    js = re.sub(r"^<script[^>]*>|</script>$", "", EGGY_JS.strip(), flags=re.S)
+    js = js.replace("(function(){\n  var eggy=document.getElementById('kg-eggy');", "(function(){\n  if(window.__KG_EGGY_INIT__) return;\n  window.__KG_EGGY_INIT__=true;\n  var eggy=document.getElementById('kg-eggy');", 1)
+    (assets / "eggy.css").write_text(css.strip() + "\n", encoding="utf-8")
+    (assets / "eggy.js").write_text(js.strip() + "\n", encoding="utf-8")
+
+
+def ensure_explicit_body(html: str) -> str:
+    """Repair older implicit-head/body documents before adding shared navigation."""
+    if re.search(r"<body\b", html, re.I):
+        # Recovery of metadata after </head> belongs only to the original malformed practice page.
+        if "數智素養練習庫" in html and re.search(r"</head>\s*<body\b", html, re.I):
+            body_start = re.search(r"<body\b[^>]*>", html, re.I)
+            tail = html[body_start.end():]
+            match = re.match(r"\s*((?:<meta\b[^>]*>|<title\b.*?</title>|<style\b.*?</style>)+)", tail, re.I | re.S)
+            if match:
+                html = html[:body_start.start()] + match.group(1) + html[body_start.start():body_start.end()] + tail[match.end():]
+        return html
+    head = re.search(r"<head\b[^>]*>(.*?)</head>", html, re.I | re.S)
+    if not head:
+        html = re.sub(r"(<html\b[^>]*>)", r"\1\n<head>", html, count=1, flags=re.I)
+        head = re.search(r"<head\b[^>]*>(.*?)</head>", html, re.I | re.S)
+    if head:
+        # If the original omitted </head>, absorb metadata/styles through the first CSS close.
+        if head.group(1).strip() == "":
+            start = head.end()
+            style_end = re.search(r"</style>", html[start:], re.I)
+            if style_end:
+                end = start + style_end.end()
+                html = html[:head.start(1)] + html[head.start(1):end] + "</head><body>" + html[end:]
+            else:
+                html = html[:head.end()] + "<body>" + html[head.end():]
+        else:
+            html = html[:head.end()] + "<body>" + html[head.end():]
+    else:
+        raise ValueError("HTML page has no <html> element")
+    if not re.search(r"</body>", html, re.I):
+        html = re.sub(r"</html>", "</body>\n</html>", html, count=1, flags=re.I)
+    # The old practice page placed metadata and styles after </head>. Pull that
+    # leading head-only material back into the head before wrapping body content.
+    body_start = re.search(r"<body\b[^>]*>", html, re.I)
+    if body_start:
+        tail = html[body_start.end():]
+        match = re.match(r"\s*((?:<meta\b[^>]*>|<title\b.*?</title>|<style\b.*?</style>)+)", tail, re.I | re.S)
+        if match:
+            html = html[:body_start.start()] + match.group(1) + html[body_start.start():body_start.end()] + tail[match.end():]
+    return html
+
+
+def normalize_slots(html: str) -> str:
+    """把三个注入槽位周围的空白归一化，保证重复注入逐字节稳定。"""
+    html = re.sub(r"\n+</head>", "\n</head>", html, count=1)
+    html = re.sub(r"(<body[^>]*>)\n+", r"\1\n", html, count=1)
+    html = re.sub(r"\n+</body>", "\n</body>", html, count=1)
+    return html
+
+
 def inject_page(rel_path: str, topic: str):
     global CURRENT_PAGE
     CURRENT_PAGE = rel_path
@@ -574,12 +712,15 @@ def inject_page(rel_path: str, topic: str):
     if not fpath.exists():
         print(f"  ✘ 缺失: {rel_path}")
         return
-    # 子目录页面回首页用 ../，根目录用 ./
+    ensure_eggy_assets()
+    # Only actual folder nesting affects relative home URL; a tutorial slug has no slash.
     depth = rel_path.count("/")
     home = "../" * depth + "index.html" if depth > 0 else "index.html"
 
-    html = fpath.read_text(encoding="utf-8")
+    html = ensure_explicit_body(fpath.read_text(encoding="utf-8"))
     html = re.sub(r'<style id="kg-eggy-style">.*?</style>', '', html, flags=re.S)
+    html = re.sub(r'<link rel="stylesheet" href="/assets/eggy.css">', '', html)
+    html = re.sub(r'<script src="/assets/eggy.js" defer></script>', '', html)
     html = re.sub(r'<!-- kg-eggy-start -->.*?<!-- kg-eggy-end -->', '', html, flags=re.S)
     html = re.sub(r'<!-- kg-eggy-js-start -->.*?<!-- kg-eggy-js-end -->', '', html, flags=re.S)
 
@@ -595,10 +736,17 @@ def inject_page(rel_path: str, topic: str):
     html = re.sub(r"<!-- kg-toc-js-start -->.*?<!-- kg-toc-js-end -->", "", html, flags=re.S)
     # 清除旧注入的侧边栏
     html = re.sub(r"<!-- kg-sb-start -->.*?<!-- kg-sb-end -->", "", html, flags=re.S)
+    html = normalize_slots(html)
+
+    # Add baseline icon/theme metadata even to pages originally lacking head metadata.
+    if "</head>" in html:
+        html = ensure_page_meta(html, rel_path)
 
     # 注入 CSS 到 </head> 前
     if "</head>" in html:
-        html = html.replace("</head>", NAV_CSS + "\n" + EGGY_CSS + "\n</head>", 1)
+        html = html.replace("</head>", NAV_CSS + "\n</head>", 1)
+        if "/assets/eggy.css" not in html:
+            html = html.replace("</head>", eggy_asset_tags() + "\n</head>", 1)
     else:
         print(f"  ⚠ 无 </head>，跳过 CSS 注入: {rel_path}")
 
@@ -615,32 +763,42 @@ def inject_page(rel_path: str, topic: str):
     # 注入互动蛋仔 HTML+JS 到 </body> 前（先注入侧边栏交互脚本）
     eggy_block = EGGY_HTML + "\n" + "<!-- kg-eggy-js-start -->\n" + EGGY_JS + "\n<!-- kg-eggy-js-end -->"
     if "</body>" in html:
-        html = html.replace("</body>", TOC_JS + "\n" + eggy_block + "\n</body>", 1)
+        html = html.replace("</body>", TOC_JS + "\n" + EGGY_HTML + "\n" + eggy_script_tag() + "\n</body>", 1)
     else:
         print(f"  ⚠ 无 </body>，跳过蛋仔注入: {rel_path}")
 
+    html = ensure_page_meta(html, rel_path)
+    # Tutorial pages use external shared assets; never duplicate eggy CSS/JS inline.
+    html = html.replace(EGGY_CSS, eggy_asset_tags())
+    html = html.replace(EGGY_JS, eggy_script_tag())
     fpath.write_text(html, encoding="utf-8")
     print(f"  ✔ 注入完成: {rel_path} (主题={topic}, home={home})")
 
 
 def inject_home():
-    """首页 index.html：注入左侧目录（默认展开，可收起；首页无顶部 nav，sidebar top:0）。"""
+    """首页 index.html：注入左侧目录 + 蛋仔；已存在的 kg-sb 区块与 body 标签原样保留。"""
     global CURRENT_PAGE
     fpath = PUBLIC_DIR / "index.html"
     if not fpath.exists():
         print("  ✘ 缺失: index.html")
         return
-    html = fpath.read_text(encoding="utf-8")
+    ensure_eggy_assets()
+    html = ensure_explicit_body(fpath.read_text(encoding="utf-8"))
     html = re.sub(r'<style id="kg-eggy-style">.*?</style>', '', html, flags=re.S)
+    html = re.sub(r'<link rel="stylesheet" href="/assets/eggy.css">', '', html)
+    html = re.sub(r'<script src="/assets/eggy.js" defer></script>', '', html)
     html = re.sub(r'<!-- kg-eggy-start -->.*?<!-- kg-eggy-end -->', '', html, flags=re.S)
     html = re.sub(r'<!-- kg-eggy-js-start -->.*?<!-- kg-eggy-js-end -->', '', html, flags=re.S)
-    # Preserve custom homepage navigation when regenerating the drawer.
-    home_links = re.search(r'<a class="kg-sb-home" href="#top">.*?(?=<div class="kg-sb-topic">)', html, flags=re.S)
-    home_links = home_links.group(0).strip() if home_links else '<a class="kg-sb-home" href="#top">🏠 秘密基地</a>'
+    # 首页侧边栏由人工维护（宝藏大陆的 1./2./3. 导航），原样保留，不重新生成。
+    existing_sb = re.search(r"<!-- kg-sb-start -->.*?<!-- kg-sb-end -->", html, flags=re.S)
+    existing_sb = existing_sb.group(0) if existing_sb else None
     # 清除旧注入
     html = re.sub(r'<style id="kg-sb-style">.*?</style>', "", html, flags=re.S)
+    html = re.sub(r'<link rel="stylesheet" href="/assets/eggy.css">', "", html)
+    html = re.sub(r'<script src="/assets/eggy.js" defer></script>', "", html)
     html = re.sub(r"<!-- kg-sb-start -->.*?<!-- kg-sb-end -->", "", html, flags=re.S)
     html = re.sub(r"<!-- kg-toc-js-start -->.*?<!-- kg-toc-js-end -->", "", html, flags=re.S)
+    html = normalize_slots(html)
 
     sb_css = """<style id="kg-sb-style">
 /* 左侧目录：首页默认展开，可悬停/✕收起 */
@@ -664,44 +822,58 @@ body{padding-left:24px;}
 @media(max-width:860px){#kg-sidebar{display:none;}#kg-sb-toggle{display:none;}.kg-sb-mask{display:none;}body{padding-left:0!important;}}
 </style>"""
     if "</head>" in html:
-        html = html.replace("</head>", sb_css + "\n" + EGGY_CSS + "\n</head>", 1)
+        html = html.replace("</head>", sb_css + "\n</head>", 1)
+        if eggy_asset_tags() not in html:
+            html = html.replace("</head>", eggy_asset_tags() + "\n</head>", 1)
     else:
         print("  ⚠ 首页无 </head>，跳过 CSS")
 
-    # 首页 sidebar：所有主题锚点
-    parts = ["<!-- kg-sb-start -->"]
-    parts.append('<button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>')
-    parts.append('<div class="kg-sb-mask" id="kg-sb-mask"></div>')
-    parts.append('<aside id="kg-sidebar">')
-    parts.append('<button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>')
-    parts.append(home_links)
-    for key, (label, anchor) in TOPIC_LABELS.items():
-        parts.append(f'<div class="kg-sb-topic">📍 {label}</div>')
-        parts.append(f'<a class="kg-sb-page" href="#{anchor}">· 查看主题</a>')
-    parts.append("</aside>")
-    parts.append("<!-- kg-sb-end -->")
-    sb_html = "\n".join(parts)
+    if existing_sb:
+        sb_html = existing_sb
+    else:
+        # 首次注入才生成默认导航；之后以页面里的 kg-sb 区块为准（人工可改）。
+        parts = ["<!-- kg-sb-start -->"]
+        parts.append('<button id="kg-sb-toggle" title="展开目录" aria-label="展开目录"><span class="kg-sb-tg-ic">☰</span></button>')
+        parts.append('<div class="kg-sb-mask" id="kg-sb-mask"></div>')
+        parts.append('<aside id="kg-sidebar">')
+        parts.append('<button id="kg-sb-x" title="收起目录" aria-label="收起目录">✕</button>')
+        parts.append('<a class="kg-sb-home" href="#top">🏠 秘密基地</a>')
+        for key, (label, anchor) in TOPIC_LABELS.items():
+            parts.append(f'<div class="kg-sb-topic">📍 {label}</div>')
+            parts.append(f'<a class="kg-sb-page" href="#{anchor}">· 查看主题</a>')
+        parts.append("</aside>")
+        parts.append("<!-- kg-sb-end -->")
+        sb_html = "\n".join(parts)
 
-    # 首页默认展开：把 body 开始标签统一替换为带 class 的完整形式
-    m = re.search(r"<body(?:\s[^>]*)?>", html)
+    # body 标签保持原样（是否默认展开由首页自己决定，注入器不覆盖）。
+    if existing_sb:
+        html = re.sub(r"<!-- kg-sb-start -->.*?<!-- kg-sb-end -->", lambda _: existing_sb, html, count=1, flags=re.S)
+    m = re.search(r"<body[^>]*>", html)
     if m:
-        html = re.sub(r"<body(?:\s[^>]*)?>", '<body class="kg-sb-open">', html, count=1)
-        pos = html.index('class="kg-sb-open">') + len('class="kg-sb-open">')
-        html = html[:pos] + "\n" + sb_html + "\n" + html[pos:]
+        pos = m.end()
+        if existing_sb:
+            # Keep the editor-authored section exactly, but don't insert a duplicate.
+            pass
+        else:
+            html = html[:pos] + "\n" + sb_html + "\n" + html[pos:]
     else:
         print("  ⚠ 首页无 <body>，跳过侧边栏注入")
 
     if "</body>" in html:
-        html = html.replace("</body>", TOC_JS + "\n" + EGGY_HTML + "\n" + "<!-- kg-eggy-js-start -->\n" + EGGY_JS + "\n<!-- kg-eggy-js-end -->" + "\n</body>", 1)
+        html = html.replace("</body>", TOC_JS + "\n" + EGGY_HTML + "\n" + eggy_script_tag() + "\n</body>", 1)
     else:
         print("  ⚠ 首页无 </body>，跳过 TOC JS")
 
+    html = ensure_page_meta(html, "index.html")
+    html = html.replace(EGGY_CSS, eggy_asset_tags()).replace(EGGY_JS, eggy_script_tag())
     fpath.write_text(html, encoding="utf-8")
     print("  ✔ 注入完成: index.html (首页左侧目录)")
 
 
 def main():
     print("=== 注入全局导航栏 + 左侧目录 ===")
+    # Emit the shared runtime once, then inject its references everywhere.
+    ensure_eggy_assets()
     for rel_path, topic in PAGES.items():
         inject_page(rel_path, topic)
     inject_home()

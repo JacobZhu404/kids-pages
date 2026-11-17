@@ -28,6 +28,61 @@ def _env(name: str) -> str:
     return os.environ.get(name, "").strip()
 
 
+# 公司环境常驻失效代理，wrangler 走代理会报 TLS/连接错误，部署前必须剔除。
+PROXY_KEYS = (
+    "http_proxy", "https_proxy", "all_proxy",
+    "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY",
+)
+
+
+def clean_env(base: Optional[dict] = None) -> dict:
+    """返回剥离代理变量的环境副本。"""
+    env = dict(base if base is not None else os.environ)
+    for key in PROXY_KEYS:
+        env.pop(key, None)
+    env.pop("NO_PROXY", None)
+    env.pop("no_proxy", None)
+    return env
+
+
+def find_wrangler() -> Optional[list]:
+    """
+    定位 wrangler，返回可直接执行的命令前缀。
+
+    顺序：PATH 上的 wrangler → 常见全局路径 → npx 缓存里的 wrangler.js（用 node 跑）。
+    npx 现拉常因缓存残留报 ENOTEMPTY，所以优先复用已缓存包。
+    """
+    home = Path.home()
+    direct = [shutil.which("wrangler")]
+    direct += [
+        str(home / ".workbuddy/binaries/node/versions/22.22.2/bin/wrangler"),
+        "/usr/local/bin/wrangler",
+        "/opt/homebrew/bin/wrangler",
+    ]
+    direct += [str(p) for p in sorted(
+        home.glob(".workbuddy/binaries/node/versions/*/bin/wrangler"), reverse=True
+    )]
+    for candidate in direct:
+        if candidate and os.path.exists(candidate) and os.access(candidate, os.X_OK):
+            return [candidate]
+
+    node = shutil.which("node")
+    if not node:
+        for p in sorted(home.glob(".workbuddy/binaries/node/versions/*/bin/node"), reverse=True):
+            if os.access(p, os.X_OK):
+                node = str(p)
+                break
+    if node:
+        scripts = sorted(
+            home.glob(".npm/_npx/*/node_modules/wrangler/bin/wrangler.js"),
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
+        if scripts:
+            return [node, str(scripts[0])]
+    return None
+
+
 def load_cf_config() -> dict:
     """加载 Cloudflare 配置"""
     if CF_CONFIG.exists():
@@ -62,9 +117,19 @@ def deploy_to_cf() -> bool:
             encoding="utf-8",
         )
 
+    # Fail fast before sending any files if generated pages/assets are inconsistent.
+    smoke = subprocess.run(
+        [sys.executable, str(PROJECT_ROOT / "core/deploy_smoke_test.py")],
+        cwd=str(PROJECT_ROOT), capture_output=True, text=True, timeout=90,
+    )
+    if smoke.returncode != 0:
+        print(f"   ⚠️ 部署前冒烟测试未通过:\n{smoke.stdout}{smoke.stderr}")
+        return False
+    print(f"   🔎 {smoke.stdout.strip()}")
+
     # 部署整个 public 目录
     try:
-        env = os.environ.copy()
+        env = clean_env()
         env["CLOUDFLARE_API_TOKEN"] = api_token
         env["CLOUDFLARE_ACCOUNT_ID"] = account_id
 
@@ -75,17 +140,12 @@ def deploy_to_cf() -> bool:
             "--branch", "main",
             "--commit-dirty=true",
         ]
-        # 优先用本地持久化安装的 wrangler，找不到再回退 npx
-        _wrangler_candidates = [shutil.which("wrangler")]
-        for _p in [
-            os.path.expanduser("~/.workbuddy/binaries/node/versions/22.22.2/bin/wrangler"),
-            "/usr/local/bin/wrangler",
-        ]:
-            if _p not in _wrangler_candidates:
-                _wrangler_candidates.append(_p)
-        wrangler_bin = next((c for c in _wrangler_candidates if c and os.path.exists(c)), None)
-        cmd = [wrangler_bin, *base_args] if wrangler_bin else ["npx", "wrangler", *base_args]
-        print(f"   🔧 调用 wrangler: {'本地 ' + wrangler_bin if wrangler_bin else 'npx 回退'}")
+        wrangler_cmd = find_wrangler()
+        if wrangler_cmd is None:
+            print("   ⚠️ 未找到 wrangler（PATH / 全局安装 / npx 缓存均无）")
+            return False
+        cmd = [*wrangler_cmd, *base_args]
+        print(f"   🔧 调用 wrangler: {' '.join(wrangler_cmd)}（已清除代理变量）")
 
         result = subprocess.run(
             cmd,

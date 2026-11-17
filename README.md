@@ -39,6 +39,8 @@ cd public && python3 -m http.server 8000
 ```
 
 ### 部署到公网
+部署前会自动检查全部页面的元信息、favicon、蛋仔共享资源、本地链接和脚本语法；也可以单独运行 `python3 core/deploy_smoke_test.py`。
+
 ```bash
 python3 core/deploy_cf_pages.py
 # 成功后在 https://kids-pages-1pw.pages.dev/ 查看
