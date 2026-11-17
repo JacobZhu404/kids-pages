@@ -42,7 +42,7 @@ TOPIC_LABELS = {
     "cbt": ("④ 完全二叉树", "topic-cbt"),
     "full": ("⑤ 满二叉树", "topic-full"),
     "digital": ("⑥ 数智素养", "digital-literacy.html"),
-    "python-fun": ("3.2 2026 北京市 Python 趣味编程", "topic-python-fun"),
+    "python-fun": ("3.2 python趣味编程 2026", "topic-python-fun"),
 }
 
 # 每个页面在侧边栏里显示的名字（短名）
@@ -62,7 +62,7 @@ PAGE_SHORT_NAMES = {
     "gesp6-full-tree-counter.html": "千问 · 满二叉子树计数",
     "digital-literacy.html": "数智素养 · 考试准备",
     "digital-practice.html": "数智素养 · 练习库",
-    "python-fun-competition.html": "2026 北京市 Python 趣味编程",
+    "python-fun-competition.html": "python趣味编程 2026",
 }
 
 NAV_CSS = """<style id="kg-nav-style">
