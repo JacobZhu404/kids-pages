@@ -108,6 +108,9 @@ EGGY_CSS = """<style id="kg-eggy-style">
 #kg-eggy .kg-dirt{opacity:0;transition:opacity .3s;}
 #kg-eggy .kg-hat{transition:opacity .3s, transform .3s;}
 #kg-eggy .kg-leg{transition:fill .3s;}
+#kg-eggy .kg-tear{opacity:0;transform-box:fill-box;transform-origin:center;}
+#kg-eggy.kg-crying .kg-tear{opacity:.9;animation:kg-tear-wobble .62s ease-in-out infinite alternate;}
+@keyframes kg-tear-wobble{from{transform:translateY(-1px);}to{transform:translateY(3px);}}
 #kg-eggy.kg-blasted .kg-smoke{opacity:1;}
 #kg-eggy.kg-blasted .kg-egg-body{fill:#3f3f3f !important;stroke:#27272a !important;}
 #kg-eggy.kg-blasted .kg-dirt{opacity:.85;}
@@ -327,7 +330,7 @@ EGGY_JS = """<script>
   function abortFlight(){
     cancelAnimationFrame(flightRAF);flightRAF=0;
     if(flightTimer)clearTimeout(flightTimer);flightTimer=null;
-    flying=false;eggy.classList.remove('kg-flying','kg-fallen');
+    flying=false;eggy.classList.remove('kg-flying','kg-fallen','kg-crying');
     svg.style.transform='';eggy.style.transition='';eggy.style.transform='';eggy.style.filter='';
     setScaredFace(false);
   }
@@ -371,7 +374,7 @@ EGGY_JS = """<script>
             if((rollDirection<0?x:maxX-x)<distance*.65)rollDirection=-rollDirection;
             rollEnd=Math.max(0,Math.min(maxX,x+rollDirection*distance));
             fallAngle=rollDirection*24;vx=0;vy=0;
-            eggy.classList.add('kg-fallen');mouth.setAttribute('d','M42 88 Q50 81 58 88');dust(0,1);
+            eggy.classList.add('kg-fallen','kg-crying');mouth.setAttribute('d','M42 88 Q50 81 58 88');dust(0,1);
           }else{vy=-Math.abs(vy)*.66;vx*=.94;impulse=1;dust(0,1);}
         }
         impulse=Math.max(0,impulse-dt*5);
@@ -391,12 +394,11 @@ EGGY_JS = """<script>
       if(phase==='fallen'){
         var t=Math.min(1,(now-phaseAt)/800);
         y=floor;
-        // Squash on impact, wobble while dazed, then gently get up.
-        var flatten=Math.sin(Math.min(1,t*3)*Math.PI/2)*(1-ease(Math.max(0,(t-.5)*2)));
-        sx=1+.28*flatten;sy=1-.3*flatten;
+        // Stay upright, cry briefly, then gently get up.
+        sx=1;sy=1;
         angle=fallAngle*Math.sin(Math.min(1,t*4)*Math.PI/2)*(1-ease(Math.max(0,(t-.45)/.55)));
         angle+=Math.sin(t*28)*5*(1-t);
-        if(t>=1){phase='walk';phaseAt=now;walkStart=x;squashFace(false);eggy.classList.remove('kg-fallen');}
+        if(t>=1){phase='walk';phaseAt=now;walkStart=x;squashFace(false);eggy.classList.remove('kg-fallen','kg-crying');}
       }
       if(phase==='walk'){
         var duration=Math.max(900,Math.abs(homeL-walkStart)/280*1000);
@@ -551,6 +553,8 @@ EGGY_HTML = """<!-- kg-eggy-start -->
     <path d="M72 60 Q74 54 76 56" stroke="#1e293b" stroke-width="1.5" fill="none" stroke-linecap="round"/>
     <circle cx="22" cy="76" r="5.5" fill="#fb7185" opacity=".55"/>
     <circle cx="78" cy="76" r="5.5" fill="#fb7185" opacity=".55"/>
+    <ellipse class="kg-tear" cx="27" cy="83" rx="2.8" ry="4.2" fill="#38bdf8"/>
+    <ellipse class="kg-tear" cx="73" cy="83" rx="2.8" ry="4.2" fill="#38bdf8"/>
     <path id="kg-eggy-mouth" d="M42 84 Q50 90 58 84" stroke="#1e293b" stroke-width="2.5" fill="none" stroke-linecap="round"/>
     <rect class="kg-leg" x="37" y="106" width="7" height="8" fill="#fde047"/>
     <rect class="kg-leg" x="56" y="106" width="7" height="8" fill="#fde047"/>
