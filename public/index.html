@@ -25,7 +25,7 @@
   .category-head p { margin-top:3px; color:var(--muted); font-size:14px; }
   .subtopic { margin-top:24px; padding-top:20px; border-top:1px solid var(--line); scroll-margin-top:24px; }
   .subtopic-head { display:flex; align-items:center; gap:10px; margin-bottom:13px; }
-  .subtopic-head h3 { font-size:19px; color:var(--teal); }
+  .subtopic-head h3, .subject-count span { font-size:19px; font-weight:700; color:var(--teal); }
   .subtopic-head span { font-size:13px; color:var(--muted); }
   .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
   .card { min-height:132px; position:relative; background:#fff; border:1px solid #e0eae4; border-radius:17px; padding:18px 19px;
@@ -39,7 +39,7 @@
   .card.special .src { color:#b0782e; }
   .subject-counts { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
   .subject-count { padding:15px 18px; border:1px solid #dce8df; border-radius:14px; background:#fff; color:var(--ink); }
-  .subject-count span { display:block; color:var(--muted); font-size:13px; }
+  .subject-count span { display:block; }
   .subject-count strong { display:block; margin-top:5px; font-size:21px; }
   .details-toggle { margin-top:18px; border:1px solid var(--line); border-radius:14px; background:#f7faf8; color:var(--blue); }
   .details-toggle summary { cursor:pointer; padding:13px 16px; font-weight:700; }
@@ -100,7 +100,7 @@
   #home-directory-toggle { top: auto; bottom: max(12px, env(safe-area-inset-bottom)); }
 }
 </style>
-<link rel="stylesheet" href="/assets/eggy.css">
+<link rel="stylesheet" href="assets/eggy.css">
 </head>
 <body>
 <!-- kg-sb-start -->
@@ -278,7 +278,7 @@
 </div>
 <!-- kg-eggy-end -->
 <!-- kg-eggy-js-start -->
-<script src="/assets/eggy.js" defer></script>
+<script src="assets/eggy.js" defer></script>
 <!-- kg-eggy-js-end -->
 </body>
 </html>

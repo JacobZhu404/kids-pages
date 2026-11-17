@@ -619,13 +619,13 @@ EGGY_HTML = """<!-- kg-eggy-start -->
 <!-- kg-eggy-end -->"""
 
 
-def eggy_asset_tags() -> str:
+def eggy_asset_tags(prefix: str = "") -> str:
     """Shared site-wide eggy files keep 16 copies of its runtime in sync."""
-    return '<link rel="stylesheet" href="/assets/eggy.css">'
+    return f'<link rel="stylesheet" href="{prefix}assets/eggy.css">'
 
 
-def eggy_script_tag() -> str:
-    return '<!-- kg-eggy-js-start -->\n<script src="/assets/eggy.js" defer></script>\n<!-- kg-eggy-js-end -->'
+def eggy_script_tag(prefix: str = "") -> str:
+    return f'<!-- kg-eggy-js-start -->\n<script src="{prefix}assets/eggy.js" defer></script>\n<!-- kg-eggy-js-end -->'
 
 
 def ensure_page_meta(html: str, rel_path: str) -> str:
@@ -740,12 +740,13 @@ def inject_page(rel_path: str, topic: str):
     ensure_eggy_assets()
     # Only actual folder nesting affects relative home URL; a tutorial slug has no slash.
     depth = rel_path.count("/")
+    prefix = "../" * depth
     home = "../" * depth + "index.html" if depth > 0 else "index.html"
 
     html = ensure_explicit_body(fpath.read_text(encoding="utf-8"))
     html = re.sub(r'<style id="kg-eggy-style">.*?</style>', '', html, flags=re.S)
-    html = re.sub(r'<link rel="stylesheet" href="/assets/eggy.css">', '', html)
-    html = re.sub(r'<script src="/assets/eggy.js" defer></script>', '', html)
+    html = re.sub(r'<link rel="stylesheet" href="(?:/|(?:\.\./)*)assets/eggy\.css">', '', html)
+    html = re.sub(r'<script src="(?:/|(?:\.\./)*)assets/eggy\.js" defer></script>', '', html)
     html = re.sub(r'<!-- kg-eggy-start -->.*?<!-- kg-eggy-end -->', '', html, flags=re.S)
     html = re.sub(r'<!-- kg-eggy-js-start -->.*?<!-- kg-eggy-js-end -->', '', html, flags=re.S)
 
@@ -770,8 +771,8 @@ def inject_page(rel_path: str, topic: str):
     # 注入 CSS 到 </head> 前
     if "</head>" in html:
         html = html.replace("</head>", NAV_CSS + "\n</head>", 1)
-        if "/assets/eggy.css" not in html:
-            html = html.replace("</head>", eggy_asset_tags() + "\n</head>", 1)
+        if topic != "python-fun":
+            html = html.replace("</head>", eggy_asset_tags(prefix) + "\n</head>", 1)
     else:
         print(f"  ⚠ 无 </head>，跳过 CSS 注入: {rel_path}")
 
@@ -785,16 +786,17 @@ def inject_page(rel_path: str, topic: str):
     else:
         print(f"  ⚠ 无 <body> 标签，跳过导航栏/侧边栏注入: {rel_path}")
 
+    mascot = "" if topic == "python-fun" else EGGY_HTML + "\n" + eggy_script_tag(prefix)
     # 注入互动蛋仔 HTML+JS 到 </body> 前（先注入侧边栏交互脚本）
     if "</body>" in html:
-        html = html.replace("</body>", TOC_JS + "\n" + EGGY_HTML + "\n" + eggy_script_tag() + "\n</body>", 1)
+        html = html.replace("</body>", TOC_JS + "\n" + mascot + "\n</body>", 1)
     else:
         print(f"  ⚠ 无 </body>，跳过蛋仔注入: {rel_path}")
 
     html = ensure_page_meta(html, rel_path)
     # Tutorial pages use external shared assets; never duplicate eggy CSS/JS inline.
-    html = html.replace(EGGY_CSS, eggy_asset_tags())
-    html = html.replace(EGGY_JS, eggy_script_tag())
+    html = html.replace(EGGY_CSS, eggy_asset_tags(prefix))
+    html = html.replace(EGGY_JS, eggy_script_tag(prefix))
     fpath.write_text(html, encoding="utf-8")
     print(f"  ✔ 注入完成: {rel_path} (主题={topic}, home={home})")
 
@@ -809,8 +811,8 @@ def inject_home():
     ensure_eggy_assets()
     html = ensure_explicit_body(fpath.read_text(encoding="utf-8"))
     html = re.sub(r'<style id="kg-eggy-style">.*?</style>', '', html, flags=re.S)
-    html = re.sub(r'<link rel="stylesheet" href="/assets/eggy.css">', '', html)
-    html = re.sub(r'<script src="/assets/eggy.js" defer></script>', '', html)
+    html = re.sub(r'<link rel="stylesheet" href="(?:/|(?:\.\./)*)assets/eggy\.css">', '', html)
+    html = re.sub(r'<script src="(?:/|(?:\.\./)*)assets/eggy\.js" defer></script>', '', html)
     html = re.sub(r'<!-- kg-eggy-start -->.*?<!-- kg-eggy-end -->', '', html, flags=re.S)
     html = re.sub(r'<!-- kg-eggy-js-start -->.*?<!-- kg-eggy-js-end -->', '', html, flags=re.S)
     # 首页侧边栏由人工维护（宝藏大陆的 1./2./3. 导航），原样保留，不重新生成。
@@ -818,8 +820,8 @@ def inject_home():
     existing_sb = existing_sb.group(0) if existing_sb else None
     # 清除旧注入
     html = re.sub(r'<style id="kg-sb-style">.*?</style>', "", html, flags=re.S)
-    html = re.sub(r'<link rel="stylesheet" href="/assets/eggy.css">', "", html)
-    html = re.sub(r'<script src="/assets/eggy.js" defer></script>', "", html)
+    html = re.sub(r'<link rel="stylesheet" href="(?:/|(?:\.\./)*)assets/eggy\.css">', "", html)
+    html = re.sub(r'<script src="(?:/|(?:\.\./)*)assets/eggy\.js" defer></script>', "", html)
     html = re.sub(r"<!-- kg-sb-start -->.*?<!-- kg-sb-end -->", "", html, flags=re.S)
     html = re.sub(r"<!-- kg-toc-js-start -->.*?<!-- kg-toc-js-end -->", "", html, flags=re.S)
     html = normalize_slots(html)

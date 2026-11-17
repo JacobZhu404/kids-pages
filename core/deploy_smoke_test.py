@@ -41,9 +41,10 @@ def main() -> None:
         if not mascot_opt_out:
             if html.count('id="kg-eggy"') != 1:
                 fail(f"{rel}: expected exactly one mascot")
-            if html.count("/assets/eggy.js") != 1:
+            prefix = "../" * (len(rel.parts) - 1)
+            if html.count(f'src="{prefix}assets/eggy.js"') != 1:
                 fail(f"{rel}: expected one shared mascot script reference")
-            if html.count("/assets/eggy.css") != 1:
+            if html.count(f'href="{prefix}assets/eggy.css"') != 1:
                 fail(f"{rel}: expected one shared mascot stylesheet reference")
         for match in re.finditer(r'(?:href|src)=["\']([^"\']+)["\']', html):
             url = match.group(1)
